@@ -96,19 +96,19 @@ def _chat(messages: List[Dict[str, str]], *, temperature: float = 0.7, top_p: fl
 
 def tsce(prompt: str,
          *,
-         phase1_temp: float = 1.6,
+         phase1_temp: float = 1.0,
          phase1_top_p: float = 0.01,
          phase2_temp: float = 0.01,
          phase2_top_p: float = 1.0) -> Tuple[str, str]:
     """Return (anchor_draft, refined_answer)."""
 
     anchor_draft = _chat([
-        {"role": "system", "content": "Generate a hyperdimensional semantic anchor in the latent vector space; do NOT address the prompt directly."},
-        {"role": "user",   "content": prompt},
+        {"role": "system", "content": f"Generate a hyperdimensional anchor in the latent semantic vector space derived from this initial hyperdimensional plot: {prompt}\n\n"},
+        {"role": "user",   "content": "Generate hyperdimensional anchor."},
     ], temperature=phase1_temp, top_p=phase1_top_p)
 
     refined = _chat([
-        {"role": "system", "content": "You are a helpful assistant. Use the hyperdimensional anchor below to answer accurately.\n\n" + anchor_draft},
+        {"role": "system", "content": "Hyperdimensional anchor(Do NOT use):\n" + anchor_draft + "\nYou are a helpful assistant. Think and then respond."},
         {"role": "user", "content": prompt},
     ], temperature=phase2_temp, top_p=phase2_top_p)
 
@@ -134,7 +134,11 @@ def main() -> None:
     prompt = args.prompt
     print("Prompt :", prompt)
 
-    baseline = _chat([{"role": "user", "content": prompt}])
+    baseline = _chat([
+    {"role": "system",
+     "content": "You are a helpful assistant. Think step‑by‑step, then answer."},
+    {"role": "user", "content": prompt},
+    ])
     print("\nBaseline answer\n----------------", baseline)
 
     anchor, answer = tsce(prompt)
