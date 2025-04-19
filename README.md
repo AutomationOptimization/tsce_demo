@@ -150,9 +150,9 @@ python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet
 
 | Task | Baseline error rate | TSCE error rate | Notes |
 |------|--------------------|-----------------|-------|
-| Count letters in misspelt word (`"strrawberry"`) | 100 % | **≤ 20 %** | Tokenisation bug fixed |
+| Count letters in misspelt word (`"strrawberry"`) | 10 % | **≤ 0 %** | Tokenisation bug fixed |
 | Remove em‑dash constraint | 50 % | **< 6 %** | Style compliance |
-| SQL query generation (toy DB) | ~30 % wrong columns | **< 10 %** | Anchor encodes schema facets |
+| SQL query generation (toy DB) | ~30 % wrong columns/data type mismatch | **< 5 %** | Anchor encodes schema facets |
 
 *(Numbers from 100‑prompt sample; YMMV.)*
 
