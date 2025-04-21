@@ -21,6 +21,11 @@ RESULT_DIR = Path("results"); RESULT_DIR.mkdir(exist_ok=True)
 # Define the models you want to iterate over
 MODEL_LIST = os.getenv("TSCE_MODEL_LIST", "gpt-3.5-turbo,gpt-4o,gpt-4.1").split(",")
 
+import importlib.util, pathlib, sys
+t_path = pathlib.Path(__file__).with_name("tsce_demo.py")
+spec   = importlib.util.spec_from_file_location("tsce_demo", t_path)
+tsce_demo = importlib.util.module_from_spec(spec); spec.loader.exec_module(tsce_demo)
+
 # ------------------------- Helper wrappers ------------------------------
 
 def run_once(prompt: str, model: str, system_prompt: str) -> Dict:
