@@ -1,18 +1,18 @@
-## TSCE Demo 🧠⚡  
-*Two‑Step Contextual Enrichment in 120 lines — for OpenAI **and** Azure OpenAI*
+## TSCE Demo 🧠⚡
+*A two-phase **mechanistic framework** for more reliable LLM answers — validated on OpenAI GPT-3.5/4 and open-weights Llama-3 8 B*
 
 ---
 
-### Table of Contents
+### Table of Contents
 1. [What is TSCE?](#what-is-tsce)
 2. [Repo Highlights](#repo-highlights)
 3. [Prerequisites](#prerequisites)
 4. [Installation](#installation)
 5. [Configuration](#configuration)
-6. [Quick Start](#quick-start)
+6. [Quick Start](#quick-start)
 7. [Usage Examples](#usage-examples)
 8. [How TSCE Works](#how-tsce-works)
-9. [Benchmarks & Expected Wins](#benchmarks--expected-wins)
+9. [Benchmarks & Latest Results](#benchmarks--latest-results)
 10. [Troubleshooting](#troubleshooting)
 11. [Extending the Demo](#extending-the-demo)
 12. [Contributing](#contributing)
@@ -20,52 +20,64 @@
 
 ---
 
-### What is TSCE? <a name="what-is-tsce"></a>
+### What is TSCE? <a name="what-is-tsce"></a>
 
-**Two‑Step Contextual Enrichment (TSCE)** is a drop‑in prompt strategy that:
+| Phase | Purpose | Temp | Output |
+|-------|---------|------|--------|
+| **1 — Hyper-Dimensional Anchor** | Compresses the entire prompt into a dense latent scaffold (HDA). | ↑ ≈ 1.3 | opaque token block |
+| **2 — Focused Generation** | Re-reads *System + User + HDA* and answers inside a narrower semantic manifold. | ↓ ≤ 0.7 | final answer |
 
-1. **Phase 1 — Hyperdimensional Anchor**  
-   Generates a rich latent scaffold (high‑temperature, low top‑p) from the user prompt.  
-2. **Phase 2 — Focused Generation**  
-   Prepends that anchor as hidden context, forcing the model to answer while locked to a narrower, more reliable semantic sub‑space.
-
-Result:  
-* ⇣ Hallucinations, ⇣ instruction slips, ⇣ formatting errors*  
-with zero fine‑tuning and only one extra API call.
+**Outcome:** fewer hallucinations, instruction slips, and formatting errors — with no fine-tuning and only one extra call.
 
 ---
 
-### Repo Highlights <a name="repo-highlights"></a>
+### Repo Highlights <a name="repo-highlights"></a>
 
 | File | Purpose |
 |------|---------|
-| `tsce_demo.py` | Single‑file demo: runs baseline **vs** TSCE, prints both answers, saves `report.json`. |
-| `.env.example` | Copy to `.env`; fill in your keys / endpoints. |
-| `requirements.txt` | Minimal deps (`python‑dotenv`, `requests`, `tiktoken`). |
-| `LICENSE` | MIT — use it anywhere. |
+| `tsce_demo.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
+| `tsce_core.py` | 120-LoC reference implementation (backend-agnostic). |
+| `benchmark/` | Harness & task sets that produced the results below. |
+| `figures/` | Entropy, KL, cosine-violin plots ready to share. |
+| `.env.example` | Copy → `.env`, add your keys. |
 
-*Works with vanilla **OpenAI Cloud** **or** **Azure OpenAI** — auto‑detected via env‑vars.*
-
----
-
-### Prerequisites <a name="prerequisites"></a>
-
-* Python 3.8 +
-* An OpenAI API key **or** Azure OpenAI deployment key
-* Git & (optionally) virtualenv
+Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint.
 
 ---
 
-### Installation <a name="installation"></a>
+### Benchmarks & Latest Results <a name="benchmarks--latest-results"></a>
+
+| Model · Backend | Tasks | One-Shot | **TSCE** | **HDA + CoT** | Token × |
+|-----------------|-------|----------|----------|---------------|---------|
+| GPT-3.5-turbo (N = 300) | math · calendar · format | 49 % | **79 %** | – | 1.9× |
+| GPT-4.1 (N = 300) | em-dash policy stress | 50 % viol. | **6 %** | – | 2.0× |
+| Llama-3 8 B (N = 100) | same pack | 69 % | **76 %** | **85 %** | 1.4× |
+
+> *Anchor alone lifts GPT-3.5 by +30 pp; on the smaller Llama, the anchor unlocks CoT (+16 pp).*
+
+**Key plots** (see `figures/`):  
+* `entropy_bar.png` — 6× entropy collapse  
+* `kl_per_position.png` — KL > 10 nats after token 20  
+* `cosine_violin.png` — answers cluster tighter with an anchor
+
+---
+
+### Prerequisites <a name="prerequisites"></a>
+
+* Python 3.8 +
+* OpenAI API key **or** Azure OpenAI deployment key
+* Git *(virtualenv optional)*
+
+---
+
+### Installation <a name="installation"></a>
 
 ```bash
-git clone https://github.com/<your‑username>/tsce-demo.git
-cd tsce-demo
+git clone https://github.com/<your-username>/tsce_demo.git
+cd tsce_demo
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env         # then open .env and paste your keys
-```
-
+cp .env.example .env          # then edit .env with your creds
 ---
 
 ### Configuration <a name="configuration"></a>
@@ -124,37 +136,6 @@ python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet
 ```
 
 `report.json` includes token counts and the hidden anchor for post‑hoc analysis.
-
----
-
-### How TSCE Works <a name="how-tsce-works"></a>
-
-```
-            ┌─────────────┐
-   prompt → │ Phase 1     │─ anchor_draft ─┐
-            │  (temp 1.0) │                ▼
-            └─────────────┘        ┌─────────────┐
-                                   │ Phase 2     │→ final answer
-                                   │ (temp 0.01) │
-                                   └─────────────┘
-```
-
-* **Hyperdimensional Anchor Prompt**  
-  `Generate a semantic hyperdimensional anchor in the latent vector space launching from this initial single‑dimensional vector: <prompt>`
-* Phase 1 uses **high temperature / tiny top‑p** → rich, quirky latent text.  
-* Phase 2 uses **low temperature** with the anchor prepended → tight, deterministic answer space.
-
----
-
-### Benchmarks & Expected Wins <a name="benchmarks--expected-wins"></a>
-
-| Task | Baseline error rate | TSCE error rate | Notes |
-|------|--------------------|-----------------|-------|
-| Count letters in misspelt word (`"strrawberry"`) | 10 % | **≤ 0 %** | Tokenisation bug fixed |
-| Remove em‑dash constraint | 50 % | **< 6 %** | Style compliance |
-| SQL query generation (toy DB) | ~30 % wrong columns/data type mismatch | **< 5 %** | Anchor encodes schema facets |
-
-*(Numbers from 100‑prompt sample; YMMV.)*
 
 ---
 
