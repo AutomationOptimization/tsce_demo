@@ -1,4 +1,10 @@
+streamlit
 python-dotenv
 requests
 tiktoken
-streamlit
+pandas
+scikit-learn
+sentence-transformers
+matplotlib
+torch
+scipy
