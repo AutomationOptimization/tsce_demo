@@ -125,6 +125,12 @@ TSCE answer
 Report saved → report.json
 ```
 
+For an interactive UI that lets you compare the baseline and TSCE answers, run:
+
+```bash
+streamlit run streamlit_chat.py
+```
+
 ---
 
 ### Usage Examples <a name="usage-examples"></a>
