@@ -154,7 +154,7 @@ Sample output:
 Anchor: ⟨HDA: 0x3f2a…⟩
 TSCE Answer: Lithium-ion batteries require…
 
-![Example output](figures/example_output.png)
+![Example output](figures/output.png)
 
 ---
 
