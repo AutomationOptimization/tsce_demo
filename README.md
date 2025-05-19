@@ -1,4 +1,5 @@
 ## TSCE Demo 🧠⚡
+Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of complex instructions when forced to answer in one shot. Two-Step Contextual Enrichment solves this by first compressing your entire prompt into a "hyperdimensional anchor," then guiding a second, focused generation—delivering more faithful answers with no extra training.
 *A two-phase **mechanistic framework** for more reliable LLM answers — validated on OpenAI GPT-3.5/4 and open-weights Llama-3 8 B*
 
 ---
@@ -21,6 +22,8 @@
 ---
 
 ### What is TSCE? <a name="what-is-tsce"></a>
+Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.” In a single pass it might drop key clauses. Instead, TSCE’s first pass distills it into a tiny latent scaffold (“anchor”), and the second pass expands that into a summary—so you get both brevity and completeness.
+
 
 | Phase | Purpose | Temp | Output |
 |-------|---------|------|--------|
@@ -40,21 +43,32 @@
 | `benchmark/` | Harness & task sets that produced the results below. |
 | `figures/` | Entropy, KL, cosine-violin plots ready to share. |
 | `.env.example` | Copy → `.env`, add your keys. |
+| `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
 
 Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint.
+✨ New: we now load the Phase 1 and Phase 2 prompts from prompts/phase1.txt and prompts/phase2.txt, making it easy to swap in your own prompt templates.
+
+### How TSCE Works <a name="how-tsce-works"></a>
+
+1. **Phase 1 – Anchor Construction:** compresses the entire prompt into an opaque anchor.
+2. **Phase 2 – Guided Answering:** reads the anchor with your original prompt to craft the final response.
+
+#### Trade-off Considerations
+Compressing natural language always risks dropping nuance, but our benchmarks show that on multi-step reasoning tasks TSCE still gains +30 pp on GPT-3.5 and yields 76 % success on Llama-3 vs. 69 % baseline—so the anchor’s focus outweighs the compression loss.
 
 ---
 
 ### Benchmarks & Latest Results <a name="benchmarks--latest-results"></a>
 
-| Model · Backend | Tasks | One-Shot | **TSCE** | **HDA + CoT** | Token × |
-|-----------------|-------|----------|----------|---------------|---------|
-| GPT-3.5-turbo (N = 300) | math · calendar · format | 49 % | **79 %** | – | 1.9× |
-| GPT-4.1 (N = 300) | em-dash policy stress | 50 % viol. | **6 %** | – | 2.0× |
-| Llama-3 8 B (N = 100) | same pack | 69 % | **76 %** | **85 %** | 1.4× |
+| Model | Task Suite | One-Shot | **TSCE** | Token × |
+|------|-------------|---------|-------|--------|
+| GPT-3.5-turbo | math ∙ calendar ∙ format | 49 % | 79 % | 1.9× |
+| GPT-4.1 | em-dash & policy tests | 50 % viol. | 6 % viol. | 2.0× |
+| Llama-3 8B | mixed reasoning pack | 69 % | 76 % | 1.4× |
 
 > *Anchor alone lifts GPT-3.5 by +30 pp; on the smaller Llama, the anchor unlocks CoT (+16 pp).*
 
+Note: TSCE uses two passes, so raw joules/token cost ≈2× single-shot; we compare against a zero-temp, single-shot oracle.
 **Key plots** (see `figures/`):  
 * `entropy_bar.png` — 6× entropy collapse  
 * `kl_per_position.png` — KL > 10 nats after token 20  
@@ -131,6 +145,17 @@ For an interactive UI that lets you compare the baseline and TSCE answers, run:
 streamlit run streamlit_chat.py
 ```
 
+### Quick Demo
+```bash
+python tsce_demo.py "What are the safety protocols for lithium-ion batteries?"
+```
+Sample output:
+
+Anchor: ⟨HDA: 0x3f2a…⟩
+TSCE Answer: Lithium-ion batteries require…
+
+![Example output](figures/example_output.png)
+
 ---
 
 ### Usage Examples <a name="usage-examples"></a>
@@ -162,6 +187,11 @@ python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet
 * **Visualization** — embed t‑SNE plot code from the white‑paper (convex hulls, arrows).  
 * **Guard‑rails** — add a self‑critique third pass for high‑risk domains.  
 * **Streamlit UI** — drop‑in interactive playground (ask → anchor → answer).  
+
+**Open Questions & Next Steps**
+- Recursive Anchors? Does running Phase 1 on its own anchor improve or compound errors?
+- Automated Prompt Tuning: Explore integrating dspy for auto-optimizing your prompt templates.
+- Benchmark Strategy: We welcome new task sets—suggest yours under benchmark/tasks/.
 
 Pull requests welcome!
 
