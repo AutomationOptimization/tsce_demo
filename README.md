@@ -28,7 +28,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | Phase | Purpose | Temp | Output |
 |-------|---------|------|--------|
 | **1 — Hyper-Dimensional Anchor** | Compresses the entire prompt into a dense latent scaffold (HDA). | ↑ ≈ 1.3 | opaque token block |
-| **2 — Focused Generation** | Re-reads *System + User + HDA* and answers inside a narrower semantic manifold. | ↓ ≤ 0.7 | final answer |
+| **2 — Focused Generation** | Re-reads *System + User + HDA* and answers inside a narrower semantic manifold. | ↓ ≤ 0.1 | final answer |
 
 **Outcome:** fewer hallucinations, instruction slips, and formatting errors — with no fine-tuning and only one extra call.
 
