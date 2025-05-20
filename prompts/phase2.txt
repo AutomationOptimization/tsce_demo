@@ -1,1 +1,3 @@
-Phase 2 prompt placeholder
+anchor + "\n**HDA above, do NOT reference.**\n" + sys_prompt_safe
+
+sys_prompt_safe = "You are a helpful assistant. Reply to the user, be concise, think step-by-step, and then address the user directly."
