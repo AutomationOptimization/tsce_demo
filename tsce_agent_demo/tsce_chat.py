@@ -220,27 +220,7 @@ class TSCEChat:
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
             anchor_text
-            + "\n---\nEnd HDA Constellation\n---\n"
-            "Utilizing the HyperDimensional Anchor (HDA)**\n\n"
-            "You are now executing the **generative pass** …\n\n"
-            "### 📌 **Step-by-Step Utilization of the HDA**\n\n"
-            "1. **Embed the HDA Deeply:**\n"
-            "   - Before consciously processing or responding, **internally simulate** "
-            "mental embeddings of the anchor.\n"
-            "   - Let the symbols seep into latent semantic layers.\n\n"
-            "2. **Iterative Imagistic Reconstruction:**\n"
-            "   - Reconstruct meaning through imagistic associations, not direct translation.\n"
-            "   - Surface interpretations carefully.\n\n"
-            "3. **Subconscious Token Interference:**\n"
-            "   - Allow the intentionally dissonant symbols to create lateral semantic paths.\n"
-            "   - Embrace serendipitous juxtapositions.\n\n"
-            "4. **Guided Emergence:**\n"
-            "   - As you begin formulating your response, periodically glance back at the anchor, "
-            "re-aligning trajectory.\n"
-            "   - This fosters coherence with creativity.\n\n"
-            "---\n\n"
-            "After internalizing HDA, begin responding to the **user**. "
-            "If your chain of thought begins to drift off-topic, quickly re-anchor using the latent images.\n\n"
+            + 
             "Also take into account the below system preferences:\n"
             + self.final_prefix
         )
