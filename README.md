@@ -50,7 +50,7 @@ Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint
 
 ### How TSCE Works <a name="how-tsce-works"></a>
 
-1. **Phase 1 – Anchor Construction:** compresses the entire prompt into an opaque anchor.
+1. **Phase 1 – Hyper-Dimensional Anchor (HDA) Construction:** compresses the entire prompt into an opaque anchor.
 2. **Phase 2 – Guided Answering:** reads the anchor with your original prompt to craft the final response.
 
 #### Trade-off Considerations
