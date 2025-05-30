@@ -1,5 +1,5 @@
 ## TSCE Demo 🧠⚡
-Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of complex instructions when forced to answer in one shot. Two-Step Contextual Enrichment solves this by first compressing your entire prompt into a "hyperdimensional anchor," then guiding a second, focused generation—delivering more faithful answers with no extra training.
+Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of complex instructions when forced to answer in one shot. Two-Step Contextual Enrichment solves this by first compressing your entire prompt into a "hyper-dimensional anchor," then guiding a second, focused generation—delivering more faithful answers with no extra training.
 *A two-phase **mechanistic framework** for more reliable LLM answers — validated on OpenAI GPT-3.5/4 and open-weights Llama-3 8 B*
 
 ---
