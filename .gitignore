@@ -3,3 +3,4 @@ report.json
 venv/
 __pycache__/
 
+results/
