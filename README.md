@@ -232,7 +232,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
 | `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
 | `.env.example` | Copy → `.env`, add your keys. |
-| `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
+| `tsce_agent_demo/data/<prompts>.txt` | Default templates |
 | `docs/tsce_DRAFT.pdf` | Current draft of the TSCE research paper |
 
 Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint.
