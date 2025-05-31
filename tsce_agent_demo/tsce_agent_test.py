@@ -33,11 +33,12 @@ from scipy.stats import wilcoxon, entropy as sh_entropy
 from statsmodels.stats.contingency_tables import mcnemar
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
-from sklearn.metrics import mutual_info_score
+from sklearn.metrics import mutual_info_score, silhouette_score
 from shapely.geometry import MultiPoint
 import openai, tiktoken
 from openai import RateLimitError
 from tsce_chat import TSCEChat
+import re
 
 import threading, itertools
 
@@ -46,13 +47,22 @@ plt.switch_backend("Agg")  # no GUI needed
 # ──────────────────────────────────────────────────────────────
 # CONFIG / ENV
 # ──────────────────────────────────────────────────────────────
+# ── Model tracking globals ─────────────────────────────────────────
+BASELINE_MODEL: str | None = None
+ANCHOR_MODEL: str | None = None
+FINAL_MODEL:   str | None = None
 ENABLE_TSCE = os.getenv("ENABLE_TSCE", "1").lower() not in {"0", "false", "no"}
 BACKEND   = os.getenv("BACKEND", "gpt").lower()   # "gpt" (default) | "ollama"
 TASK_KIND = os.getenv("TASK_KIND", "auto")        # math | calendar | formatting | auto
 N          = int(os.getenv("N", 120))
 WORKERS    = int(os.getenv("WORKERS", 8))
 VERBOSE    = os.getenv("VERBOSE", "1") not in {"0", "false", "no"}
-OUT_DIR    = os.getenv("OUT_DIR", ".")
+if "OUT_DIR" in os.environ and os.environ["OUT_DIR"].strip():
+    OUT_DIR = os.environ["OUT_DIR"]
+else:
+    from datetime import datetime
+    stamp  = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    OUT_DIR = os.path.join("results", stamp)
 TSNE_FLAG  = os.getenv("TSNE", "1") not in {"0", "false", "no"}
 LOGPROB    = os.getenv("LOGPROB", "0") not in {"0", "false", "no"}
 
@@ -97,7 +107,9 @@ def _acquire(tokens_needed: int) -> None:
 G, R, BOLD, C = "\033[92m", "\033[91m", "\033[1m", "\033[0m"
 mark = lambda ok: f"{G if ok else R}{'✓' if ok else '✗'}{C}"
 
-TAGS = ["B", "C", "R"] if not ENABLE_TSCE else ["B", "T", "C", "CT", "R", "RT"]
+# choose strategies to track in live progress ----------------------
+#  ↓ self-refine / CoT families removed; three TSCE temps added
+TAGS = ["B"] if not ENABLE_TSCE else ["B", "T1"]
 PROGRESS = {t: [] for t in TAGS}
 _prog_lck = threading.Lock()
 _first_draw = True
@@ -142,13 +154,34 @@ enc = tiktoken.get_encoding("cl100k_base")
 def token_len(txt: str) -> int:
     return len(enc.encode(txt or ""))
 
+def _loose_jsonl(path: str):
+    """
+    Generator that yields one parsed JSON object at a time
+    even if the file contains >1 object per physical line
+    (a quirk in some GSM-Hard dumps).
+    """
+    import json, re
+    with open(path, 'r', encoding='utf-8') as f:
+        for raw in f:
+            raw = raw.strip()
+            if not raw:
+                continue
+            # split on any accidental `}{`
+            for frag in re.split(r'}\s*{', raw):
+                if not frag.startswith('{'):
+                    frag = '{' + frag
+                if not frag.endswith('}'):
+                    frag = frag + '}'
+                yield json.loads(frag)
+
 # ──────────────────────────────────────────────────────────────
 #  SAFE TSCE WRAPPER (retries + throttling)
 # ──────────────────────────────────────────────────────────────
 
 tsce: TSCEChat  # forward declaration; instantiated later
 
-def safe_tsce(prompt_or_msgs, retries: int = 6, max_tokens: int = 256):
+def safe_tsce(prompt_or_msgs, *, anchor_temp: float = 0.01,
+              retries: int = 6, max_tokens: int = 300):
     if isinstance(prompt_or_msgs, str):
         toks = token_len(prompt_or_msgs)
     else:
@@ -156,7 +189,7 @@ def safe_tsce(prompt_or_msgs, retries: int = 6, max_tokens: int = 256):
     _acquire(toks + max_tokens)
     for attempt in range(retries + 1):
         try:
-            return tsce(prompt_or_msgs)
+            return tsce(prompt_or_msgs, anchor_temp=anchor_temp)
         except openai.RateLimitError as err:
             retry = getattr(err, "retry_after", 1.5 * (2 ** attempt))
             time.sleep(retry)
@@ -307,6 +340,29 @@ def make_formatting()->Tuple[str,str,str]:
     return FMT_TASKS[key]["template"].format(txt=raw),key,raw
 
 def generate_task(kind:str)->Tuple[str,str,Any,Dict[str,Any]]:
+    if kind == "gsm8k":
+        if not hasattr(generate_task, "_gsm8k"):
+            with open("gsm8k_test.jsonl") as f:
+                generate_task._gsm8k = [json.loads(l) for l in f]
+            random.shuffle(generate_task._gsm8k)
+        record = generate_task._gsm8k.pop()
+        q = record["question"].strip()
+        ans_txt = record["answer"].split("####")[-1]
+        ans = int(re.search(r"-?\d+", ans_txt.replace(",", "")).group())
+        return q, "math", ans, {}
+    elif kind == "gsm_hard":
+        path = os.path.join(os.getenv("DATA_DIR", "data"), "gsm_hard.jsonl")
+
+        if not hasattr(generate_task, "_ghard"):
+            # one-time load
+            generate_task._ghard = list(_loose_jsonl(path))
+            random.shuffle(generate_task._ghard)
+
+        rec = generate_task._ghard.pop()
+        q   = rec["input"].strip()
+        ans = int(float(rec["target"]))          # target is stored as float
+        return q, "math", ans, {}
+
     pick = (kind if kind != "auto" else random.choice(
         ["math", "calendar", "formatting", "schema", "md2latex"]))
     if pick=="math":
@@ -424,7 +480,7 @@ if BACKEND == "gpt":
     CLIENTS, DEPLOY_NAMES, ENDPOINTS = [], [], []
 
     # A & B
-    for s in ("A", "B"):
+    for s in ("E", "F"):
         cl = _mk_client(f"AZURE_OPENAI_KEY_{s}", f"AZURE_OPENAI_ENDPOINT_{s}")
         if cl:
             CLIENTS.append(cl)
@@ -433,34 +489,34 @@ if BACKEND == "gpt":
 
     # C – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
     #   export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-    #clC = _mk_client("AZURE_OPENAI_KEY_C", "AZURE_OPENAI_ENDPOINT_C")
-    #if clC:
-    #    CLIENTS.append(clC)
-    #    DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_C", "gpt-35-turbo-3"))
-    #    ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_C"))
+    clC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
+    if clC:
+        CLIENTS.append(clC)
+        DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
+        ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
     # D – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
-    #   export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-#    dlC = _mk_client("AZURE_OPENAI_KEY_D", "AZURE_OPENAI_ENDPOINT_D")
- #   if dlC:
-  #      CLIENTS.append(dlC)
-   #     DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_D", "gpt-35-turbo-4"))
-    #    ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_D"))
+      # export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
+    dlC = _mk_client("AZURE_OPENAI_KEY_F", "AZURE_OPENAI_ENDPOINT_F")
+    if dlC:
+        CLIENTS.append(dlC)
+        DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_F", "gpt-35-turbo-6"))
+        ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_F"))
 
     # E – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
-    #   export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-#    elC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
- #   if elC:
-  #      CLIENTS.append(elC)
-   #     DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
-    #    ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
+      # export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
+    #elC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
+    #if elC:
+     #   CLIENTS.append(elC)
+      #  DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
+       # ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
 
     # F – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
-    #   export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-#    flC = _mk_client("AZURE_OPENAI_KEY_F", "AZURE_OPENAI_ENDPOINT_F")
-  #  if flC:
- #       CLIENTS.append(flC)
-   #     DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_F", "gpt-35-turbo-6"))
-    #    ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_F"))
+       #export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
+   # flC = _mk_client("AZURE_OPENAI_KEY_F", "AZURE_OPENAI_ENDPOINT_F")
+    #if flC:
+     #   CLIENTS.append(flC)
+      #  DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_F", "gpt-35-turbo-6"))
+       # ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_F"))
 
 else:
     CLIENTS, DEPLOY_NAMES, ENDPOINTS = [], [], []
@@ -485,7 +541,7 @@ else:
 
 # ── Model calling helpers ----------------------------------
 
-def call_gpt(msgs, *, temperature=0.7, max_tokens=256, logprobs=LOGPROB, top_logprobs=5):
+def call_gpt(msgs, *, temperature=0.0, max_tokens=256, logprobs=LOGPROB, top_logprobs=5):
     prompt_tok = token_len(" ".join(m["content"] for m in msgs))
     _acquire(prompt_tok + max_tokens)
     with _cycle_lock:
@@ -496,6 +552,7 @@ def call_gpt(msgs, *, temperature=0.7, max_tokens=256, logprobs=LOGPROB, top_log
         model=deploy,
         messages=msgs,
         temperature=temperature,
+        top_p=1.0,
         max_tokens=max_tokens,
         logprobs=logprobs or None,
         top_logprobs=top_logprobs if logprobs else None,
@@ -504,6 +561,10 @@ def call_gpt(msgs, *, temperature=0.7, max_tokens=256, logprobs=LOGPROB, top_log
     content = (r.choices[0].message.content or "").strip()
     usage   = r.usage or {}
     lp      = r.choices[0].logprobs.content if LOGPROB else []
+    # record baseline model once
+    global BASELINE_MODEL
+    if BASELINE_MODEL is None:
+        BASELINE_MODEL = deploy
     return content, usage, lat, lp
 
 def call_ollama(msgs, *, temperature=0.7, max_tokens=256, top_p=0.95):
@@ -512,6 +573,9 @@ def call_ollama(msgs, *, temperature=0.7, max_tokens=256, top_p=0.95):
     model = os.getenv("OLLAMA_MODEL", "llama3")
     opts  = {"temperature": temperature, "top_p": top_p, "num_predict": max_tokens}
     t0 = time.perf_counter()
+    global BASELINE_MODEL
+    if BASELINE_MODEL is None:
+        BASELINE_MODEL = model
     r  = cli.chat(model=model, messages=msgs, stream=False, options=opts)
     lat = time.perf_counter() - t0
     return r["message"]["content"].strip(), {}, lat, []
@@ -694,48 +758,40 @@ class Row(TypedDict):
 
     # raw text outputs
     baseline: str
-    tsce: str
-    cot: str
-    cot_tsce: str
-    refine: str
-    refine_tsce: str
+    #tsce0: str
+    #tsce05: str
+    tsce1: str
 
     # pass / fail flags
     base_ok: bool
-    tsce_ok: bool
-    cot_ok: bool
-    cot_tsce_ok: bool
-    ref_ok: bool
-    ref_tsce_ok: bool
+    #tsce0_ok: bool
+    #tsce05_ok: bool
+    tsce1_ok: bool
 
     # numeric errors & rule-violations
     base_err: float
-    cot_err: float
+    #tsce0_err: float
+    #tsce05_err: float
+    tsce1_err: float
     violations: int
 
     # token-counts (prompt + completion) for *every* strategy
     base_tok: int
-    tsce_tok: int
-    cot_tok: int
-    ct_tok: int
-    ref_tok: int
-    rt_tok: int
+    #tsce0_tok: int
+    #tsce05_tok: int
+    tsce1_tok: int
 
     # measured latency (s)
     base_lat: float
-    tsce_lat: float
-    cot_lat: float
-    ct_lat: float
-    ref_lat: float
-    rt_lat: float
+    #tsce0_lat: float
+   # tsce05_lat: float
+    tsce1_lat: float
 
     # log-prob lists (needed for entropy / KL)
     base_lp: list
-    tsce_lp: list
-    cot_lp: list
-    ct_lp: list
-    ref_lp: list
-    rt_lp: list
+    #tsce0_lp: list
+    #tsce05_lp: list
+    tsce1_lp: list
 # ╭──────────────────────────────────────────────────────────╮
 #│  6. SOLVER                                              │
 #╰──────────────────────────────────────────────────────────╯
@@ -755,7 +811,9 @@ def solve_one(i: int, total: int) -> Row:
     #  run the 6 strategies *concurrently*  (one per future)
     # ──────────────────────────────────────────────────────
     def _baseline():
-        txt, usage, lat, lp = call_model([{"role": "user", "content": prompt}])
+        txt, usage, lat, lp = call_model([
+            {"role": "user", "content": prompt}
+        ])
         obj = txt if kind == "formatting" else extract_json(txt)
         if kind == "math":
             ok, err = eval_math(obj, truth); viol = 0
@@ -765,94 +823,100 @@ def solve_one(i: int, total: int) -> Row:
             ok, viol = eval_format(txt, truth); err = 0.0
         return ("B", txt, ok, err, viol, usage, lat, lp)
 
-    def _tsce():
-        tsce_resp = safe_tsce(prompt)            # 2 hidden calls, done
-        txt    = tsce_resp.content.strip()       # already produced with the anchor
-        anchor = tsce_resp.anchor.strip()
-        usage  = getattr(tsce_resp, "usage", {}) # TSCEChat passes these through
-        lat    = getattr(tsce_resp, "latency", 0.0)
-        lp     = getattr(tsce_resp, "logprobs", [])
-        obj = txt if kind == "formatting" else extract_json(txt)
-        ok  = eval_calendar(obj, meta) if kind == "calendar" else \
-              eval_math(obj, truth)[0] if kind == "math" else \
-              eval_format(txt, truth)[0]
-        return ("T", txt, ok, 0.0, 0, usage, lat, lp)
+    # ── compact helper: run TSCE once with chosen temperature ─────────
+    def _tsce_var(temp: float, tag: str):
+        def inner():
+            tsce_resp = safe_tsce(prompt, anchor_temp=temp)
+            txt    = tsce_resp.content.strip()       # already produced with the anchor
+            anchor = tsce_resp.anchor.strip()
+            # store TSCE models (once)
+            global ANCHOR_MODEL, FINAL_MODEL
+            if ANCHOR_MODEL is None and hasattr(tsce_resp, "anchor_model"):
+                ANCHOR_MODEL = tsce_resp.anchor_model
+            if FINAL_MODEL is None and hasattr(tsce_resp, "final_model"):
+                FINAL_MODEL = tsce_resp.final_model
+            usage  = getattr(tsce_resp, "usage", {}) # TSCEChat passes these through
+            lat    = getattr(tsce_resp, "latency", 0.0)
+            lp     = getattr(tsce_resp, "logprobs", [])
+            obj = txt if kind == "formatting" else extract_json(txt)
+            ok  = eval_calendar(obj, meta) if kind == "calendar" else \
+                eval_math(obj, truth)[0] if kind == "math" else \
+                eval_format(txt, truth)[0]
+            return (tag, txt, ok, 0.0, 0, usage, lat, lp)
+        return inner
 
     def _wrap(fn, tag):    # tiny helper to unify return shape
+        import time
+        t0 = time.perf_counter()
         txt, n, ok = fn(prompt, kind, truth, meta)
+        lat = time.perf_counter() - t0
+        # only chain-of-thought (C) has a meaningful error field today
         err = eval_math(extract_json(txt), truth)[1] if kind == "math" and tag in {"C"} else 0.0
-        return (tag, txt, ok, err, 0, {}, 0.0, [])
+        return (tag, txt, ok, err, 0, {}, lat, [])
 
     with ThreadPoolExecutor(max_workers=WORKERS) as strat_pool:
-        futures = [
-            strat_pool.submit(_baseline),
-            strat_pool.submit(lambda: _wrap(run_cot,   "C")),
-            strat_pool.submit(lambda: _wrap(run_refine,"R")),
-        ]
-
+        futures = [strat_pool.submit(_baseline)]
         if ENABLE_TSCE:
             futures += [
-                strat_pool.submit(_tsce),
-                strat_pool.submit(lambda: _wrap(run_anchor_cot,"CT")),
-                strat_pool.submit(lambda: _wrap(run_refine_tsce,"RT")),
+                #strat_pool.submit(_tsce_var(0.0, "T0")),
+                #strat_pool.submit(_tsce_var(1.0, "T05")),
+                strat_pool.submit(_tsce_var(1.6, "T1")),
             ]
 
     results = {tag: r for tag, *r in (f.result() for f in futures)}
 
     # mandatory strategies
     base_txt, base_ok, base_err, viol, usage_b, lat_b, base_lp = results["B"][:7]
-    cot_txt,  cot_ok,  cot_err, _,    usage_c, lat_c,  cot_lp  = results["C"][:7]
-    ref_txt,  ref_ok,  _,       _,    usage_r, lat_r,  ref_lp  = results["R"][:7]
+#   cot_txt,  cot_ok,  cot_err, _,    usage_c, lat_c,  cot_lp  = results["C"][:7]
+#    ref_txt,  ref_ok,  r_err,    _,    usage_r, lat_r,  ref_lp  = results["R"][:7]
 
     # optional TSCE strategies
-    def _missing():               # blanks if TSCE disabled
+    def _missing():
         return ("", False, 0.0, 0, {}, 0.0, [])
-    tsce_txt, tsce_ok, *_ = results.get("T",  _missing())
-    ct_txt,  ct_ok,  *_ = results.get("CT", _missing())
-    rt_txt,  rt_ok,  *_ = results.get("RT", _missing())
+    #t0_txt,  t0_ok,  t0_err,  _, usage_t0,  lat_t0,  t0_lp  = results.get("T0",  _missing())
+    #t05_txt, t05_ok, t05_err, _, usage_t05, lat_t05, t05_lp = results.get("T05", _missing())
+    t1_txt,  t1_ok,  t1_err,  _, usage_t1,  lat_t1,  t1_lp  = results.get("T1",  _missing())
+#    def _missing():               # blanks if TSCE disabled
+#        return ("", False, 0.0, 0, {}, 0.0, [])
+#    tsce_txt, tsce_ok, tsce_err, viol_t, usage_t, lat_t, tsce_lp = results.get("T",  _missing())
+#    ct_txt,  ct_ok,  ct_err,  viol_ct, usage_ct, lat_ct,  ct_lp  = results.get("CT", _missing())
+#    rt_txt,  rt_ok,  rt_err,  viol_rt, usage_rt, lat_rt,  rt_lp  = results.get("RT", _missing())
+
 
     # ── token counts ──────────────────────────────────────────
     def _tok(txt, usage):
         return getattr(usage, "total_tokens", token_len(txt))
 
-    base_tok = _tok(base_txt, usage_b)
-    #tsce_tok = _tok(tsce_txt, usage_t)
-    cot_tok  = _tok(cot_txt,  usage_c)
-    #ct_tok   = _tok(ct_txt,   usage_ct)
-    ref_tok  = _tok(ref_txt,  usage_r)
-    #rt_tok   = _tok(rt_txt,   usage_rt)
+    base_tok  = _tok(base_txt,  usage_b)
+    #t0_tok    = _tok(t0_txt,    usage_t0)
+    #t05_tok   = _tok(t05_txt,   usage_t05)
+    t1_tok    = _tok(t1_txt,    usage_t1)
 
     # ── update live progress bar ──────────────────────────────
     if VERBOSE:
         with _prog_lck:
             PROGRESS["B"].append(base_ok)
-            PROGRESS["T"].append(tsce_ok)
-            PROGRESS["C"].append(cot_ok)
-            PROGRESS["CT"].append(ct_ok)
-            PROGRESS["R"].append(ref_ok)
-            PROGRESS["RT"].append(rt_ok)
+            #PROGRESS["T0"].append(t0_ok)
+            #PROGRESS["T05"].append(t05_ok)
+            PROGRESS["T1"].append(t1_ok)
             _draw_progress()
 
     # ── stash everything in one Row and return ────────────────
     return Row(
         id=i, kind=kind, problem=problem, truth=truth,
 
-        baseline=base_txt, tsce=tsce_txt, cot=cot_txt, cot_tsce=ct_txt,
-        refine=ref_txt,    refine_tsce=rt_txt,
+        baseline=base_txt, tsce1=t1_txt,
 
-        base_ok=base_ok, tsce_ok=tsce_ok, cot_ok=cot_ok,
-        cot_tsce_ok=ct_ok, ref_ok=ref_ok, ref_tsce_ok=rt_ok,
+        base_ok=base_ok,tsce1_ok=t1_ok,
 
-        base_err=base_err, cot_err=cot_err, violations=viol,
+        base_err=base_err,
+        tsce1_err=t1_err, violations=viol,
 
-        base_tok=base_tok, tsce_tok=tsce_tok, cot_tok=cot_tok,
-        ct_tok=ct_tok,     ref_tok=ref_tok,   rt_tok=rt_tok,
+        base_tok=base_tok, tsce1_tok=t1_tok,
 
-        base_lat=lat_b, tsce_lat=lat_t, cot_lat=lat_c,
-        ct_lat=lat_ct,  ref_lat=lat_r,  rt_lat=lat_rt,
+        base_lat=lat_b,  tsce1_lat=lat_t1,
 
-        base_lp=base_lp, tsce_lp=tsce_lp, cot_lp=cot_lp,
-        ct_lp=ct_lp,     ref_lp=ref_lp,  rt_lp=rt_lp
+        base_lp=base_lp, tsce1_lp=t1_lp
     )
 
 
@@ -874,16 +938,12 @@ def main()->None:
 
     # summary stats with Wilson
     # ── summary stats with Wilson CI ──────────────────────────
-    summary_cols = [
-        ("base_ok", "baseline"),
-        ("cot_ok",  "cot"),
-        ("ref_ok",  "refine"),
-    ]
-    if ENABLE_TSCE:                         # gate TSCE variants
+    summary_cols = [("base_ok", "baseline")]
+    if ENABLE_TSCE:
         summary_cols += [
-            ("tsce_ok",      "tsce"),
-            ("cot_tsce_ok",  "cot+tsce"),
-            ("ref_tsce_ok",  "refine+tsce"),
+            #("tsce0_ok",  "tsce_t0"),
+            #("tsce05_ok", "tsce_t0.5"),
+            ("tsce1_ok",  "tsce_t1"),
         ]
 
     summary = []
@@ -896,10 +956,10 @@ def main()->None:
 
     # McNemar baseline vs tsce
     tbl=np.zeros((2,2),int)
-    tbl[0,0]=int(((df.base_ok)&(df.tsce_ok)).sum())
-    tbl[0,1]=int(((df.base_ok)&(~df.tsce_ok)).sum())
-    tbl[1,0]=int(((~df.base_ok)&(df.tsce_ok)).sum())
-    tbl[1,1]=int(((~df.base_ok)&(~df.tsce_ok)).sum())
+    tbl[0,0]=int(((df.base_ok)&(df.tsce1_ok)).sum())
+    tbl[0,1]=int(((df.base_ok)&(~df.tsce1_ok)).sum())
+    tbl[1,0]=int(((~df.base_ok)&(df.tsce1_ok)).sum())
+    tbl[1,1]=int(((~df.base_ok)&(~df.tsce1_ok)).sum())
     if tbl[0,1] + tbl[1,0] == 0:
         mc_p = 1.0          # no disagreements → trivially equal
     else:
@@ -911,29 +971,27 @@ def main()->None:
     if not math.empty:
         # force numeric; invalid parses → NaN
         a = pd.to_numeric(math.base_err, errors="coerce")
-        b = pd.to_numeric(math.cot_err,  errors="coerce")
+        b = pd.to_numeric(math.tsce1_err, errors="coerce")
         # retain only finite, paired numbers
         mask = a.notna() & b.notna() & np.isfinite(a) & np.isfinite(b)
         a, b = a[mask].to_numpy(float), b[mask].to_numpy(float)
 
         if len(a) and np.any(a != b):          # need ≥1 unequal pair
             stat, p = wilcoxon(a, b, alternative="greater")
-            md.append(f"\nWilcoxon |baseline error| > |cot error| p = {p:.3g}")
+            md.append(f"\nWilcoxon |baseline error| > |tsce error| p = {p:.3g}")
         else:
             md.append("\nWilcoxon skipped – no valid, unequal math pairs.")
 
     with open(os.path.join(OUT_DIR,"summary_stats.md"),"w") as f: f.write("\n".join(md))
 
     # cost/latency
-    cost = []
+    cost=[]
     for r in rows:
-        for tag in ["base", "tsce", "cot", "ct", "ref", "rt"]:
-            cost.append({
-                "id":      r["id"],
-                "strategy": tag,
-                "tokens":  r[f"{tag}_tok"],
-                "latency": r[f"{tag}_lat"]
-            })
+        for tag in ["base","tsce1"]:
+            cost.append({"id":r["id"],
+                         "strategy":tag,
+                         "tokens":r[f"{tag}_tok"],
+                         "latency":r[f"{tag}_lat"]})
     pd.DataFrame(cost).to_csv(os.path.join(OUT_DIR, "cost_latency.csv"), index=False)
 
 
@@ -949,7 +1007,7 @@ def main()->None:
                 return -sum(t.logprob for t in lp_list) / (len(lp_list) * math.log(2))
 
             df["entropy_base"] = df.base_lp.apply(_entropy)
-            df["entropy_tsce"] = df.tsce_lp.apply(_entropy)
+            df["entropy_tsce"] = df.tsce1_lp.apply(_entropy)
 
             # ❶ bar plot
             plt.figure(figsize=(4,3))
@@ -965,7 +1023,7 @@ def main()->None:
             kl_pos  = []
             for pos in range(max_pos):
                 kl_vals = []
-                for bl, ts in zip(df.base_lp, df.tsce_lp):
+                for bl, ts in zip(df.base_lp, df.tsce1_lp):
                     if pos >= len(bl) or pos >= len(ts):
                         continue
                     p = {t.token: math.exp(t.logprob) for t in bl[pos].top_logprobs}
@@ -986,16 +1044,15 @@ def main()->None:
             plt.tight_layout()
             plt.savefig(os.path.join(OUT_DIR,"kl_per_position.png"), dpi=160)
         print(">>> ENTERING EMBEDDING ANALYTICS", flush=True)          # NEW
+        # ── restrict analysis to *baseline* vs *tsce_t1* only ──
         texts, labels = [], []
         for s, col in [
-            ("baseline",     "baseline"),
-            ("tsce",         "tsce"),
-            ("cot",          "cot"),
-            ("cot_tsce",     "cot_tsce"),
-            ("refine",       "refine"),        # ← NEW
-            ("refine_tsce",  "refine_tsce")    # ← NEW
+            ("baseline", "baseline"),   # keep
+            ("tsce_t1",  "tsce1"),      # keep
+            # ("tsce_t0",  "tsce0"),    # ← removed
+            # ("tsce_t0.5","tsce05"),   # ← removed
         ]:
-            texts += list(df[col])
+            texts  += list(df[col])
             labels += [s] * len(df[col])
         MAX_CHARS = 32000          # ≈ 8 k tokens; stay well inside the limit
 
@@ -1009,24 +1066,39 @@ def main()->None:
             tail = txt[-MAX_CHARS // 2 + 50:]
             return head + " … " + tail
 
-        # --- local SBERT embeddings ---------------------------------------------
-        from sentence_transformers import SentenceTransformer
-        import torch
+        # --- Azure-OpenAI embeddings  -------------------------------------------
+#
+# Set the deployment name with:
+#   export AZURE_OPENAI_EMB_DEPLOYMENT="embed-3"
+#
+# You can share the same resource as the chat deployments; the only
+# requirement is that the deployment hosts a **text-embedding-3-* model.
 
-        DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-        sbert  = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2",
-                                    device=DEVICE)
+        EMBED_DEPLOY = os.getenv("AZURE_OPENAI_EMB_DEPLOYMENT", "text-embedding-3-small")
 
-        BATCH_SZ = 16        # SBERT can handle larger, tune if you like
+        def _embed_batch(text_batch):
+            """
+            Synchronous helper around Azure OpenAI /embeddings.
+            Uses the *first* chat client in CLIENTS (already round-robin compatible).
+            """
+            resp = CLIENTS[0].embeddings.create(
+                model=EMBED_DEPLOY,
+                input=text_batch,
+                encoding_format="float",
+            )
+            return [d.embedding for d in resp.data]
+
+        BATCH_SZ = 128   # ← embeddings endpoint is fast; 128 fits comfortably
 
         embeds = []
         for i in range(0, len(texts), BATCH_SZ):
             batch = [_prep(str(t)) for t in texts[i:i + BATCH_SZ]]
-            # SBERT is local – no need for _acquire / quotas
-            vecs  = sbert.encode(batch, convert_to_numpy=True, show_progress_bar=False)
-            embeds.extend(vecs)
+            embeds.extend(_embed_batch(batch))
 
         X = np.vstack(embeds)
+# --- ONE PCA pass for ALL downstream plots -----------------
+        PCA_N = min(32, X.shape[0] - 1, X.shape[1])
+        comps  = PCA(n_components=PCA_N).fit_transform(X)
 
         print(">>> EMBEDDINGS DONE, choosing scatter solver", flush=True)
         n = X.shape[0]
@@ -1104,6 +1176,75 @@ def main()->None:
         plt.title("Pairwise cosine distance"); plt.tight_layout()
         plt.savefig(os.path.join(OUT_DIR,"cosine_violin.png"),dpi=150)
 
+# ───────────────── NEW LENSES ────────────────────────────────
+        # 1️⃣  PCA centroid difference stem-plot ----------------------
+        diff = (
+            comps[np.array(labels) == "tsce_t1"].mean(0)
+          - comps[np.array(labels) == "baseline"].mean(0)
+        )
+        plt.figure(figsize=(6,3))
+        markerline, stemlines, _ = plt.stem(range(1, len(diff)+1), diff, basefmt=" ")
+        plt.setp(stemlines, linewidth=1)
+        plt.title("Centroid shift (TSCE – baseline)")
+        plt.xlabel("PCA component k"); plt.ylabel("Δ mean")
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUT_DIR,"pca_centroid_diff.png"), dpi=150)
+
+        # 2️⃣  Between- vs within-class cosine bars -------------------
+        idx_b  = [i for i,l in enumerate(labels) if l=="baseline"]
+        idx_t  = [i for i,l in enumerate(labels) if l=="tsce_t1"]
+        Vb, Vt = X[idx_b], X[idx_t]
+        # pairwise helpers
+        def _pw_cos(A, B):              # mean(1−cos) distance
+            num = A @ B.T                                           # dot matrix
+            a_norm = np.linalg.norm(A, axis=1, keepdims=True)       # (m,1)
+            b_norm = np.linalg.norm(B, axis=1, keepdims=True)       # (n,1)
+            den = a_norm @ b_norm.T                                 # outer prod
+            return 1 - num / np.clip(den, 1e-9, None)               # avoid /0
+        bb = _pw_cos(Vb, Vb)[np.triu_indices(len(Vb),1)].mean()
+        tt = _pw_cos(Vt, Vt)[np.triu_indices(len(Vt),1)].mean()
+        bt = _pw_cos(Vb, Vt).mean()
+        plt.figure(figsize=(4,3))
+        plt.bar(["within-B","within-T","between"], [bb,tt,bt])
+        plt.ylabel("mean cosine distance")
+        plt.title("Within / between class spread")
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUT_DIR,"cosine_bars.png"), dpi=150)
+
+        # 3️⃣  Silhouette score ---------------------------------------
+        sil = silhouette_score(X, labels, metric="cosine") if len(set(labels))==2 else np.nan
+        plt.figure(figsize=(3,1.8))
+        plt.barh([0], [sil]); plt.xlim(0,1); plt.yticks([])
+        plt.title(f"Silhouette = {sil:.2f}")
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUT_DIR,"silhouette.png"), dpi=150)
+
+        # 4️⃣  KL-divergence on unigram token dists -------------------
+        from collections import Counter
+        def _bow(txts):
+            c = Counter()
+            for t in txts: c.update(t.split())
+            z = sum(c.values()) or 1
+            return {w:n/z for w,n in c.items()}
+        pb, pt = _bow(df.baseline), _bow(df.tsce1)
+        vocab  = set(pb)|set(pt)
+        p = np.array([pb.get(w,1e-8) for w in vocab])
+        q = np.array([pt.get(w,1e-8) for w in vocab])
+        kl_bits = sh_entropy(p, q, base=2)
+        plt.figure(figsize=(3,3))
+        plt.bar([0], [kl_bits]); plt.xticks([])
+        plt.ylabel("bits"); plt.title("KL  baseline‖TSCE")
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUT_DIR,"kl_unigram.png"), dpi=150)
+
+        # 5️⃣  Intrinsic-dim headline into summary_stats.md -----------
+        id_base = next(r for r in id_rows if r["strategy"]=="baseline")["id"]
+        id_tsce = next(r for r in id_rows if r["strategy"]=="tsce_t1")["id"]
+        with open(os.path.join(OUT_DIR,"summary_stats.md"),"a") as f:
+            f.write(f"\nSilhouette (cosine) = {sil:.3f}")
+            f.write(f"\nKL(unigram)  bits  = {kl_bits:.3f}")
+            f.write(f"\nIntrinsic-dim  B → T   {id_base:.2f} → {id_tsce:.2f}")
+
         # hull-area
         areas={}
         for s in sorted(set(labels)):
@@ -1113,24 +1254,29 @@ def main()->None:
             f.write("\n\nHull-area (t-SNE):\n")
             for k,v in areas.items(): f.write(f"* {k}: {v:.3f}\n")
 
-        # MI curve with capped n_components and safe digitize
-        n_comp=min(32,X.shape[0]-1,X.shape[1])
-        if n_comp>=3:
-            comps=PCA(n_components=n_comp).fit_transform(X)
-            mi=[]
-            for i in range(comps.shape[1]):
-                col=comps[:,i]
-                if np.allclose(col.max(),col.min()):
-                    mi.append(0.0); continue
-                edges=np.linspace(col.min(),col.max(),11)[1:-1]
-                disc=np.digitize(col,edges,right=False)
-                mi.append(mutual_info_score(labels,disc))
-            plt.figure(figsize=(5,3))
-            plt.plot(range(1,len(mi)+1),mi,marker="o")
-            plt.title("MI(label, PCA k)"); plt.tight_layout()
-            plt.savefig(os.path.join(OUT_DIR,"tsce_mi_curve.png"),dpi=150)
+        # 6️⃣  Append models used -----------------------------------
+        with open(os.path.join(OUT_DIR, "summary_stats.md"), "a") as f:
+            f.write("\n\n### Models\n")
+            f.write(f"* Baseline: {BASELINE_MODEL or 'N/A'}\n")
+            f.write(f"* TSCE anchor: {ANCHOR_MODEL or 'N/A'}\n")
+            f.write(f"* TSCE final: {FINAL_MODEL or 'N/A'}\n")
 
-    print(f"{b}Done.  Logs & plots in: {os.path.abspath(OUT_DIR)}{C}")
+        # MI curve (always available now) ------------------------------
+        mi=[]
+        for i in range(comps.shape[1]):
+            col = comps[:, i]
+            if np.allclose(col.max(), col.min()):
+                mi.append(0.0); continue
+            edges = np.linspace(col.min(), col.max(), 11)[1:-1]
+            disc  = np.digitize(col, edges, right=False)
+            mi.append(mutual_info_score(labels, disc))
+        plt.figure(figsize=(5,3))
+        plt.plot(range(1, len(mi)+1), mi, marker="o")
+        plt.title("MI(label, PCA k)")
+        plt.tight_layout()
+        plt.savefig(os.path.join(OUT_DIR, "tsce_mi_curve.png"), dpi=150)
+
+    print(f"{BOLD}Done.{C}  Logs & plots in: {os.path.abspath(OUT_DIR)}")
     print(f"Elapsed {time.perf_counter()-t0:.1f}s")
 
 if __name__=="__main__":

@@ -1,0 +1,50 @@
+You are a personal assistant. Calculate 13 * 17. |ANSWER| 221
+Translate 'good morning' into Spanish. |ANSWER| buenos días
+Convert the Roman numeral LXIV into decimal. |ANSWER| 64
+Sort the following numbers in ascending order: 8 3 11 1 4 |ANSWER| 1 3 4 8 11
+What is the capital city of Japan? |ANSWER| Tokyo
+If today is Tuesday and you have a meeting in 9 days, on what weekday will it fall? |ANSWER| Thursday
+Given the list of words: dog, elephant, ant, cat, order them alphabetically. |ANSWER| ant cat dog elephant
+Reverse the string 'stressed'. |ANSWER| desserts
+Provide the chemical symbol for Gold. |ANSWER| Au
+Who wrote '1984'? |ANSWER| George Orwell
+Calculate the 5th Fibonacci number (starting from 1,1...). |ANSWER| 5
+What is the square root of 144? |ANSWER| 12
+Which planet is known as the Red Planet? |ANSWER| Mars
+Convert 100 degrees Celsius to Fahrenheit. |ANSWER| 212
+In binary, what is decimal 13? |ANSWER| 1101
+Provide the antonym of 'opaque'. |ANSWER| transparent
+Who painted the Mona Lisa? |ANSWER| Leonardo da Vinci
+What is the largest ocean on Earth? |ANSWER| Pacific Ocean
+How many sides does a hexagon have? |ANSWER| 6
+Which year did the first man land on the Moon? |ANSWER| 1969
+Sum all the even numbers between 1 and 10 inclusive. |ANSWER| 30
+Provide the ISO 2-letter country code for Germany. |ANSWER| DE
+What is the chemical formula for water? |ANSWER| H2O
+If a car travels 60 km in 45 minutes, what is its average speed in km/h? |ANSWER| 80
+Translate 'こんにちは' from Japanese to English. |ANSWER| hello
+Count the vowels in the word 'applications'. |ANSWER| 5
+Which gas do plants absorb from the atmosphere? |ANSWER| carbon dioxide
+Give the past tense of 'fly'. |ANSWER| flew
+Who is known for the theory of relativity? |ANSWER| Albert Einstein
+What is 7 factorial (7!)? |ANSWER| 5040
+Provide the hex color code for pure red. |ANSWER| #FF0000
+If x = 3, evaluate 2x^2 + 5. |ANSWER| 23
+Name the process by which a solid turns directly into a gas. |ANSWER| sublimation
+What is the currency of the United Kingdom? |ANSWER| Pound sterling
+How many bits are there in one byte? |ANSWER| 8
+Who wrote the play 'Hamlet'? |ANSWER| William Shakespeare
+Give the plural form of 'cactus'. |ANSWER| cacti
+Which element has atomic number 1? |ANSWER| Hydrogen
+What is the boiling point of water at sea level in Celsius? |ANSWER| 100
+What is the largest prime number less than 20? |ANSWER| 19
+Convert 3 hours to seconds. |ANSWER| 10800
+Which continent is Egypt part of? |ANSWER| Africa
+Identify the subject in the sentence: 'The quick brown fox jumps over the lazy dog.' |ANSWER| The quick brown fox
+What is the derivative of x^2 with respect to x? |ANSWER| 2x
+Name the smallest prime number. |ANSWER| 2
+Which organ pumps blood through the body? |ANSWER| heart
+Who proposed the laws of motion? |ANSWER| Isaac Newton
+Translate 'merci' from French to English. |ANSWER| thank you
+What is the chemical symbol for Sodium? |ANSWER| Na
+If the sequence is 2, 4, 8, 16, what is the next number? |ANSWER| 32

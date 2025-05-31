@@ -191,15 +191,12 @@ class TSCEChat:
                 raise ValueError("Each element must be a dict with 'role' & 'content'.")
             return list(prompt_or_chat)
 
-        raise TypeError(
-            "Input must be either a string or a list of "
-            "{'role': str, 'content': str} dictionaries."
-        )
+        
 
     # ---------------------------------------------------------------------
     # Public API: call like a function → returns TSCEReply
     # ---------------------------------------------------------------------
-    def __call__(self, prompt_or_chat: Union[str, Chat]) -> "TSCEReply":
+    def __call__(self, prompt_or_chat: Union[str, Chat], *, anchor_temp: float = 1.6) -> "TSCEReply":
         start = time.time()
         chat: Chat = self._normalize_chat(prompt_or_chat)
 
@@ -211,48 +208,40 @@ class TSCEChat:
         anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat
         anchor_resp = self._completion(
             anchor_msg,
-            temperature=1.6,   # high temperature → creative
-            top_p=0.01,        # narrow nucleus → exploration
-            max_tokens=150,
+            temperature=anchor_temp,   # high temperature → creative
+            top_p=0.1,        # wide nucleus → exploration
+            max_tokens=250,
         )
         anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
+        anchor_model = anchor_resp.get("model")
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
-            anchor_text
-            + "\n---\nEnd HDA Constellation\n---\n"
-            "Utilizing the HyperDimensional Anchor (HDA)**\n\n"
-            "You are now executing the **generative pass** …\n\n"
-            "### 📌 **Step-by-Step Utilization of the HDA**\n\n"
-            "1. **Embed the HDA Deeply:**\n"
-            "   - Before consciously processing or responding, **internally simulate** "
-            "mental embeddings of the anchor.\n"
-            "   - Let the symbols seep into latent semantic layers.\n\n"
-            "2. **Iterative Imagistic Reconstruction:**\n"
-            "   - Reconstruct meaning through imagistic associations, not direct translation.\n"
-            "   - Surface interpretations carefully.\n\n"
-            "3. **Subconscious Token Interference:**\n"
-            "   - Allow the intentionally dissonant symbols to create lateral semantic paths.\n"
-            "   - Embrace serendipitous juxtapositions.\n\n"
-            "4. **Guided Emergence:**\n"
-            "   - As you begin formulating your response, periodically glance back at the anchor, "
-            "re-aligning trajectory.\n"
-            "   - This fosters coherence with creativity.\n\n"
-            "---\n\n"
-            "After internalizing HDA, begin responding to the **user**. "
-            "If your chain of thought begins to drift off-topic, quickly re-anchor using the latent images.\n\n"
-            "Also take into account the below system preferences:\n"
-            + self.final_prefix
+            anchor_text + 
+            "##END Hyper-Dimensional Anchor##\n"
         )
-        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat
+        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat 
         final_resp = self._completion(
         final_msg,
-        temperature=0.1,
-        top_p=0.95,
+        temperature=0.0,
+        top_p=1.0,
         logprobs=LOGPROB,             # NEW
         top_logprobs=5 if LOGPROB else None,
-    )
-        final_text = final_resp["choices"][0]["message"]["content"].strip()
+        )
+        final_model = final_resp.get("model")
+         # ── DEBUG: catch filtered / empty content ─────────────────────────
+        raw_final = final_resp["choices"][0]["message"].get("content")
+        if raw_final is None:
+            # dump the entire response and the messages we sent:
+            print("⚠️ [TSCE DEBUG] final_resp was filtered or empty!", file=sys.stderr)
+            import json, sys
+            print("==== messages sent to model ====", file=sys.stderr)
+            print(json.dumps(final_msg, indent=2)[:2000], file=sys.stderr)
+            print("==== raw API response ====", file=sys.stderr)
+            print(json.dumps(final_resp, indent=2)[:2000], file=sys.stderr)
+            # now raise so you can see the full dump in your terminal
+            raise RuntimeError("TSCEChat: final_resp content was None — see debug above")
+        final_text = raw_final.strip()
          # ── NEW: pull log-probs out (if we asked for them) ────────────────
         lp: list = []
         if LOGPROB:
@@ -265,7 +254,8 @@ class TSCEChat:
 
         self._stats = {"latency_s": round(time.time() - start, 2)}
 
-        reply = TSCEReply(content=final_text, anchor=anchor_text)
+        reply = TSCEReply(content=final_text, anchor=anchor_text,
+                          anchor_model=anchor_model, final_model=final_model)
         reply.logprobs = lp           # benchmark picks this up via getattr
         return reply
 
@@ -304,8 +294,45 @@ class TSCEChat:
         if isinstance(self.client, openai.AzureOpenAI):
             params["model"] = self.deployment_id or self._auto_deployment
         else:
-            params["model"] = self.model or "gpt-3.5-turbo-0125"
-        return self.client.chat.completions.create(**params).model_dump()
+            params["model"] = self.model or "gpt-35-turbo"
+        return self.client.chat.completions.create(**params, timeout=120,).model_dump()
+
+    def _completion_anchor(
+        self,
+        messages: List[dict[str, str]],
+        **gen_kwargs,
+    ):
+         # ----- Ollama branch ---------------------------------------------------
+        if self.backend == "ollama":
+            model = self.model or self._auto_deployment or "llama3"
+            mapping = {                       # OpenAI → Ollama option names
+                "temperature": "temperature",
+                "top_p":       "top_p",
+                "max_tokens":  "num_predict",
+            }
+            options = {mapping[k]: v for k, v in gen_kwargs.items() if k in mapping}
+            resp = self.client.chat(
+                model=model,
+                messages=messages,
+                stream=False,
+                options=options or None,
+            )
+            return {"choices": [{"message": {"content": resp["message"]["content"]}}]}
+
+        # ----- OpenAI / Azure branch ------------------------------------------
+        params = dict(messages=messages, **gen_kwargs)
+        # refresh client if a picker is present
+        if self._client_picker:
+            self.client, self._auto_deployment = self._client_picker()
+            self.model = self._auto_deployment    # ← add this line
+
+
+
+        if isinstance(self.client, openai.AzureOpenAI):
+            params["model"] = self.deployment_id or self._auto_deployment
+        else:
+            params["model"] = self.model or "gpt-35-turbo"
+        return self.client.chat.completions.create(**params, timeout=120,).model_dump()
 
     # Public accessor ---------------------------------------------------
     def last_stats(self):
@@ -316,9 +343,15 @@ class TSCEChat:
 # Lightweight reply wrapper
 # ─────────────────────────────────────────────────────────────────────────────
 class TSCEReply:
-    def __init__(self, *, content: str, anchor: str):
+    def __init__(self, *, content: str, anchor: str,
+                 anchor_model: str | None = None,
+                 final_model: str | None = None):
         self.content = content
         self.anchor = anchor
+        self.anchor_model = anchor_model
+        self.final_model = final_model
 
     def __repr__(self):
-        return f"TSCEReply(content={self.content!r}, anchor={self.anchor!r})"
+        return (f"TSCEReply(content={self.content!r}, anchor={self.anchor!r}, "
+                f"anchor_model={self.anchor_model!r}, "
+                f"final_model={self.final_model!r})")
