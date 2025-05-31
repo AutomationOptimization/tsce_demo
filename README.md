@@ -118,6 +118,22 @@ AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 
 *Leave unused keys blank.*
 
+### HuggingFace Spaces secrets
+
+Create a `.streamlit/secrets.toml` file so Streamlit can read your API keys when
+deployed on a HuggingFace Space:
+
+```toml
+OPENAI_API_KEY = "${OPENAI_API_KEY}"
+AZURE_OPENAI_ENDPOINT = "${AZURE_OPENAI_ENDPOINT}"
+AZURE_OPENAI_DEPLOYMENT = "${AZURE_OPENAI_DEPLOYMENT}"
+AZURE_OPENAI_API_VERSION = "${AZURE_OPENAI_API_VERSION}"
+AZURE_OPENAI_KEY = "${AZURE_OPENAI_KEY}"
+```
+
+Add the corresponding secrets in the Space **Settings → Secrets** tab. They will
+be exposed as environment variables for the app at runtime.
+
 ---
 
 ### Quick Start <a name="quick-start"></a>
