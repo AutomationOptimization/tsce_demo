@@ -10,7 +10,7 @@ import pdfplumber
 # -------------------------------------------------------------------
 # Compatibility shim: make tsce_chat look like the old tsce_demo API
 # -------------------------------------------------------------------
-import tsce_chat as tsce_demo
+from tsce_agent_demo import tsce_chat as tsce_demo
 
 # Expose variables expected by legacy code
 import os
