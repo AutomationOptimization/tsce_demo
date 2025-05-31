@@ -1,5 +1,5 @@
 ## TSCE Demo 🧠⚡
-Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of complex instructions when forced to answer in one shot. Two-Step Contextual Enrichment solves this by first compressing your entire prompt into a "hyper-dimensional anchor," then guiding a second, focused generation—delivering more faithful answers with no extra training.
+Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of complex instructions when forced to answer in one shot. Two-Step Contextual Enrichment solves this by first producing an "Embedding Space Control Prompt", then guiding a second, focused generation—delivering more faithful answers with no extra training.
 *A two-phase **mechanistic framework** for more reliable LLM answers — validated on OpenAI GPT-3.5/4 and open-weights Llama-3 8 B*
 
 ---
@@ -22,13 +22,13 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 ---
 
 ### What is TSCE? <a name="what-is-tsce"></a>
-Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.” In a single pass it might drop key clauses. Instead, TSCE’s first pass distills it into a tiny latent scaffold (“anchor”), and the second pass expands that into a summary—so you get both brevity and completeness.
+Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.” In a single pass it might drop key clauses or veer off into a hallucination because it's sampling from a wide distribution of possible vectors. Instead, TSCE’s first pass compresses the potential vector space with an "Embedding Space Control Prompt", and then second pass is better primed to generate the summary.
 
 
 | Phase | Purpose | Temp | Output |
 |-------|---------|------|--------|
-| **1 — Hyper-Dimensional Anchor** | Compresses the entire prompt into a dense latent scaffold (HDA). | ↑ ≈ 1.3 | opaque token block |
-| **2 — Focused Generation** | Re-reads *System + User + HDA* and answers inside a narrower semantic manifold. | ↓ ≤ 0.1 | final answer |
+| **1 — Embedding Space Control Prompt** | Compresses the entire prompt into a dense latent scaffold (ESCP). | ↑ ≈ 1.0 | opaque token block |
+| **2 — Focused Generation** | Re-reads *System + User + ESCP* and answers inside a narrower semantic manifold. | ↓ ≤ 0.1 | final answer |
 
 **Outcome:** fewer hallucinations, instruction slips, and formatting errors — with no fine-tuning and only one extra call.
 
@@ -38,10 +38,10 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 
 | File | Purpose |
 |------|---------|
-| `tsce_demo.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
-| `tsce_core.py` | 120-LoC reference implementation (backend-agnostic). |
-| `benchmark/` | Harness & task sets that produced the results below. |
-| `figures/` | Entropy, KL, cosine-violin plots ready to share. |
+| `tsce_agent_demo/` | Harness & task sets that produced the results below. |
+| `tsce_agent_demo/tsce_agent_test.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
+| `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
+| `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
 | `.env.example` | Copy → `.env`, add your keys. |
 | `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
 
@@ -50,7 +50,7 @@ Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint
 
 ### How TSCE Works <a name="how-tsce-works"></a>
 
-1. **Phase 1 – Hyper-Dimensional Anchor (HDA) Construction:** compresses the entire prompt into an opaque anchor.
+1. **Phase 1 – Embedding Space Control Prompt (ESCP) Construction:** compresses the entire prompt into an opaque anchor.
 2. **Phase 2 – Guided Answering:** reads the anchor with your original prompt to craft the final response.
 
 #### Trade-off Considerations
@@ -89,6 +89,7 @@ Note: TSCE uses two passes, so raw joules/token cost ≈2× single-shot; we comp
 ```bash
 git clone https://github.com/<your-username>/tsce_demo.git
 cd tsce_demo
+cd tsce_agent_demo
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # then edit .env with your creds
@@ -122,21 +123,17 @@ AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ### Quick Start <a name="quick-start"></a>
 
 ```bash
-python tsce_demo.py "How many r's are in strrawberry?"
+python tsce_agent_test.py
 ```
 
 Sample output:
 
 ```
-Prompt : How many r's are in strrawberry?
-
-Baseline answer
----------------- There are 2 r's in the word…
-
-TSCE answer
------------ The word "strrawberry" contains 4 r's.
-
-Report saved → report.json
+==========
+>>> ENTERING EMBEDDING ANALYTICS
+>>> EMBEDDINGS DONE, choosing scatter solver
+>>> running t-SNE with {'method': 'barnes_hut', 'perplexity': 30, 'n_iter': 1000}
+...
 ```
 
 For an interactive UI that lets you compare the baseline and TSCE answers, run:
@@ -144,30 +141,6 @@ For an interactive UI that lets you compare the baseline and TSCE answers, run:
 ```bash
 streamlit run streamlit_chat.py
 ```
-
-### Quick Demo
-```bash
-python tsce_demo.py "What are the safety protocols for lithium-ion batteries?"
-```
-Sample output:
-
-Anchor: ⟨HDA: 0x3f2a…⟩
-TSCE Answer: Lithium-ion batteries require…
-
-![Example output](figures/output.png)
-
----
-
-### Usage Examples <a name="usage-examples"></a>
-
-```bash
-python tsce_demo.py "Rewrite this sentence without any em-dashes — can you?"
-python tsce_demo.py "Generate a SQL query that counts users per country."
-python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet points."
-```
-
-`report.json` includes token counts and the hidden anchor for post‑hoc analysis.
-
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>
@@ -177,7 +150,6 @@ python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet
 | `401 Unauthorized` | Wrong or expired key; ensure the key matches the endpoint type. |
 | Hangs > 2 min | Slow model; tweak `timeout` in `_chat()` or lower temperature. |
 | `ValueError: model not found` | Set `MODEL_NAME` (OpenAI) **or** `AZURE_OPENAI_DEPLOYMENT` (Azure) correctly. |
-| Anchor leaks to user | Verify Phase 2 system message starts with `Hyperdimensional anchor:\n` and low temp. |
 
 ---
 
@@ -189,7 +161,7 @@ python tsce_demo.py "Explain quantum tunnelling to a 10‑year‑old in 3 bullet
 * **Streamlit UI** — drop‑in interactive playground (ask → anchor → answer).  
 
 **Open Questions & Next Steps**
-- Recursive Anchors? Does running Phase 1 on its own anchor improve or compound errors?
+- Recursive ESCP? Does running Phase 1 on its own escp improve or compound errors?
 - Automated Prompt Tuning: Explore integrating dspy for auto-optimizing your prompt templates.
 - Benchmark Strategy: We welcome new task sets—suggest yours under benchmark/tasks/.
 
@@ -214,4 +186,4 @@ This project is licensed under the **MIT License** — free for commercial or pr
 
 ---
 
-*Happy anchoring!* 🚀
+*Happy controlling!* 🚀
