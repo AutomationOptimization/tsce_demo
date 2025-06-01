@@ -10,7 +10,7 @@ import pdfplumber
 # -------------------------------------------------------------------
 # Compatibility shim: make tsce_chat look like the old tsce_demo API
 # -------------------------------------------------------------------
-import tsce_chat as tsce_demo
+from tsce_agent_demo import tsce_chat as tsce_demo
 
 # Expose variables expected by legacy code
 import os
@@ -118,12 +118,16 @@ if st.button("Submit", key="submit_prompt") and prompt:
 
             # --- TSCE (only for the chosen tsce_model) ---
             tsce_out = None
+            anchor_val = None
+            answer_val = None
             if model_name == tsce_model:
-                anchor, answer = tsce_demo.tsce(chunk)
-                tsce_out = answer or ""
+                anchor_val, answer_val = tsce_demo.tsce(chunk)
+                tsce_out = answer_val or ""
             chunk_results["outputs"][model_name] = {
                 "baseline": base,
-                "tsce": tsce_out
+                "tsce": tsce_out,
+                "tsce_anchor": anchor_val,
+                "tsce_answer": answer_val,
             }
         results.append(chunk_results)
     st.session_state["results"] = results
@@ -156,16 +160,18 @@ if "results" in st.session_state:
                         "timestamp", "prompt", "file_type", "chunk_idx", "chunk_input",
                         "baseline", "tsce_anchor", "tsce_answer", "tsce_full", "rating"
                     ])
+                # Grab the outputs for whichever model was TSCE-ed
+                model_out = result["outputs"][tsce_model]
                 writer.writerow([
                     datetime.now().isoformat(),
                     st.session_state.get("current_prompt", ""),
                     st.session_state.get("file_type", ""),
-                    result.get("chunk_idx", ""),
-                    result.get("chunk", ""),
-                    result.get("baseline", ""),
-                    result.get("tsce_anchor", ""),
-                    result.get("tsce_answer", ""),
-                    result.get("tsce_full", ""),
+                    result["chunk_idx"],
+                    result["chunk"],
+                    model_out.get("baseline", ""),
+                    model_out.get("tsce_anchor", ""),
+                    model_out.get("tsce_answer", ""),
+                    model_out.get("tsce", ""),
                     rating,
                 ])
             st.success(f"Rating saved for chunk {result['chunk_idx']}.")
