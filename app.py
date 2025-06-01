@@ -99,6 +99,9 @@ if st.button("Submit", key="submit_prompt") and prompt:
     else:
         tsce_model = selected_models[0]
 
+    # keep it alive for later reruns (e.g. when rating buttons fire)
+    st.session_state["tsce_model"] = tsce_model
+
     chunks = chunk_text(combined_input) if len(combined_input) > 130000 else [combined_input]
     for chunk_idx, chunk in enumerate(chunks, 1):
         chunk_results = {"chunk_idx": chunk_idx, "chunk": chunk, "outputs": {}}
@@ -152,6 +155,10 @@ if "results" in st.session_state:
             key=f"rating_choice_{result['chunk_idx']}",
         )
         if st.button(f"Submit Rating for chunk {result['chunk_idx']}", key=f"submit_rating_{result['chunk_idx']}"):
+            tsce_model = st.session_state.get("tsce_model")
+            if tsce_model is None:
+                st.error("TSCE model not found – please submit a prompt first.")
+                st.stop()
             file_exists = os.path.exists(RATINGS_FILE)
             with open(RATINGS_FILE, "a", newline="") as f:
                 writer = pycsv.writer(f)
@@ -160,8 +167,8 @@ if "results" in st.session_state:
                         "timestamp", "prompt", "file_type", "chunk_idx", "chunk_input",
                         "baseline", "tsce_anchor", "tsce_answer", "tsce_full", "rating"
                     ])
-                # Grab the outputs for whichever model was TSCE-ed
-                model_out = result["outputs"][tsce_model]
+                # Grab the outputs for the stored TSCE-processed model
+                model_out = result["outputs"].get(tsce_model, {})
                 writer.writerow([
                     datetime.now().isoformat(),
                     st.session_state.get("current_prompt", ""),
