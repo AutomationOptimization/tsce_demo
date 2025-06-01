@@ -19,7 +19,13 @@ from __future__ import annotations
 import os, time
 from types import SimpleNamespace
 from typing import Any, List, Sequence, Dict, Union, Literal
-import openai
+try:
+    import openai
+except ModuleNotFoundError as exc:
+    raise RuntimeError(
+        "The 'openai' Python package is required. "
+        "Add 'openai>=1.14' to requirements.txt (Azure OpenAI uses the same client)."
+    ) from exc
 
 # ── New: backend discriminator ------------------------------------------------
 Backend = Literal["openai", "azure", "ollama"]
