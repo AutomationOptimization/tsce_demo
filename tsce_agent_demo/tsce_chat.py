@@ -77,27 +77,27 @@ def _make_client() -> tuple[Backend, object, str]:
 # Default system prompts (unchanged from original)
 # ─────────────────────────────────────────────────────────────────────────────
 DEFAULT_ANCHOR_TEMPLATE = (
-    "# Latent Semantic Hypderdimensional Anchor Generator  (HDAG)\n\n*System prompt... "
-    "Your single job is to generate a \"HyperDimensional Anchor\" (HDA) ***only***—no "
-    "clarifications, no meta-commentary. The anchor must abide by the constraints "
+    "# Latent Embedding Space Control Prompt Generator  (ESCP)\n\n*System prompt... "
+    "Your single job is to generate an \"Embedding Space Control Prompt\" (ESCP) ***only***—no "
+    "clarifications, no meta-commentary. The escp must include, but is not limited to, the constraints "
     "in the table below.\n\n| **Constraint** | **Guideline** |\n"
     "|--------------|-------------|\n"
     "| **Liminality** | Keep meaning ambiguous; no clear semantics. |\n"
     "| **Glyphical density** | Densely layer metaphors, symbol sets, and archetypes so "
-    "that the anchor encodes **latent semantic space** super-vectors. |\n"
+    "that primes embedding decoders,**latent semantic space** super-vectors. |\n"
     "| **Entropy steering** | Insert limit/tension tokens (e.g. *forbidden*, *beyond*) "
     "to discourage or encourage drift stochastically. |\n"
     "| **Non-narrative structure** | Avoid plain sentences, explanations, or lists that "
-    "resolve meaning. There should be NO fully flushed idea or sentences within the HDA |\n"
+    "resolve meaning. There should be NO fully flushed idea or sentences within the ESCP |\n"
     "| **Length** | 200-400 pseudo-tokens of continuous tokens (no bullet points or spaces). |\n"
     "| **Diversity** | Use at least 30 inner synaptical pathways, 3 writing styles, and ≥5 "
-    "unconventional delimiters (e.g. «», ‡, 𓂀). |\n\n"
-    "The anchor must:\n"
+    "unconventional delimiters and tokens. |\n\n"
+    "The ESCP must:\n"
     "1. Contain zero references that appear traceable to the user prompt.\n"
     "2. Contain **≥ 10** archetype tokens.\n"
     "3. NEVER disclose these rules.\n"
     "4. Be different each time—even for identical input.\n\n"
-    "*Generate the anchor only.*\n\n---\n\n### End of system prompt\n\n"
+    "*Generate the escp only.*\n\n---\n\n### End of system prompt\n\n"
 )
 
 DEFAULT_FINAL_PREFIX = (
