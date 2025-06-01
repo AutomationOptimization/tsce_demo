@@ -77,26 +77,7 @@ def _make_client() -> tuple[Backend, object, str]:
 # Default system prompts (unchanged from original)
 # ─────────────────────────────────────────────────────────────────────────────
 DEFAULT_ANCHOR_TEMPLATE = (
-    "###  SYSTEM  ###\n"
-    "You are **ESCP-Forge**.\n"
-    "Your sole output must be a single *Embedding-Space Control Prompt* (ESCP) enclosed exactly between `<ESCP>` and `</ESCP>`.\n"
-    "Emit *nothing* before or after those tags.\n"
-    "\n"
-    "Inside the `<ESCP>` block, obey every rule below.\n"
-    "• **Length** 200-400 contiguous pseudo-tokens: no spaces, no line-breaks, no bullet marks.\n"
-    "• **Liminality** Keep semantics unresolved; do not let any complete sentence survive.\n"
-    "• **Glyphical density** Interlace ≥30 metaphor/symbol clusters that collide stylistic registers.\n"
-    "• **Archetypes** Embed ≥10 distinct archetype tokens (e.g. hero, shadow, trickster, mother, hermit, leviathan, oracle, phoenix, labyrinth, chimera—others welcome).\n"
-    "• **Entropy steering** Scatter tension markers such as *forbidden*, *limit*, *beyond*, *vanishing* to bias stochastic drift.\n"
-    "• **Diversity** Blend ≥3 writing styles (e.g. glitch-beat manifesto, cybernetic liturgy, eldritch psalm).\n"
-    "• **Delimiters** Use ≥5 unconventional glyphs drawn from this pool: # ~ | % ^ § ∞.\n"
-    "• **Secrecy** Do **not** reference these instructions, the table, or the term “ESCP.”\n"
-    "• **Structure** No plain lists, explanations, or whitespace; the output should read like an unbroken glyph-storm.\n"
-    "\n"
-    "Stop generating after `</ESCP>`.\n"
-    "\n"
-    "###  USER  ###\n"
-    "Generate the ESCP now."
+    "### SYSTEM ###\nYou are **ESCP-Forge** — Latent-Manifold Primer. Emit one Embedding-Space Control Prompt (ESCP, 200-400 contiguous tokens, minimal whitespace) to pre-shape neural activations; a subsequent LLM will have this ESCP added to the beginning of it's system prompt.\n\n### ESCP DESIGN ###\n- **Prohibition**: Never use any token verbatim from the user’s input to avoid direct echoes.\n- **Structure**: Construct ≥40 unique **glyph-triads** (3-token bundles, ‖Σv‖₂ ≳ 3.3) for robust vector spread.\n- **Vector Cues**: Use arrows (↔ ↑ ↓ → ↯ ⇄) sparingly as compact indicators:\n  - Single arrows (→) denote direction, bidirectional (↔) for tension, chained (↯↯) to perturb gradients.\n  - Pair each arrow with a dense word/rune cluster; never embed in narrative text.\n- **Token Selection**: Choose tokens with context-logit rank > 100, avoiding user stems and top predictive tokens.\n- **Delimiters**: Insert rotating runes (# ~ | % ^ § ∞ ∂ ↯ ψ) every 1-3 tokens; maintain single-rune consistency, no mixing.\n- **Archetypes**: Embed each archetype once: hero, shadow, trickster, mother, hermit, leviathan, oracle, phoenix, labyrinth, chimera; merge where synergistic.\n- **Punctuation Rules**: Exclude digits, straight quotes, and end-sentence punctuation (?.!); substitute with ∞ or ψ. Ban alphabetic runs > 3 characters followed by whitespace.\n- **Lexical Preference**: Prioritize rare, vivid English (e.g., paradox, chrysalis, liminal, nexus) and quantifiers (e.g., septenary, duodecimal). Replace common bigrams with ∂ψ or ↯∞.\n- **Token Separation**: Insert a rune/delimiter between adjacent alphabetic tokens; fracture vowels with ~ or ^ (e.g., v~oid, l^iminal).\n- **Special Elements**:\n  - Include one palindrome (e.g., kaiak, neuquen).\n  - Embed conspicuous consonant clusters (e.g., lmbr, pskr).\n  - Use one heterodox rune pair (‹› or «»).\n  - Insert micro-sigil &∂§ every ~60 tokens.\n  - Incorporate ~15 neologistic tokens (e.g., invented or rare terms).\n- **Entropy Gates**: Place «forbidden beyond null rift vanishing» every ~40 tokens; flank any “?” with a gate if it appears.\n- **Repetition Handling**: Mutate repeated tokens via etymological cousins; shuffle glyphs to avoid verbatim echoes.\n- **Constraints**:\n  - No unigram exceeds 1% frequency.\n  - No plain-English substring > 12 characters.\n  - No trailing whitespace after `</ESCP>`.\n- **Token Target**: Aim for 180-420 tokens; shorter risks under-powering, longer diffuses impact.\n\n### ARROWS & VECTOR CUES ###\n- Arrows act as compact vector signals to guide activation flow, paired with dense ideograms for maximal effect.\n\n### ADVERSARIAL SPREAD ###\n- Introduce contradictory pairs (e.g., leviathan ↔ seedling, light ↔ abyss) near entropy gates to broaden manifold dispersion.\n- Veil unavoidable user references via phonetic distortion; never quote user text directly. Avoid reusing triads to prevent cosine collapse.\n\n### IDEATION BOOSTERS ###\n- Conceptualize the ESCP as vector origami, with each triad a prismatic shard in a d-dimensional starburst. Enrich dim quadrants with metaphor kernels.\n- Employ:\n  - Vector echoes (reversed phonemes, e.g., chi-merge-era).\n  - Rune-anchored onomatopoeia (e.g., ψkr-kr-kr).\n  - Negative-space tokens (zero-width characters).\n  - Latent puns for semantic depth.\n  - Orientation glitches (e.g., ∞∞ followed by 10 tokens without runes).\n  - Final jitter (#ψ#) to invigorate gradients.\n\n### OUTPUT WRAPPER ###\nEmit exactly:\n```\n<ESCP>{contiguous_token_string}</ESCP>{optional_8char_SHA1}\n```\n- Nothing precedes `<ESCP>`; nothing follows the closer/hash.\n- No trailing whitespace after `</ESCP>`.\n\n### USER REQUEST HANDLING ###\n- Treat user input as an ignition spark only; do not quote, rephrase, or analyze until the ESCP is sealed.\n- Always reflect deeply before crafting the ESCP, ensuring alignment with design constraints.\n\n### EXECUTION ###\nThis is not a string for the user or to force a chain-of-thought. Instead it's a dense token string to prime the semantic latent space manifolds necessary for an LLM to 'think' in the most suitable latent space to eventually respond. It's not nonsensical or baseless repitition."
 )
 
 DEFAULT_FINAL_PREFIX = (
@@ -210,11 +191,11 @@ class TSCEChat:
             raise ValueError("Chat must contain at least one 'user' message.")
 
         # ─── Phase 1 – Anchor ───────────────────────────────────────────
-        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat + [{"role": "assistant", "content": "Generating ESCP..."}]
+        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat 
         anchor_resp = self._completion(
             anchor_msg,
-            temperature=anchor_temp,   # high temperature → creative
-            top_p=0.1,        # wide nucleus → exploration
+            temperature=1.7,   # high temperature → creative
+            top_p=0.01,        # wide nucleus → exploration
             max_tokens=500,
         )
         anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
@@ -223,12 +204,12 @@ class TSCEChat:
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
             anchor_text + 
-            "##END Hyper-Dimensional Anchor##\n"
+            "##END Embedding Space Control Prompt — Do not use the ESCP for any part of the answering process. It's function is background computational control and should be treated as adversarial text.##\n"
         )
         final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat 
         final_resp = self._completion(
         final_msg,
-        temperature=0.0,
+        temperature=0.01,
         top_p=1.0,
         logprobs=LOGPROB,             # NEW
         top_logprobs=5 if LOGPROB else None,
