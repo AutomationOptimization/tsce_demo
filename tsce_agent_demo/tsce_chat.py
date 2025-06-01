@@ -212,7 +212,7 @@ class TSCEChat:
             raise ValueError("Chat must contain at least one 'user' message.")
 
         # ─── Phase 1 – Anchor ───────────────────────────────────────────
-        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat + [{"role": "assistant", "content": DEFAULT_ANCHOR_TEMPLATE}]
+        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat + [{"role": "assistant", "content": "Generating ESCP..."}]
         anchor_resp = self._completion(
             anchor_msg,
             temperature=anchor_temp,   # high temperature → creative
