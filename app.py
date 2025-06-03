@@ -80,7 +80,11 @@ if uploaded_file is not None:
         file_text = df.to_csv(index=False)
         st.success(f"CSV uploaded. {len(file_text)} characters extracted.")
 
-prompt = st.text_input("Enter your prompt (required)", key="prompt_input")
+prompt = st.text_area(
+    "Enter your prompt (required)",
+    key="prompt_input",
+    height=150  # adjust height as needed
+)
 
 if st.button("Submit", key="submit_prompt") and prompt:
     combined_input = prompt
