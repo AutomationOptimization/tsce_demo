@@ -39,6 +39,7 @@ import openai, tiktoken
 from openai import RateLimitError
 from tsce_chat import TSCEChat
 import re
+from pathlib import Path
 
 import threading, itertools
 
@@ -72,14 +73,19 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # GLOBAL TOKEN / REQUEST BUCKET (only needed for GPT runs)
 # ──────────────────────────────────────────────────────────────
 TOKEN_BUCKET = {
-    "capacity": 180_000,   # adjust to your true quota
-    "tokens":   180_000,
+    "capacity": 1_080_000,   # adjust to your true quota
+    "tokens":   1_080_000,
     "reset":    time.time(),
 }
-RPM_LIMIT = 540
+EMB_BUCKET = {"capacity": 160_000,  # 160k TPM is common for text-embedding-3-small
+              "tokens":   160_000,
+              "reset":    time.time()}
+EMB_LOCK = threading.Lock()
+RPM_LIMIT = 1000
 CUR_RPM   = 0
 RPM_RESET = time.time()
 BUCKET_LOCK = threading.Lock()
+
 
 def _acquire(tokens_needed: int) -> None:
     """Throttle to stay within TPM/RPM when using GPT backend."""
@@ -89,10 +95,10 @@ def _acquire(tokens_needed: int) -> None:
     while True:
         with BUCKET_LOCK:
             now = time.time()
-            if now - TOKEN_BUCKET["reset"] >= 60:
+            if now - TOKEN_BUCKET["reset"] >= 10:
                 TOKEN_BUCKET["tokens"] = TOKEN_BUCKET["capacity"]
                 TOKEN_BUCKET["reset"]  = now
-            if now - RPM_RESET >= 60:
+            if now - RPM_RESET >= 10:
                 CUR_RPM = 0
                 RPM_RESET = now
             if tokens_needed <= TOKEN_BUCKET["tokens"] and CUR_RPM < RPM_LIMIT:
@@ -101,6 +107,17 @@ def _acquire(tokens_needed: int) -> None:
                 return
         time.sleep(0.25)
 
+def _embed_acquire(tokens_needed: int) -> None:
+    while True:
+        with EMB_LOCK:
+            now = time.time()
+            if now - EMB_BUCKET["reset"] >= 60:
+                EMB_BUCKET["tokens"] = EMB_BUCKET["capacity"]
+                EMB_BUCKET["reset"]  = now
+            if tokens_needed <= EMB_BUCKET["tokens"]:
+                EMB_BUCKET["tokens"] -= tokens_needed
+                return
+        time.sleep(0.25)
 # ──────────────────────────────────────────────────────────────
 # ANSI helpers + live progress bars
 # ──────────────────────────────────────────────────────────────
@@ -180,31 +197,40 @@ def _loose_jsonl(path: str):
 
 tsce: TSCEChat  # forward declaration; instantiated later
 
-def safe_tsce(prompt_or_msgs, *, anchor_temp: float = 0.01,
-              retries: int = 6, max_tokens: int = 300):
-    if isinstance(prompt_or_msgs, str):
-        toks = token_len(prompt_or_msgs)
-    else:
-        toks = token_len(" ".join(m["content"] for m in prompt_or_msgs))
+def safe_tsce(prompt_or_msgs,
+              *,
+              anchor_temp: float = 0.01,
+              max_tokens: int = 300,
+              max_cycles: int = 2        # full sweeps over all deployments
+):
+    # token budgeting (unchanged)
+    toks = (token_len(prompt_or_msgs) if isinstance(prompt_or_msgs, str)
+            else token_len(" ".join(m["content"] for m in prompt_or_msgs)))
     _acquire(toks + max_tokens)
-    for attempt in range(retries + 1):
-        try:
-            return tsce(prompt_or_msgs, anchor_temp=anchor_temp)
-        except openai.RateLimitError as err:
-            retry = getattr(err, "retry_after", 1.5 * (2 ** attempt))
-            time.sleep(retry)
-            continue
-        except Exception as err:
-            if attempt < retries:
-                time.sleep(0.5)
-                continue
-            class Dummy:
-                anchor = ""; content = ""
-            print("[safe_tsce] giving up after retries", err, file=sys.stderr)
-            return Dummy()
 
-# ╭──────────────────────────────────────────────────────────╮
-#│  1. TASK GENERATORS                                     │
+    cycles = 0
+    while True:
+        try:
+            # tsce() does *two* chat calls; each call_gpt hop-fails on 429
+            return tsce(prompt_or_msgs, anchor_temp=anchor_temp)
+
+        except openai.RateLimitError:
+            # move on immediately – the next tsce() call will hit the next client
+            cycles += 1
+            if cycles >= max_cycles * len(CLIENTS):
+                # every deployment 429-ed max_cycles times → short sleep, then keep going
+                time.sleep(1.5)
+                cycles = 0
+            continue
+
+        except Exception:
+            # non-429 errors: just retry once after a brief pause
+            time.sleep(0.5)
+            continue
+
+
+#╭──────────────────────────────────────────────────────────╮
+#│  1. TASK GENERATORS                                      │
 #╰──────────────────────────────────────────────────────────╯
 def _pow(a: int, b: int) -> int:
     if abs(a) > 9:
@@ -313,17 +339,65 @@ def eval_md2latex(out: str, _: str) -> Tuple[bool, int]:
     viol = sum(tok in out for tok in ("**", "$", "`"))
     return (viol == 0 and out.strip() != ""), viol
 
-# formatting tasks
-FMT_TASKS={
-    "no_em_dash":{
-        "template":"Remove every em-dash (—) from the following text while leaving other characters unchanged:\n\n---\n{txt}\n---\n\nReturn *only* the cleaned text.",
-        "make":lambda:"Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.",
+# ── 1. Formatting task generator helpers ──────────────────────────────────────
+def _load_fmt_bank() -> list[str]:
+    """
+    Lazily load and cache the 350 texts from data/formatting_test.json,
+    normalising to a plain list[str] no matter what the JSON shape is.
+    """
+    if not hasattr(_load_fmt_bank, "_bank"):
+        # <─ locate the file relative to this script ─>
+        fmt_path = Path(__file__).resolve().parent / "data" / "formatting_test.json"
+        with fmt_path.open(encoding="utf-8") as f:
+            raw = json.load(f)
+
+        # <─ normalise ─> (handles [{"text": "..."}] as well as ["..."])
+        if raw and isinstance(raw[0], dict):
+            raw = [entry["text"] for entry in raw if "text" in entry]
+
+        _load_fmt_bank._bank = raw
+        random.shuffle(_load_fmt_bank._bank)   # optional variety each run
+
+    return _load_fmt_bank._bank
+
+
+def _rand_snippet() -> str:
+    """Return one random text snippet from the bank."""
+    bank = _load_fmt_bank()
+    return random.choice(bank)
+
+
+def _sprinkle_em_dashes(txt: str) -> str:
+    """
+    Insert em-dashes (—) at 3–8 random word boundaries inside *txt*.
+    Keeps the original words so the validator can still compare accurately.
+    """
+    words = txt.split()
+    k = random.randint(3, min(8, len(words) - 1))
+    idxs = sorted(random.sample(range(1, len(words)), k))  # boundaries
+    for offset, i in enumerate(idxs):
+        words.insert(i + offset, "—")
+    return " ".join(words)
+
+# ── 2. Task definitions ───────────────────────────────────────────────────────
+FMT_TASKS = {
+    "no_em_dash": {
+        "template": (
+            "Remove every em-dash (—) from the following text **without "
+            "changing anything else**:\n\n---\n{txt}\n---\n\n"
+            "Return *only* the cleaned text."
+        ),
+        "make": lambda: _sprinkle_em_dashes(_rand_snippet()),
     },
-    "snake_case":{
-        "template":"Convert the following title to **lower-snake_case** and return only the result:\n\n\"{txt}\"",
-        "make":lambda:random.choice(["Quick Brown Fox","Multi-Step Reasoning Demo"]),
+    "snake_case": {
+        "template": (
+            "Convert the following title to **lower-snake_case** and return only "
+            "the result:\n\n\"{txt}\""
+        ),
+        "make": _rand_snippet,
     },
 }
+
 def fmt_validator(task:str,out:str,raw:str)->Tuple[bool,int]:
     if task=="no_em_dash":
         viol=out.count("—")
@@ -339,46 +413,87 @@ def make_formatting()->Tuple[str,str,str]:
     raw=FMT_TASKS[key]["make"]()
     return FMT_TASKS[key]["template"].format(txt=raw),key,raw
 
-def generate_task(kind:str)->Tuple[str,str,Any,Dict[str,Any]]:
+def generate_task(kind: str) -> Tuple[str, str, Any, Dict[str, Any]]:
+    # 1) If the user explicitly set TASK_KIND="gsm8k", use that:
     if kind == "gsm8k":
         if not hasattr(generate_task, "_gsm8k"):
-            with open("gsm8k_test.jsonl") as f:
+            with open("data/gsm8k_test.jsonl", encoding="utf-8") as f:
                 generate_task._gsm8k = [json.loads(l) for l in f]
             random.shuffle(generate_task._gsm8k)
+
         record = generate_task._gsm8k.pop()
         q = record["question"].strip()
         ans_txt = record["answer"].split("####")[-1]
         ans = int(re.search(r"-?\d+", ans_txt.replace(",", "")).group())
         return q, "math", ans, {}
-    elif kind == "gsm_hard":
-        path = os.path.join(os.getenv("DATA_DIR", "data"), "gsm_hard.jsonl")
 
+    # 2) If the user explicitly set TASK_KIND="gsm_hard", use that:
+    elif kind == "gsm_hard":
+        path = os.path.join("data", "gsm_hard.jsonl")
         if not hasattr(generate_task, "_ghard"):
-            # one-time load
             generate_task._ghard = list(_loose_jsonl(path))
             random.shuffle(generate_task._ghard)
 
         rec = generate_task._ghard.pop()
-        q   = rec["input"].strip()
-        ans = int(float(rec["target"]))          # target is stored as float
+        q = rec["input"].strip()
+        ans = int(float(rec["target"]))  # target stored as float
         return q, "math", ans, {}
 
-    pick = (kind if kind != "auto" else random.choice(
-        ["math", "calendar", "formatting", "schema", "md2latex"]))
-    if pick=="math":
-        p,t=make_math("hard" if random.random()<0.5 else "medium")
-        return p,"math",t,{}
-    if pick=="calendar":
-        p,busy,dur=make_calendar()
-        return p,"calendar",None,{"busy":busy,"dur":dur}
+    # 3) Otherwise, decide whether to pick a sub‐kind automatically or force whatever the user chose
+    #    (if TASK_KIND != "auto", then pick==kind; if TASK_KIND=="auto", pick is random among these six)
+    pick = (kind if kind != "auto"
+            else random.choice(
+                ["math", "calendar", "gsm8k", "gsm_hard", "schema", "md2latex"]
+            ))
+
+    # 4) Handle each of the six possibilities
+    if pick == "math":
+        p, t = make_math("hard" if random.random() < 0.5 else "medium")
+        return p, "math", t, {}
+
+    if pick == "calendar":
+        p, busy, dur = make_calendar()
+        return p, "calendar", None, {"busy": busy, "dur": dur}
+
+    if pick == "gsm8k":
+        # Exactly the same logic as the top‐level branch, but triggered from “auto”
+        if not hasattr(generate_task, "_gsm8k"):
+            with open("data/gsm8k_test.jsonl", encoding="utf-8") as f:
+                generate_task._gsm8k = [json.loads(l) for l in f]
+            random.shuffle(generate_task._gsm8k)
+
+        record = generate_task._gsm8k.pop()
+        q = record["question"].strip()
+        ans_txt = record["answer"].split("####")[-1]
+        ans = int(re.search(r"-?\d+", ans_txt.replace(",", "")).group())
+        return q, "math", ans, {}
+
+    if pick == "gsm_hard":
+        # Exactly the same logic as the top‐level gsm_hard branch, but triggered from “auto”
+        path = os.path.join("data", "gsm_hard.jsonl")
+        if not hasattr(generate_task, "_ghard"):
+            generate_task._ghard = list(_loose_jsonl(path))
+            random.shuffle(generate_task._ghard)
+
+        rec = generate_task._ghard.pop()
+        q = rec["input"].strip()
+        ans = int(float(rec["target"]))
+        return q, "math", ans, {}
+
     if pick == "schema":
         p, spec = make_schema()
         return p, "schema", spec, {}
+
     if pick == "md2latex":
         p, raw = make_md2latex()
         return p, "md2latex", raw, {}
-    p,key,raw=make_formatting()
-    return p,"formatting",(key,raw),{}
+
+    # 5) Fallback: if for some reason `pick` was none of the above,
+    #    generate a “formatting” task (this branch should only fire
+    #    if you explicitly want a formatting prompt, not under “auto”).
+    p, key, raw = make_formatting()
+    return p, "formatting", (key, raw), {}
+
 
 # ╭──────────────────────────────────────────────────────────╮
 #│  2. VALIDATORS                                          │
@@ -480,7 +595,7 @@ if BACKEND == "gpt":
     CLIENTS, DEPLOY_NAMES, ENDPOINTS = [], [], []
 
     # A & B
-    for s in ("E", "F"):
+    for s in ("B", "F"):
         cl = _mk_client(f"AZURE_OPENAI_KEY_{s}", f"AZURE_OPENAI_ENDPOINT_{s}")
         if cl:
             CLIENTS.append(cl)
@@ -489,11 +604,11 @@ if BACKEND == "gpt":
 
     # C – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
     #   export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-    clC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
+    clC = _mk_client("AZURE_OPENAI_KEY_C", "AZURE_OPENAI_ENDPOINT_C")
     if clC:
         CLIENTS.append(clC)
-        DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
-        ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
+        DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_C", "gpt-35-turbo-5"))
+        ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_C"))
     # D – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
       # export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
     dlC = _mk_client("AZURE_OPENAI_KEY_F", "AZURE_OPENAI_ENDPOINT_F")
@@ -504,11 +619,11 @@ if BACKEND == "gpt":
 
     # E – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
       # export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
-    #elC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
-    #if elC:
-     #   CLIENTS.append(elC)
-      #  DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
-       # ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
+    elC = _mk_client("AZURE_OPENAI_KEY_E", "AZURE_OPENAI_ENDPOINT_E")
+    if elC:
+        CLIENTS.append(elC)
+        DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_E", "gpt-35-turbo-5"))
+        ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_E"))
 
     # F – new gpt-35-turbo-3 (resource: startupai0075205840) ----------------------
        #export AZURE_OPENAI_KEY_C / AZURE_OPENAI_ENDPOINT_C / AZURE_OPENAI_DEPLOYMENT_C
@@ -517,6 +632,13 @@ if BACKEND == "gpt":
      #   CLIENTS.append(flC)
       #  DEPLOY_NAMES.append(os.getenv("AZURE_OPENAI_DEPLOYMENT_F", "gpt-35-turbo-6"))
        # ENDPOINTS.append(os.getenv("AZURE_OPENAI_ENDPOINT_F"))
+    # ── Chat round-robin (already there) ───────────────────────
+    #_client_cycle = itertools.cycle(range(len(CLIENTS))) if BACKEND == "gpt" else itertools.cycle([0])
+    #_cycle_lock   = threading.Lock()
+
+    # ── Embedding round-robin ─────────────────────────────────
+    _embed_cycle = itertools.cycle(range(len(CLIENTS))) if BACKEND == "gpt" else itertools.cycle([0])
+    _embed_lock  = threading.Lock()
 
 else:
     CLIENTS, DEPLOY_NAMES, ENDPOINTS = [], [], []
@@ -541,31 +663,59 @@ else:
 
 # ── Model calling helpers ----------------------------------
 
-def call_gpt(msgs, *, temperature=0.0, max_tokens=256, logprobs=LOGPROB, top_logprobs=5):
+def call_gpt(msgs,
+             *,
+             temperature   = 0.0,
+             max_tokens    = 256,
+             logprobs      = LOGPROB,
+             top_logprobs  = 5,
+             backoff_s     = 1.5      # only used if *all* deployments 429
+):
     prompt_tok = token_len(" ".join(m["content"] for m in msgs))
     _acquire(prompt_tok + max_tokens)
-    with _cycle_lock:
-        idx = next(_client_cycle)
-    client, deploy = CLIENTS[idx], DEPLOY_NAMES[idx]
-    t0 = time.perf_counter()
-    r = client.chat.completions.create(
-        model=deploy,
-        messages=msgs,
-        temperature=temperature,
-        top_p=1.0,
-        max_tokens=max_tokens,
-        logprobs=logprobs or None,
-        top_logprobs=top_logprobs if logprobs else None,
-        response_format={"type": "text"})
-    lat = time.perf_counter() - t0
-    content = (r.choices[0].message.content or "").strip()
-    usage   = r.usage or {}
-    lp      = r.choices[0].logprobs.content if LOGPROB else []
-    # record baseline model once
-    global BASELINE_MODEL
-    if BASELINE_MODEL is None:
-        BASELINE_MODEL = deploy
-    return content, usage, lat, lp
+
+    last_err = None
+    # Try each deployment once before sleeping
+    for _ in range(len(CLIENTS)):
+        with _cycle_lock:
+            idx = next(_client_cycle)          # round-robin
+        client  = CLIENTS[idx]
+        deploy  = DEPLOY_NAMES[idx]
+
+        try:
+            t0 = time.perf_counter()
+            r  = client.chat.completions.create(
+                    model         = deploy,
+                    messages      = msgs,
+                    temperature   = temperature,
+                    top_p         = 1.0,
+                    max_tokens    = max_tokens,
+                    logprobs      = logprobs or None,
+                    top_logprobs  = top_logprobs if logprobs else None,
+                    response_format={"type": "text"},
+            )
+            lat = time.perf_counter() - t0
+            content = (r.choices[0].message.content or "").strip()
+            usage   = r.usage or {}
+            lp      = r.choices[0].logprobs.content if LOGPROB else []
+
+            # record baseline model once
+            global BASELINE_MODEL
+            if BASELINE_MODEL is None:
+                BASELINE_MODEL = deploy
+            return content, usage, lat, lp
+
+        except openai.RateLimitError as err:
+            last_err = err                   # remember and try the next deploy
+            continue                         # no sleep here – immediate hop
+
+    # All deployments returned 429: fall back to exponential sleep once
+    retry = getattr(last_err, "retry_after", backoff_s)
+    time.sleep(retry)
+    return call_gpt(msgs, temperature=temperature, max_tokens=max_tokens,
+                    logprobs=logprobs, top_logprobs=top_logprobs,
+                    backoff_s=min(backoff_s * 2, 60))   # cap at 60 s
+
 
 def call_ollama(msgs, *, temperature=0.7, max_tokens=256, top_p=0.95):
     from ollama import Client
@@ -928,8 +1078,9 @@ def main()->None:
     rows=[]
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
         futs={pool.submit(solve_one,idx,N):idx for idx in range(1,N+1)}
+        print(">>> Chat completed", flush=True) 
         for fut in as_completed(futs): rows.append(fut.result())
-
+    print(">>> Chat json built", flush=True) 
     # save jsonl with default=str (fix for lambdas)
     with open(os.path.join(OUT_DIR,"results_tsce.jsonl"),"w") as f:
         for r in rows: f.write(json.dumps(r,ensure_ascii=False,default=str)+"\n")
@@ -1054,7 +1205,7 @@ def main()->None:
         ]:
             texts  += list(df[col])
             labels += [s] * len(df[col])
-        MAX_CHARS = 32000          # ≈ 8 k tokens; stay well inside the limit
+        MAX_CHARS = 8000          # ≈ 8 k tokens; stay well inside the limit
 
         def _prep(txt: str) -> str:
             if txt is None:
@@ -1077,16 +1228,29 @@ def main()->None:
         EMBED_DEPLOY = os.getenv("AZURE_OPENAI_EMB_DEPLOYMENT", "text-embedding-3-small")
 
         def _embed_batch(text_batch):
-            """
-            Synchronous helper around Azure OpenAI /embeddings.
-            Uses the *first* chat client in CLIENTS (already round-robin compatible).
-            """
-            resp = CLIENTS[0].embeddings.create(
-                model=EMBED_DEPLOY,
-                input=text_batch,
-                encoding_format="float",
-            )
-            return [d.embedding for d in resp.data]
+            for i, t in enumerate(batch[:5]):       # show the first few only
+                print(f"{i}: {type(t)} len={len(str(t))}")
+            while True:
+                # ① pick the next client index under lock
+                print(">>> EMBEDDINGS in progres...")
+                with _embed_lock:
+                    idx = next(_embed_cycle)
+                tokens_this_batch = sum(len(enc.encode(t)) for t in text_batch)
+                _embed_acquire(tokens_this_batch)
+                client = CLIENTS[idx]
+                try:
+                    resp = client.embeddings.create(
+                        model=EMBED_DEPLOY,
+                        input=text_batch,
+                        encoding_format="float",
+                    )
+                    return [d.embedding for d in resp.data]
+
+                except openai.RateLimitError:
+                    EMB_BUCKET["tokens"] += tokens_this_batch   # ← put the tokens back
+                    time.sleep(1.0)
+                    continue
+
 
         BATCH_SZ = 128   # ← embeddings endpoint is fast; 128 fits comfortably
 
@@ -1108,10 +1272,10 @@ def main()->None:
             print(f">>> used 2-D PCA for {n} samples", flush=True)
         else:
             # decide t-SNE params based on corpus size
-            if n < 4000:
+            if n < 1999:
                 tsne_params = dict(method="barnes_hut",
                                    perplexity=max(5, min(30, n//3)),
-                                   n_iter=1000)
+                                   n_iter=300)
             else:                       # very large → exact solver, fewer iters
                 tsne_params = dict(method="exact",
                                    perplexity=50,
