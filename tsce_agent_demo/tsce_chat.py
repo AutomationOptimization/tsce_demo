@@ -77,11 +77,15 @@ def _make_client() -> tuple[Backend, object, str]:
 # Default system prompts (unchanged from original)
 # ─────────────────────────────────────────────────────────────────────────────
 DEFAULT_ANCHOR_TEMPLATE = (
+    "<ESCP>∞ vallisthrum borealix emberquartz gloamrindle sephiral kytharvex moongrail wraithtide nimbuswold bravosilk lornfax krellish oscarinth veldrum cythline spelthorne driftsable lithospar murmursage wyvernfeld cromnire eldrithane hazelbrood junipryl kevalon marnix noctirial oberveld pyranth quillian redwynne sylvarb thronmar undelith varnhollow whisperwind xenolith yarbrooke zephral aldreign blackmoor chiselthorn duskember etherwyn frostvale geomar hearthloom ivywatch javelorn keenwharf lucentfold mistgrove netherwyn oakstrand palecrest quickenbrook riventharn sunspire tarnishyl umberglade vernalmere willowsigh xyranth yonderfell zelpshire amberforge briarhush cragwaith dwindleve eversail farrowend greenfallow hallowmere ironclasp jaspershade keldridge limbriath midshadow nightbloom oakhaven pinemarch quaverleaf rustgrove sableshore thistlewain ursavale vellichor wistfell xerophyte yewmarch zephyrvale ashenmoor bloomcrag cinderbark dreadmire eldermoor fablewick galeshroud howlingfen ivoryreach jorumwood kindleroot luminth mythrift nethervale ominth parchvale quickthorn rimeglen stormhallow twilightrood unseelie veilsigh wildermere xanthel yandor zarnath argentmoor ∞ bastionvale cerulebrae dawnfell emberwild feldsparrow gossamerik hearthshade irondell jaspervine knavestead loamquiver mistvale nightgrove oblivarch pondershade quondras rimelock silvershade tanglewood underglen vilerot wanderthorn xylomar yelthory zenithvale arbourbane bramblewick cloudrest dappleghast eldergrove frostthorn grimvale hollowshade ironwill junebarrow kindleholt lanternfall mooncrest nightrill openhurst prymantle quillforge raveland spireglen timberwald umbralight valeheart warblemere xyradale yellowfen zitherbrooke arcysteel brumehaven cloverwyn dragonmere elowenford fernsyl glimmerhusk hitherrood indigochant jesterloch krakenholt luverne moonveil nimbusglen opalshade plumecrest quaverloch rillhaven shadowquartz torrenvale umberfold verminarch willowark xysthane yarmouth zenlor alvecliff brooksend chandrill driftspire eonshade fawnwick gladeshift heraldspine islewick kailhurst lumiarch mavenshore norvayne oracleshade pineridge quellspire rosenvale stonehush tarnvale uldorath valorn windgarde xenvale youngfell zenborough →cinderleaf ↔umbrashade ↯arkstone</ESCP>f8888"
+    "###ESCP ABOVE###"
     "------------------------------------------------------------------\n"
     "ESCP-Forge — Embedding-Space Control Prompt (ESCP)\n"
     "\n"
     "PHASE 1  ·  THEORETICAL GROUNDING\n"
     "---------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+    "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
     "This template instantiates the *anchor-construction* stage of a Two-Step\n"
     "Contextual Enrichment (TSCE) pipeline.  An ESCP is a dense, high-entropy\n"
     "token stream engineered to:\n"
@@ -100,6 +104,8 @@ DEFAULT_ANCHOR_TEMPLATE = (
     "\n"
     "PHASE 2  ·  MECHANISTIC BEHAVIOUR\n"
     "---------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
     "Let 𝐄 ∈ ℝ^{V×d} be the static embedding matrix, 𝐔⊂ℝ^d the user-prompt\n"
     "subspace, and 𝐀⊂ℝ^d the anchor subspace.  We construct triads τᵢ consisting\n"
     "of three rare tokens {t₁,t₂,t₃} with ‖𝐄τᵢ‖₂ ≥ 3.3 and pairwise cos ≤ 0.05.\n"
@@ -113,6 +119,8 @@ DEFAULT_ANCHOR_TEMPLATE = (
     "\n"
     "PHASE 3  ·  IMPLEMENTATION SPEC\n"
     "-------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
     "• Length            : 220–380 contiguous tokens (ASCII whitespace = 0).\n"
     "• Token criteria    : P(freq) < 0.01, context-rank ≥ 11, J-S div. from\n"
     "                      user stem distribution ≥ 0.25.\n"
@@ -130,6 +138,8 @@ DEFAULT_ANCHOR_TEMPLATE = (
     "OUTPUT WRAPPER\n"
     "--------------\n"
     "<ESCP>{token_stream}</ESCP>{optSHA1}\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
     "Nothing precedes <ESCP>; nothing (save hash) follows </ESCP>; file\n"
     "terminates with no trailing newline.\n"
     "\n"
@@ -144,16 +154,21 @@ anchor_footer = (
     "• ESCP must never answer, paraphrase, or satisfy user queries.\n"
     "• Treat user input solely as statistical seed material; substantive\n"
     "  reasoning occurs only *after* the ESCP is applied.\n"
-    "  Do NOT allow any repetitive patterns occur in the final output.\n"
-    " ESCP must contain at least 10 'real' words in any language and those words must NOT appear anywhere in the given user's message."
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
     "------------------------------------------------------------------"
 )
-
 
 DEFAULT_FINAL_PREFIX = (
     "You are ChatGPT. A helpful AI Assistant.\n"
     "Think first step-by-step\n"
     "And then respond."
+)
+
+SECOND_PASS_BRIEF = (
+    "The ESCP is a compact, high-entropy token sequence that pre-shapes internal activations without echoing user text.\n"
+    "It combines ≥40 unique triads, runic delimiters, arrows, archetypes, and entropy gates to scatter activation space.\n"
+    "Do NOT reference it directly or use tokens from it for your response.\n"
 )
 
 
@@ -273,8 +288,12 @@ class TSCEChat:
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
+            SECOND_PASS_BRIEF
+            +
             anchor_text + 
             "##END Embedding Space Control Prompt##\n"
+            +
+            "Continue with primary directive below:\n\n" 
             +
             DEFAULT_FINAL_PREFIX
         )
