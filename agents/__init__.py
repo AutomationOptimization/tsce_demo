@@ -1,6 +1,6 @@
 """Agent utilities."""
 
-from .base import BaseAgent
+from .base_agent import BaseAgent
 from .leader import Leader
 from .scientist import Scientist
 from .planner import Planner

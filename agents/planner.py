@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import List
 
-from .base import BaseAgent  # type: ignore
+from .base_agent import BaseAgent
 
 
 class Planner(BaseAgent):
@@ -25,3 +25,7 @@ class Planner(BaseAgent):
             parts = [p.strip() for p in context.split(".") if p.strip()]
 
         return [f"Step {i + 1}: {part}" for i, part in enumerate(parts)]
+
+    def send_message(self, message: str) -> str:  # pragma: no cover
+        self.context = message
+        return "\n".join(self.act())

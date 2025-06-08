@@ -12,13 +12,26 @@ from tools import (
     RunScriptTool,
 )
 
-class BaseAgent:
-    """Minimal base agent that sends prompts to an OpenAI compatible model."""
+from .base_agent import BaseAgent
 
-    def __init__(self, name: str, system_message: str = "", model: str = "gpt-3.5-turbo") -> None:
-        self.name = name
-        self.system_message = system_message
+class Researcher(BaseAgent):
+    """Agent capable of searching the web and reading/writing files."""
+
+    def __init__(self, model: str = "gpt-3.5-turbo") -> None:
+        super().__init__(name="Researcher")
+        self.system_message = (
+            "You are a meticulous research assistant. "
+            "Use your search and file tools when helpful."
+        )
         self.model = model
+        self.history: List[str] = []
+        self.search_tool = GoogleSearch()
+        self.scrape_tool = WebScrape()
+        self.create_tool = CreateFileTool()
+        self.read_tool = ReadFileTool()
+        self.edit_tool = EditFileTool()
+        self.delete_tool = DeleteFileTool()
+        self.run_tool = RunScriptTool()
 
     def chat(self, prompt: str) -> str:
         messages = [
@@ -28,26 +41,13 @@ class BaseAgent:
         resp = openai.ChatCompletion.create(model=self.model, messages=messages)
         return resp["choices"][0]["message"]["content"]
 
-class Researcher(BaseAgent):
-    """Agent capable of searching the web and reading/writing files."""
-
-    def __init__(self, model: str = "gpt-3.5-turbo") -> None:
-        super().__init__(
-            name="Researcher",
-            system_message=(
-                "You are a meticulous research assistant. "
-                "Use your search and file tools when helpful."
-            ),
-            model=model,
-        )
-        self.history: List[str] = []
-        self.search_tool = GoogleSearch()
-        self.scrape_tool = WebScrape()
-        self.create_tool = CreateFileTool()
-        self.read_tool = ReadFileTool()
-        self.edit_tool = EditFileTool()
-        self.delete_tool = DeleteFileTool()
-        self.run_tool = RunScriptTool()
+    # ------------------------------------------------------------------
+    def send_message(self, message: str) -> str:
+        """Send ``message`` to the model and return the reply."""
+        reply = self.chat(message)
+        self.history.append(message)
+        self.history.append(reply)
+        return reply
 
     # Convenience wrappers -------------------------------------------------
     def search(self, query: str) -> str:

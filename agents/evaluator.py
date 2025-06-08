@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict
 
-from .base import BaseAgent
+from .base_agent import BaseAgent
 
 
 class Evaluator(BaseAgent):
@@ -12,6 +12,9 @@ class Evaluator(BaseAgent):
     def __init__(self, results_dir: str | Path) -> None:
         super().__init__(name="Evaluator")
         self.results_dir = Path(results_dir)
+
+    def send_message(self, message: str) -> str:  # pragma: no cover
+        raise NotImplementedError
 
     # ------------------------------------------------------------------
     def _parse_summary(self) -> Dict[str, Any]:
