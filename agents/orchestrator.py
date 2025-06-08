@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import List, Dict
+import os
 
 from .leader import Leader
 from .planner import Planner
@@ -18,7 +19,7 @@ from tsce_agent_demo.tsce_chat import TSCEChat
 class Orchestrator:
     """Coordinate a simple round-robin conversation between agents."""
 
-    def __init__(self, goals: List[str], *, model: str | None = None) -> None:
+    def __init__(self, goals: List[str], *, model: str | None = None, output_dir: str = "output") -> None:
         self.leader = Leader(goals=goals)
         self.planner = Planner(name="Planner")
         self.scientist = Scientist(name="Scientist")
@@ -28,6 +29,8 @@ class Orchestrator:
         self.simulator = Simulator()
         self.evaluator = Evaluator(results_dir="tsce_agent_demo/results")
         self.judge_panel = JudgePanel()
+        self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
         self.stages = {
@@ -83,18 +86,25 @@ class Orchestrator:
                 self.history.append({"role": "scientist", "content": sci_hyp})
                 res_hyp = self.researcher.send_message(sci_hyp)
                 self.history.append({"role": "researcher", "content": res_hyp})
-                token = record_agreed_hypothesis(
-                    sci_hyp, res_hyp, researcher=self.researcher
-                )
-                if token:
-                    self.history.append({"role": "hypothesis", "content": token})
-                    break
 
             # --- Research aggregation --------------------------------------
             if self.stages.get("research"):
                 data = self.researcher.search(goal)
                 self.history.append({"role": "researcher", "content": data})
                 plan = f"{plan}\n{data}"
+                self.researcher.create_file(
+                    os.path.join(self.output_dir, "research.txt"),
+                    data,
+                )
+                token = record_agreed_hypothesis(
+                    sci_hyp,
+                    res_hyp,
+                    path=os.path.join(self.output_dir, "leading_hypothesis.txt"),
+                    researcher=self.researcher,
+                )
+                if token:
+                    self.history.append({"role": "hypothesis", "content": token})
+                    break
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):

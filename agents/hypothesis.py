@@ -5,8 +5,14 @@ from .researcher import Researcher
 TERMINATE_TOKEN = "TERMINATE"
 
 
-def record_agreed_hypothesis(sci_view: str, res_view: str, *, researcher: Researcher | None = None) -> str | None:
-    """Write the agreed hypothesis to ``leading_hypothesis.txt`` and return the terminate token.
+def record_agreed_hypothesis(
+    sci_view: str,
+    res_view: str,
+    *,
+    path: str = "leading_hypothesis.txt",
+    researcher: Researcher | None = None,
+) -> str | None:
+    """Write the agreed hypothesis to ``path`` and return the terminate token.
 
     Parameters
     ----------
@@ -14,6 +20,8 @@ def record_agreed_hypothesis(sci_view: str, res_view: str, *, researcher: Resear
         Hypothesis proposed by the Scientist.
     res_view : str
         Hypothesis echoed or proposed by the Researcher.
+    path : str, optional
+        File path where the hypothesis should be recorded.
     researcher : Researcher | None, optional
         Researcher instance used to write the file. A new one is created if omitted.
 
@@ -24,7 +32,7 @@ def record_agreed_hypothesis(sci_view: str, res_view: str, *, researcher: Resear
     """
     if sci_view.strip().lower() == res_view.strip().lower():
         agent = researcher or Researcher()
-        agent.write_file("leading_hypothesis.txt", sci_view)
+        agent.write_file(path, sci_view)
         return TERMINATE_TOKEN
     return None
 
