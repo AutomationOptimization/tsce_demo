@@ -1,6 +1,8 @@
+import os
 import requests
-import openai
 from typing import List
+
+from tsce_agent_demo.tsce_chat import TSCEChat
 
 from tools import (
     GoogleSearch,
@@ -12,18 +14,19 @@ from tools import (
     RunScriptTool,
 )
 
-from .base_agent import BaseAgent
+from .base import BaseAgent
 
 class Researcher(BaseAgent):
     """Agent capable of searching the web and reading/writing files."""
 
-    def __init__(self, model: str = "gpt-3.5-turbo") -> None:
+    def __init__(self, model: str | None = None) -> None:
         super().__init__(name="Researcher")
         self.system_message = (
             "You are a meticulous research assistant. "
             "Use your search and file tools when helpful."
         )
-        self.model = model
+        self.model = model or os.getenv("MODEL_NAME", "gpt-3.5-turbo")
+        self._chat = TSCEChat(model=self.model)
         self.history: List[str] = []
         self.search_tool = GoogleSearch()
         self.scrape_tool = WebScrape()
@@ -38,8 +41,8 @@ class Researcher(BaseAgent):
             {"role": "system", "content": self.system_message},
             {"role": "user", "content": prompt},
         ]
-        resp = openai.ChatCompletion.create(model=self.model, messages=messages)
-        return resp["choices"][0]["message"]["content"]
+        reply = self._chat(messages)
+        return reply.content
 
     # ------------------------------------------------------------------
     def send_message(self, message: str) -> str:
