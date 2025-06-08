@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import time
 
-from .base import BaseAgent
+from .base_agent import BaseAgent
 
 
 def run_simulation(path: str) -> str:
@@ -50,6 +50,9 @@ class Simulator(BaseAgent):
 
     def __init__(self) -> None:
         super().__init__(name="Simulator")
+
+    def send_message(self, message: str) -> str:  # pragma: no cover
+        return self.act(message)
 
     # ------------------------------------------------------------------
     def act(self, path: str) -> str:

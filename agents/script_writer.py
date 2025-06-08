@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import textwrap
 
-from .base import BaseAgent
+from .base_agent import BaseAgent
 
 
 class ScriptWriter(BaseAgent):
@@ -11,6 +11,9 @@ class ScriptWriter(BaseAgent):
 
     def __init__(self) -> None:
         super().__init__(name="ScriptWriter")
+
+    def send_message(self, message: str) -> str:  # pragma: no cover
+        return self.act(message)
 
     # ------------------------------------------------------------------
     def act(self, request: str) -> str:
