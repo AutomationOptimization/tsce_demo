@@ -5,6 +5,7 @@ from typing import List, Dict
 from .leader import Leader
 from .planner import Planner
 from .scientist import Scientist
+from .researcher import Researcher
 from tsce_agent_demo.tsce_chat import TSCEChat
 
 
@@ -15,21 +16,33 @@ class Orchestrator:
         self.leader = Leader(goals=goals)
         self.planner = Planner(name="Planner")
         self.scientist = Scientist(name="Scientist")
+        self.researcher = Researcher()
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
 
     # ------------------------------------------------------------------
     def run(self) -> List[Dict[str, str]]:
         """Run the group chat until a terminate token is observed."""
+        stalled = False
+        prev_plan = ""
+        prev_answer = ""
+
         while True:
             goal = self.leader.act()
             self.history.append({"role": "leader", "content": goal})
             if "terminate" in goal.lower():
                 break
 
-            plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
-            plan = self.chat(plan_prompt).content
-            self.history.append({"role": "planner", "content": plan})
+            if stalled:
+                data = self.researcher.search(goal)
+                plan = f"INTERJECT: {data}"
+                self.history.append({"role": "researcher", "content": plan})
+                self.leader.observe(plan)
+            else:
+                plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
+                plan = self.chat(plan_prompt).content
+                self.history.append({"role": "planner", "content": plan})
+
             if "terminate" in plan.lower():
                 break
 
@@ -41,6 +54,11 @@ class Orchestrator:
             self.history.append({"role": "scientist", "content": answer})
             if "terminate" in answer.lower():
                 break
+
+            stalled = plan == prev_plan or answer == prev_answer
+            prev_plan = plan
+            prev_answer = answer
+
         return self.history
 
 
