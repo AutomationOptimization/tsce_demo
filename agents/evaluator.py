@@ -3,11 +3,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict
 
+from .base import BaseAgent
 
-class Evaluator:
-    """Utility class that inspects a TSCE results directory."""
+
+class Evaluator(BaseAgent):
+    """Utility agent that inspects a TSCE results directory."""
 
     def __init__(self, results_dir: str | Path) -> None:
+        super().__init__(name="Evaluator")
         self.results_dir = Path(results_dir)
 
     # ------------------------------------------------------------------
@@ -54,3 +57,6 @@ class Evaluator:
             f"({data['tsce_rate']:.1%})."
         )
         return {"summary": summary, "success": improved}
+
+
+__all__ = ["Evaluator"]
