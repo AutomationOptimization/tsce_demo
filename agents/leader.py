@@ -12,8 +12,8 @@ class Leader(BaseAgent):
     goals: List[str] = field(default_factory=list)
     step: int = 0
 
-    def __init__(self, goals: List[str] | None = None) -> None:
-        super().__init__(name="Leader")
+    def __init__(self, goals: List[str] | None = None, *, log_dir: str | None = None) -> None:
+        super().__init__(name="Leader", log_dir=log_dir)
         self.history: List[str] = []
         self.goals = goals or []
         self.step = 0

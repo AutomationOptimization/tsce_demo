@@ -19,8 +19,8 @@ from .base import BaseAgent
 class Researcher(BaseAgent):
     """Agent capable of searching the web and reading/writing files."""
 
-    def __init__(self, model: str | None = None) -> None:
-        super().__init__(name="Researcher")
+    def __init__(self, model: str | None = None, *, log_dir: str | None = None) -> None:
+        super().__init__(name="Researcher", log_dir=log_dir)
         self.system_message = (
             "You are a meticulous research assistant. "
             "Use your search and file tools when helpful."

@@ -106,6 +106,7 @@ OPENAI_API_KEY=sk-********************************
 # optional
 OPENAI_ENDPOINT=https://api.openai.com/v1/chat/completions
 MODEL_NAME=gpt-3.5-turbo
+LOG_DIR=logs  # optional agent conversation logs
 ```
 
 #### Azure OpenAI
@@ -118,7 +119,7 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
 AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ```
 
-*Leave unused keys blank.*
+*Leave unused keys blank.* Set ``LOG_DIR`` if you want to persist agent history logs.
 
 ---
 
@@ -153,11 +154,12 @@ An extended workflow coordinates all agents in stages. Create an
 from agents import Orchestrator
 
 goals = ["Print hello world", "TERMINATE"]
-orc = Orchestrator(goals)
+orc = Orchestrator(goals, log_dir="logs")  # logs conversations to logs/*.log
 history = orc.run()
 for step in history:
     print(step["role"], step["content"])
 ```
+Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to change this.
 
 The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
 the evaluator's summary for the run to conclude.
@@ -316,6 +318,7 @@ OPENAI_API_KEY=sk-********************************
 # optional
 OPENAI_ENDPOINT=https://api.openai.com/v1/chat/completions
 MODEL_NAME=gpt-3.5-turbo
+LOG_DIR=logs  # optional agent conversation logs
 ```
 
 #### Azure OpenAI
@@ -328,7 +331,7 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
 AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ```
 
-*Leave unused keys blank.*
+*Leave unused keys blank.* Set ``LOG_DIR`` if you wish to store conversation logs.
 
 ---
 
@@ -362,9 +365,10 @@ Use the orchestrator to run each agent stage in sequence:
 from agents import Orchestrator
 
 goals = ["Print hello world", "TERMINATE"]
-orc = Orchestrator(goals)
+orc = Orchestrator(goals, log_dir="logs")
 orc.run()
 ```
+Logs are written to ``logs/`` by default.
 
 The run finishes only when the ``JudgePanel`` unanimously approves the final
 evaluation.

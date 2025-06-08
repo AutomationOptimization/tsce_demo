@@ -19,15 +19,15 @@ from tsce_agent_demo.tsce_chat import TSCEChat
 class Orchestrator:
     """Coordinate a simple round-robin conversation between agents."""
 
-    def __init__(self, goals: List[str], *, model: str | None = None, output_dir: str = "output") -> None:
-        self.leader = Leader(goals=goals)
-        self.planner = Planner(name="Planner")
-        self.scientist = Scientist(name="Scientist")
-        self.researcher = Researcher()
-        self.script_writer = ScriptWriter()
-        self.script_qa = ScriptQA()
-        self.simulator = Simulator()
-        self.evaluator = Evaluator(results_dir="tsce_agent_demo/results")
+    def __init__(self, goals: List[str], *, model: str | None = None, output_dir: str = "output", log_dir: str | None = None) -> None:
+        self.leader = Leader(goals=goals, log_dir=log_dir)
+        self.planner = Planner(name="Planner", log_dir=log_dir)
+        self.scientist = Scientist(name="Scientist", log_dir=log_dir)
+        self.researcher = Researcher(log_dir=log_dir)
+        self.script_writer = ScriptWriter(log_dir=log_dir)
+        self.script_qa = ScriptQA(log_dir=log_dir)
+        self.simulator = Simulator(log_dir=log_dir)
+        self.evaluator = Evaluator(results_dir="tsce_agent_demo/results", log_dir=log_dir)
         self.judge_panel = JudgePanel()
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)

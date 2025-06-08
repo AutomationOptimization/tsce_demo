@@ -9,8 +9,8 @@ from .base_agent import BaseAgent
 class ScriptWriter(BaseAgent):
     """Return a short Python snippet for a textual request."""
 
-    def __init__(self) -> None:
-        super().__init__(name="ScriptWriter")
+    def __init__(self, *, log_dir: str | None = None) -> None:
+        super().__init__(name="ScriptWriter", log_dir=log_dir)
 
     def send_message(self, message: str) -> str:  # pragma: no cover
         return self.act(message)

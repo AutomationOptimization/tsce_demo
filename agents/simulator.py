@@ -48,8 +48,8 @@ def run_simulation(path: str) -> str:
 class Simulator(BaseAgent):
     """Execute Python scripts and record the output."""
 
-    def __init__(self) -> None:
-        super().__init__(name="Simulator")
+    def __init__(self, *, log_dir: str | None = None) -> None:
+        super().__init__(name="Simulator", log_dir=log_dir)
 
     def send_message(self, message: str) -> str:  # pragma: no cover
         return self.act(message)
