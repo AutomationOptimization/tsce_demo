@@ -44,6 +44,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
 | `.env.example` | Copy → `.env`, add your keys. |
 | `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
+| `agents/hypothesis.py` | Record agreed hypothesis and emit `TERMINATE` |
 
 Works with **OpenAI Cloud**, **Azure OpenAI**, or any **Ollama / vLLM** endpoint.
 ✨ New: we now load the Phase 1 and Phase 2 prompts from prompts/phase1.txt and prompts/phase2.txt, making it easy to swap in your own prompt templates.

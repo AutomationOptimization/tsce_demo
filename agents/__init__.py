@@ -10,6 +10,7 @@ from .script_qa import ScriptQA
 from .simulator import Simulator
 from .evaluator import Evaluator
 from .orchestrator import Orchestrator
+from .hypothesis import record_agreed_hypothesis, TERMINATE_TOKEN
 
 __all__ = [
     "BaseAgent",
@@ -22,4 +23,6 @@ __all__ = [
     "Simulator",
     "Evaluator",
     "Orchestrator",
+    "record_agreed_hypothesis",
+    "TERMINATE_TOKEN",
 ]
