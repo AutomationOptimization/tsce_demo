@@ -1,10 +1,21 @@
 """Agent utilities."""
-from .leader import BaseAgent, Leader
-from .simulator import run_simulation
-from . import script_writer
-from .researcher import Researcher
-from .base_agent import BaseAgent
+
+from .base import BaseAgent
+from .leader import Leader
 from .scientist import Scientist
+from .researcher import Researcher
+from .script_writer import ScriptWriter
+from .script_qa import ScriptQA
+from .simulator import Simulator
+from .evaluator import Evaluator
 
-__all__ = ["BaseAgent", "Scientist", "script_writer",  "Leader"]
-
+__all__ = [
+    "BaseAgent",
+    "Leader",
+    "Scientist",
+    "Researcher",
+    "ScriptWriter",
+    "ScriptQA",
+    "Simulator",
+    "Evaluator",
+]

@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 from typing import Tuple
 
+from .base import BaseAgent
+
 
 def run_tests(path: str | os.PathLike) -> Tuple[bool, str]:
     """Run tests located at ``path``.
@@ -28,4 +30,17 @@ def run_tests(path: str | os.PathLike) -> Tuple[bool, str]:
     output = proc.stdout + proc.stderr
     return proc.returncode == 0, output
 
-__all__ = ["run_tests"]
+
+class ScriptQA(BaseAgent):
+    """Agent that executes a script's tests."""
+
+    def __init__(self) -> None:
+        super().__init__(name="ScriptQA")
+
+    # ------------------------------------------------------------------
+    def act(self, path: str | os.PathLike) -> Tuple[bool, str]:
+        """Run tests at ``path`` and return ``(success, details)``."""
+        return run_tests(path)
+
+
+__all__ = ["ScriptQA", "run_tests"]

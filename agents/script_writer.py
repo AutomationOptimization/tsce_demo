@@ -1,42 +1,56 @@
+from __future__ import annotations
+
 import re
 import textwrap
 
+from .base import BaseAgent
 
-def act(request: str) -> str:
-    """Return a short Python code snippet for the given request.
 
-    The implementation is intentionally lightweight and recognises only a few
-    common patterns.  If the request cannot be handled, a comment describing
-    the limitation is returned instead of code.
-    """
-    lower = request.lower()
+class ScriptWriter(BaseAgent):
+    """Return a short Python snippet for a textual request."""
 
-    if "hello" in lower and "world" in lower:
-        return 'print("Hello, world!")'
+    def __init__(self) -> None:
+        super().__init__(name="ScriptWriter")
 
-    m = re.search(r"fibonacci(?: up to)? (\d+)", lower)
-    if m:
-        n = int(m.group(1))
-        return textwrap.dedent(f"""
-            def fib(n):
-                a, b = 0, 1
-                result = []
-                for _ in range(n):
-                    result.append(a)
-                    a, b = b, a + b
-                return result
+    # ------------------------------------------------------------------
+    def act(self, request: str) -> str:
+        """Return a short Python code snippet for ``request``.
 
-            print(fib({n}))
-        """).strip()
+        The implementation is intentionally lightweight and recognises only a
+        few common patterns.  If the request cannot be handled, a comment
+        describing the limitation is returned instead of code.
+        """
+        lower = request.lower()
 
-    m = re.search(r"factorial(?: of)? (\d+)", lower)
-    if m:
-        n = int(m.group(1))
-        return textwrap.dedent(f"""
-            def factorial(n):
-                return 1 if n <= 1 else n * factorial(n-1)
+        if "hello" in lower and "world" in lower:
+            return 'print("Hello, world!")'
 
-            print(factorial({n}))
-        """).strip()
+        m = re.search(r"fibonacci(?: up to)? (\d+)", lower)
+        if m:
+            n = int(m.group(1))
+            return textwrap.dedent(f"""
+                def fib(n):
+                    a, b = 0, 1
+                    result = []
+                    for _ in range(n):
+                        result.append(a)
+                        a, b = b, a + b
+                    return result
 
-    return f"# TODO: unable to generate script for: {request}"
+                print(fib({n}))
+            """).strip()
+
+        m = re.search(r"factorial(?: of)? (\d+)", lower)
+        if m:
+            n = int(m.group(1))
+            return textwrap.dedent(f"""
+                def factorial(n):
+                    return 1 if n <= 1 else n * factorial(n-1)
+
+                print(factorial({n}))
+            """).strip()
+
+        return f"# TODO: unable to generate script for: {request}"
+
+
+__all__ = ["ScriptWriter"]

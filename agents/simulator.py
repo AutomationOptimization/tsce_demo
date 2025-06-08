@@ -4,6 +4,8 @@ from pathlib import Path
 import sys
 import time
 
+from .base import BaseAgent
+
 
 def run_simulation(path: str) -> str:
     """Execute a Python file and store the result in ``results/``.
@@ -41,3 +43,18 @@ def run_simulation(path: str) -> str:
         f.write(f"\n--- return code: {proc.returncode} ---\n")
 
     return str(log_file)
+
+
+class Simulator(BaseAgent):
+    """Execute Python scripts and record the output."""
+
+    def __init__(self) -> None:
+        super().__init__(name="Simulator")
+
+    # ------------------------------------------------------------------
+    def act(self, path: str) -> str:
+        """Run ``path`` and return the log file location."""
+        return run_simulation(path)
+
+
+__all__ = ["Simulator", "run_simulation"]
