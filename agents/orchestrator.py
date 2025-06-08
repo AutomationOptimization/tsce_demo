@@ -11,6 +11,7 @@ from .script_qa import ScriptQA
 from .simulator import Simulator
 from .evaluator import Evaluator
 from .hypothesis import record_agreed_hypothesis
+from .judge import JudgePanel
 from tsce_agent_demo.tsce_chat import TSCEChat
 
 
@@ -26,6 +27,7 @@ class Orchestrator:
         self.script_qa = ScriptQA()
         self.simulator = Simulator()
         self.evaluator = Evaluator(results_dir="tsce_agent_demo/results")
+        self.judge_panel = JudgePanel()
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
         self.stages = {
@@ -35,6 +37,7 @@ class Orchestrator:
             "qa": True,
             "simulate": True,
             "evaluate": True,
+            "judge": True,
         }
 
     def drop_stage(self, stage: str) -> None:
@@ -114,7 +117,12 @@ class Orchestrator:
             if self.stages.get("evaluate"):
                 result = self.evaluator.act()
                 self.history.append({"role": "evaluator", "content": result["summary"]})
-                if result.get("success"):
+                approved = True
+                if self.stages.get("judge"):
+                    approved = self.judge_panel.vote(result["summary"])
+                    status = "approved" if approved else "rejected"
+                    self.history.append({"role": "judge_panel", "content": status})
+                if result.get("success") and approved:
                     break
 
         return self.history
