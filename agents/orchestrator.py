@@ -6,6 +6,11 @@ from .leader import Leader
 from .planner import Planner
 from .scientist import Scientist
 from .researcher import Researcher
+from .script_writer import ScriptWriter
+from .script_qa import ScriptQA
+from .simulator import Simulator
+from .evaluator import Evaluator
+from .hypothesis import record_agreed_hypothesis
 from tsce_agent_demo.tsce_chat import TSCEChat
 
 
@@ -17,15 +22,35 @@ class Orchestrator:
         self.planner = Planner(name="Planner")
         self.scientist = Scientist(name="Scientist")
         self.researcher = Researcher()
+        self.script_writer = ScriptWriter()
+        self.script_qa = ScriptQA()
+        self.simulator = Simulator()
+        self.evaluator = Evaluator(results_dir="tsce_agent_demo/results")
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
+        self.stages = {
+            "hypothesis": True,
+            "research": True,
+            "script": True,
+            "qa": True,
+            "simulate": True,
+            "evaluate": True,
+        }
+
+    def drop_stage(self, stage: str) -> None:
+        """Disable a processing stage."""
+        if stage in self.stages:
+            self.stages[stage] = False
+
+    def activate_stage(self, stage: str) -> None:
+        """Enable a processing stage."""
+        if stage in self.stages:
+            self.stages[stage] = True
 
     # ------------------------------------------------------------------
     def run(self) -> List[Dict[str, str]]:
-        """Run the group chat until a terminate token is observed."""
-        stalled = False
+        """Run the group chat following the long-form pipeline."""
         prev_plan = ""
-        prev_answer = ""
 
         while True:
             goal = self.leader.act()
@@ -33,31 +58,64 @@ class Orchestrator:
             if "terminate" in goal.lower():
                 break
 
-            if stalled:
+            plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
+            plan = self.chat(plan_prompt).content
+            self.history.append({"role": "planner", "content": plan})
+
+            if plan.strip() == prev_plan.strip():
                 data = self.researcher.search(goal)
-                plan = f"INTERJECT: {data}"
-                self.history.append({"role": "researcher", "content": plan})
-                self.leader.observe(plan)
-            else:
-                plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
-                plan = self.chat(plan_prompt).content
-                self.history.append({"role": "planner", "content": plan})
+                interject = f"INTERJECT: {data}"
+                self.history.append({"role": "researcher", "content": interject})
+                self.leader.observe(interject)
+            prev_plan = plan
 
             if "terminate" in plan.lower():
                 break
 
-            sci_prompt = (
-                "You are Scientist. Based on this plan, provide your analysis:\n"
-                f"{plan}"
-            )
-            answer = self.chat(sci_prompt).content
-            self.history.append({"role": "scientist", "content": answer})
-            if "terminate" in answer.lower():
-                break
+            # --- Hypothesis -------------------------------------------------
+            if self.stages.get("hypothesis"):
+                sci_hyp = self.chat(
+                    f"You are Scientist. Propose a short hypothesis for: {plan}"
+                ).content
+                self.history.append({"role": "scientist", "content": sci_hyp})
+                res_hyp = self.researcher.send_message(sci_hyp)
+                self.history.append({"role": "researcher", "content": res_hyp})
+                token = record_agreed_hypothesis(
+                    sci_hyp, res_hyp, researcher=self.researcher
+                )
+                if token:
+                    self.history.append({"role": "hypothesis", "content": token})
+                    break
 
-            stalled = plan == prev_plan or answer == prev_answer
-            prev_plan = plan
-            prev_answer = answer
+            # --- Research aggregation --------------------------------------
+            if self.stages.get("research"):
+                data = self.researcher.search(goal)
+                self.history.append({"role": "researcher", "content": data})
+                plan = f"{plan}\n{data}"
+
+            # --- Script writing -------------------------------------------
+            if self.stages.get("script"):
+                script = self.script_writer.act(plan)
+                self.history.append({"role": "script_writer", "content": script})
+                path = "generated_script.py"
+                self.researcher.create_file(path, script)
+
+                if self.stages.get("qa"):
+                    success, qa_output = self.script_qa.act(path)
+                    self.history.append(
+                        {"role": "script_qa", "content": qa_output}
+                    )
+
+                if self.stages.get("simulate"):
+                    log_path = self.simulator.act(path)
+                    self.history.append({"role": "simulator", "content": log_path})
+
+            # --- Evaluation -------------------------------------------------
+            if self.stages.get("evaluate"):
+                result = self.evaluator.act()
+                self.history.append({"role": "evaluator", "content": result["summary"]})
+                if result.get("success"):
+                    break
 
         return self.history
 
