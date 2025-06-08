@@ -49,6 +49,43 @@ class Evaluator(BaseAgent):
         }
 
     # ------------------------------------------------------------------
+    def parse_simulator_log(self, log_file: str | Path) -> Dict[str, Any]:
+        """Analyze ``log_file`` and record whether the simulation succeeded."""
+        path = Path(log_file)
+        if not path.is_file():
+            raise FileNotFoundError(f"{path} not found")
+
+        return_code: int | None = None
+        stderr_lines = []
+        capture_stderr = False
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                line = line.rstrip()
+                if line.startswith("--- return code:"):
+                    try:
+                        return_code = int(line.split(":", 1)[1].split("-", 1)[0].strip())
+                    except ValueError:
+                        return_code = None
+                    capture_stderr = False
+                elif line.strip() == "--- stderr ---":
+                    capture_stderr = True
+                elif capture_stderr:
+                    stderr_lines.append(line)
+
+        success = (return_code == 0) and not stderr_lines
+        summary = f"{path.name}: {'success' if success else 'failure'} (rc={return_code})"
+
+        summary_path = path.with_suffix(path.suffix + ".summary")
+        summary_path.write_text(summary + "\n", encoding="utf-8")
+
+        return {
+            "summary": summary,
+            "success": success,
+            "log_file": str(path),
+            "summary_file": str(summary_path),
+        }
+
+    # ------------------------------------------------------------------
     def act(self) -> Dict[str, Any]:
         """Summarize the run and return a success flag."""
         data = self._parse_summary()
