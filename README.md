@@ -11,13 +11,14 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 4. [Installation](#installation)
 5. [Configuration](#configuration)
 6. [Quick Start](#quick-start)
-7. [Usage Examples](#usage-examples)
-8. [How TSCE Works](#how-tsce-works)
-9. [Benchmarks & Latest Results](#benchmarks--latest-results)
-10. [Troubleshooting](#troubleshooting)
-11. [Extending the Demo](#extending-the-demo)
-12. [Contributing](#contributing)
-13. [License](#license)
+7. [Orchestrator Demo](#orchestrator-demo)
+8. [Usage Examples](#usage-examples)
+9. [How TSCE Works](#how-tsce-works)
+10. [Benchmarks & Latest Results](#benchmarks--latest-results)
+11. [Troubleshooting](#troubleshooting)
+12. [Extending the Demo](#extending-the-demo)
+13. [Contributing](#contributing)
+14. [License](#license)
 
 ---
 
@@ -142,6 +143,22 @@ For an interactive UI that lets you compare the baseline and TSCE answers, run:
 ```bash
 streamlit run streamlit_chat.py
 ```
+
+### Orchestrator Demo <a name="orchestrator-demo"></a>
+
+An extended workflow coordinates all agents in stages. Create an
+``Orchestrator`` with a list of goals and call ``run()``:
+
+```python
+from agents import Orchestrator
+
+goals = ["Print hello world", "TERMINATE"]
+orc = Orchestrator(goals)
+history = orc.run()
+for step in history:
+    print(step["role"], step["content"])
+```
+
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>
@@ -201,13 +218,14 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 4. [Installation](#installation)
 5. [Configuration](#configuration)
 6. [Quick Start](#quick-start)
-7. [Usage Examples](#usage-examples)
-8. [How TSCE Works](#how-tsce-works)
-9. [Benchmarks & Latest Results](#benchmarks--latest-results)
-10. [Troubleshooting](#troubleshooting)
-11. [Extending the Demo](#extending-the-demo)
-12. [Contributing](#contributing)
-13. [License](#license)
+7. [Orchestrator Demo](#orchestrator-demo)
+8. [Usage Examples](#usage-examples)
+9. [How TSCE Works](#how-tsce-works)
+10. [Benchmarks & Latest Results](#benchmarks--latest-results)
+11. [Troubleshooting](#troubleshooting)
+12. [Extending the Demo](#extending-the-demo)
+13. [Contributing](#contributing)
+14. [License](#license)
 
 ---
 
@@ -332,6 +350,19 @@ For an interactive UI that lets you compare the baseline and TSCE answers, run:
 ```bash
 streamlit run streamlit_chat.py
 ```
+
+### Orchestrator Demo <a name="orchestrator-demo"></a>
+
+Use the orchestrator to run each agent stage in sequence:
+
+```python
+from agents import Orchestrator
+
+goals = ["Print hello world", "TERMINATE"]
+orc = Orchestrator(goals)
+orc.run()
+```
+
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>
