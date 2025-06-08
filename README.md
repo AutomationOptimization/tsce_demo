@@ -159,6 +159,9 @@ for step in history:
     print(step["role"], step["content"])
 ```
 
+The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
+the evaluator's summary for the run to conclude.
+
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>
@@ -362,6 +365,9 @@ goals = ["Print hello world", "TERMINATE"]
 orc = Orchestrator(goals)
 orc.run()
 ```
+
+The run finishes only when the ``JudgePanel`` unanimously approves the final
+evaluation.
 
 ---
 
