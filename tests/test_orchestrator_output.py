@@ -18,7 +18,7 @@ class DummyChat:
         return types.SimpleNamespace(content=content)
 
 class DummyResearcher:
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.history = []
     def search(self, query):
         return "data"

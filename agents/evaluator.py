@@ -9,8 +9,8 @@ from .base_agent import BaseAgent
 class Evaluator(BaseAgent):
     """Utility agent that inspects a TSCE results directory."""
 
-    def __init__(self, results_dir: str | Path) -> None:
-        super().__init__(name="Evaluator")
+    def __init__(self, results_dir: str | Path, *, log_dir: str | None = None) -> None:
+        super().__init__(name="Evaluator", log_dir=log_dir)
         self.results_dir = Path(results_dir)
 
     def send_message(self, message: str) -> str:  # pragma: no cover

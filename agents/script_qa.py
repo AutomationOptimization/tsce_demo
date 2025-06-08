@@ -34,8 +34,8 @@ def run_tests(path: str | os.PathLike) -> Tuple[bool, str]:
 class ScriptQA(BaseAgent):
     """Agent that executes a script's tests."""
 
-    def __init__(self) -> None:
-        super().__init__(name="ScriptQA")
+    def __init__(self, *, log_dir: str | None = None) -> None:
+        super().__init__(name="ScriptQA", log_dir=log_dir)
 
     def send_message(self, message: str) -> str:  # pragma: no cover
         success, output = self.act(message)
