@@ -3,4 +3,7 @@ report.json
 venv/
 __pycache__/
 
+# macOS system files
+.DS_Store
+
 results/
