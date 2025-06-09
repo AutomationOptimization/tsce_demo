@@ -122,7 +122,11 @@ class Orchestrator:
                 if self.stages.get("qa"):
                     success, qa_output = self.script_qa.act(path)
                     self.history.append(
-                        {"role": "script_qa", "content": qa_output}
+                        {
+                            "role": "script_qa",
+                            "content": qa_output,
+                            "success": success,
+                        }
                     )
 
                 if self.stages.get("simulate"):
