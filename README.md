@@ -12,13 +12,14 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 5. [Configuration](#configuration)
 6. [Quick Start](#quick-start)
 7. [Orchestrator Demo](#orchestrator-demo)
-8. [Usage Examples](#usage-examples)
-9. [How TSCE Works](#how-tsce-works)
-10. [Benchmarks & Latest Results](#benchmarks--latest-results)
-11. [Troubleshooting](#troubleshooting)
-12. [Extending the Demo](#extending-the-demo)
-13. [Contributing](#contributing)
-14. [License](#license)
+8. [Pipeline Overview](#pipeline-overview)
+9. [Usage Examples](#usage-examples)
+10. [How TSCE Works](#how-tsce-works)
+11. [Benchmarks & Latest Results](#benchmarks--latest-results)
+12. [Troubleshooting](#troubleshooting)
+13. [Extending the Demo](#extending-the-demo)
+14. [Contributing](#contributing)
+15. [License](#license)
 
 ---
 
@@ -43,6 +44,9 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/tsce_agent_test.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
 | `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
 | `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
+| `tsce_agent_demo/run_orchestrator.py` | Command-line interface for the pipeline |
+| `tsce_agent_demo/inspect_tsce_layers.py` | Layer variance tool using transformer-lens |
+| `tsce_agent_demo/tsce_heval_test.py` | Evaluate the HaluEval benchmark |
 | `.env.example` | Copy → `.env`, add your keys. |
 | `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
 | `agents/hypothesis.py` | Record agreed hypothesis and emit `TERMINATE` |
@@ -168,6 +172,25 @@ is inactive, so drop the research stage when you want planning to resume.
 The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
 the evaluator's summary for the run to conclude.
 
+### Pipeline Overview <a name="pipeline-overview"></a>
+
+See [docs/pipeline.md](docs/pipeline.md) for a detailed walk through of each
+stage in the orchestrator. The nine-member ``JudgePanel`` must unanimously
+approve the final evaluation before the run terminates.
+
+### CLI Usage
+
+Run the orchestrator directly from the command line:
+
+```bash
+python tsce_agent_demo/run_orchestrator.py "Print hello world" TERMINATE
+```
+
+Additional utilities:
+
+* ``tsce_agent_demo/inspect_tsce_layers.py`` – analyse layer-wise variance on local models.
+* ``tsce_agent_demo/tsce_heval_test.py`` – run the HaluEval benchmark with TSCE.
+
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>
@@ -228,13 +251,14 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 5. [Configuration](#configuration)
 6. [Quick Start](#quick-start)
 7. [Orchestrator Demo](#orchestrator-demo)
-8. [Usage Examples](#usage-examples)
-9. [How TSCE Works](#how-tsce-works)
-10. [Benchmarks & Latest Results](#benchmarks--latest-results)
-11. [Troubleshooting](#troubleshooting)
-12. [Extending the Demo](#extending-the-demo)
-13. [Contributing](#contributing)
-14. [License](#license)
+8. [Pipeline Overview](#pipeline-overview)
+9. [Usage Examples](#usage-examples)
+10. [How TSCE Works](#how-tsce-works)
+11. [Benchmarks & Latest Results](#benchmarks--latest-results)
+12. [Troubleshooting](#troubleshooting)
+13. [Extending the Demo](#extending-the-demo)
+14. [Contributing](#contributing)
+15. [License](#license)
 
 ---
 
@@ -259,6 +283,9 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/tsce_agent_test.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
 | `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
 | `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
+| `tsce_agent_demo/run_orchestrator.py` | Command-line interface for the pipeline |
+| `tsce_agent_demo/inspect_tsce_layers.py` | Layer variance tool using transformer-lens |
+| `tsce_agent_demo/tsce_heval_test.py` | Evaluate the HaluEval benchmark |
 | `.env.example` | Copy → `.env`, add your keys. |
 | `tsce_agent_demo/data/<prompts>.txt` | Default templates |
 | `docs/tsce_DRAFT.pdf` | Current draft of the TSCE research paper |
