@@ -75,7 +75,13 @@ class Evaluator(BaseAgent):
         success = (return_code == 0) and not stderr_lines
         summary = f"{path.name}: {'success' if success else 'failure'} (rc={return_code})"
 
-        summary_path = path.with_suffix(path.suffix + ".summary")
+        # Write a human‑readable summary next to the log file but without the
+        # timestamp that ``run_simulation`` adds to the log name.  The summary
+        # file uses the original script name with a ``.summary`` extension.
+        stem = path.stem
+        if "_" in stem:
+            stem = stem.rsplit("_", 1)[0]
+        summary_path = path.with_name(f"{stem}.summary")
         summary_path.write_text(summary + "\n", encoding="utf-8")
 
         return {
