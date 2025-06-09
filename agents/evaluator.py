@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any, Dict
+import shutil
 
 from .base_agent import BaseAgent
 
@@ -49,8 +50,21 @@ class Evaluator(BaseAgent):
         }
 
     # ------------------------------------------------------------------
-    def parse_simulator_log(self, log_file: str | Path) -> Dict[str, Any]:
-        """Analyze ``log_file`` and record whether the simulation succeeded."""
+    def parse_simulator_log(
+        self,
+        log_file: str | Path,
+        *,
+        dest_dir: str | Path | None = None,
+    ) -> Dict[str, Any]:
+        """Analyze ``log_file`` and record whether the simulation succeeded.
+
+        Parameters
+        ----------
+        log_file:
+            Path to the log file written by :class:`Simulator`.
+        dest_dir:
+            Optional directory to move/copy the generated ``.summary`` file to.
+        """
         path = Path(log_file)
         if not path.is_file():
             raise FileNotFoundError(f"{path} not found")
@@ -84,11 +98,26 @@ class Evaluator(BaseAgent):
         summary_path = path.with_name(f"{stem}.summary")
         summary_path.write_text(summary + "\n", encoding="utf-8")
 
+        saved_summary = summary_path
+        if dest_dir is not None:
+            dest_dir = Path(dest_dir)
+            dest_dir.mkdir(exist_ok=True)
+            dest = dest_dir / summary_path.name
+            try:
+                shutil.move(str(summary_path), dest)
+            except Exception:
+                shutil.copy(str(summary_path), dest)
+                try:
+                    summary_path.unlink()
+                except FileNotFoundError:  # pragma: no cover - cleanup
+                    pass
+            saved_summary = dest
+
         return {
             "summary": summary,
             "success": success,
             "log_file": str(path),
-            "summary_file": str(summary_path),
+            "summary_file": str(saved_summary),
         }
 
     # ------------------------------------------------------------------

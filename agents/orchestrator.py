@@ -202,8 +202,10 @@ class Orchestrator:
                 if self.stages.get("simulate"):
                     log_path = self.simulator.act(path)
                     self.history.append({"role": "simulator", "content": log_path})
-                    sim_result = self.evaluator.parse_simulator_log(log_path)
-                    self.history.append({"role": "evaluator", "content": sim_result["summary"]})
+                    sim_result = self.evaluator.parse_simulator_log(
+                        log_path, dest_dir=self.output_dir
+                    )
+                    self.history.append({"role": "evaluator", "content": sim_result["summary_file"]})
 
             # --- Evaluation -------------------------------------------------
             if self.stages.get("evaluate"):

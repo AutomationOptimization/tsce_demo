@@ -6,4 +6,5 @@ __pycache__/
 # macOS system files
 .DS_Store
 
-results/
+results/*
+!results/README.md
