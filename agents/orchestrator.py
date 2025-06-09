@@ -147,7 +147,10 @@ class Orchestrator:
                     data_parts.append(output)
 
                 if not data_parts:
-                    data_parts.append(self.researcher.search(goal))
+                    search_results = self.researcher.search(goal)
+                    if isinstance(search_results, list):
+                        search_results = "\n".join(search_results)
+                    data_parts.append(search_results)
 
                 data = "\n".join(data_parts)
                 plan = f"{plan}\n{data}" if data else plan
