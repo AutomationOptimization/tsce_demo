@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import List
+from time import sleep
 
 from .base_agent import BaseAgent
 
@@ -29,6 +30,17 @@ class JudgePanel:
         """Return ``True`` when all judges approve ``transcript``."""
         results = [j.approve(transcript) for j in self.judges]
         return all(results)
+
+    def vote_until_unanimous(self, transcript: str, *, delay: float = 0.5) -> bool:
+        """Repeatedly poll judges until all approve ``transcript``.
+
+        The optional ``delay`` parameter waits the specified number of seconds
+        between successive rounds of voting to prevent a tight loop.
+        """
+        while True:
+            if self.vote(transcript):
+                return True
+            sleep(delay)
 
 
 __all__ = ["Judge", "JudgePanel"]
