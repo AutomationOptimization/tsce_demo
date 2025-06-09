@@ -28,7 +28,8 @@ class Orchestrator:
         self.script_writer = ScriptWriter(log_dir=log_dir)
         self.script_qa = ScriptQA(log_dir=log_dir)
         self.simulator = Simulator(log_dir=log_dir)
-        self.evaluator = Evaluator(results_dir="tsce_agent_demo/results", log_dir=log_dir)
+        self.results_dir = "tsce_agent_demo/results"
+        self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=log_dir)
         self.judge_panel = JudgePanel()
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -36,6 +37,7 @@ class Orchestrator:
         os.makedirs(self.hypothesis_dir, exist_ok=True)
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
+        self.log_dir = log_dir
         self.stages = {
             "planner": True,
             "hypothesis": True,
@@ -51,11 +53,25 @@ class Orchestrator:
         """Disable a processing stage."""
         if stage in self.stages:
             self.stages[stage] = False
+            if stage == "research":
+                # Remove heavy agents until later phases
+                self.script_writer = None
+                self.simulator = None
+                self.evaluator = None
+                self.stages["script"] = False
+                self.stages["simulate"] = False
+                self.stages["evaluate"] = False
 
     def activate_stage(self, stage: str) -> None:
         """Enable a processing stage."""
         if stage in self.stages:
             self.stages[stage] = True
+            if stage == "script" and self.script_writer is None:
+                self.script_writer = ScriptWriter(log_dir=self.log_dir)
+            elif stage == "simulate" and self.simulator is None:
+                self.simulator = Simulator(log_dir=self.log_dir)
+            elif stage == "evaluate" and self.evaluator is None:
+                self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=self.log_dir)
 
     # ------------------------------------------------------------------
     def run(self) -> List[Dict[str, str]]:
