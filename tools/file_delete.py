@@ -1,3 +1,15 @@
+"""Remove files safely.
+
+Typical usage::
+
+    DeleteFileTool()("temp.txt")
+
+Returns
+-------
+str
+    ``"Deleted <path>"`` on success or an error message if deletion fails.
+"""
+
 import os
 
 

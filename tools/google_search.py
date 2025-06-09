@@ -1,3 +1,15 @@
+"""Retrieve quick search result titles using Google's public endpoint.
+
+Example::
+
+    GoogleSearch()("python testing", num_results=3)
+
+Returns
+-------
+list[str]
+    A list of result titles or a single-element list with an error message.
+"""
+
 import re
 import requests
 

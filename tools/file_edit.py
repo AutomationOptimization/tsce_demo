@@ -1,3 +1,16 @@
+"""Editing helper that overwrites files in place.
+
+Example::
+
+    EditFileTool()("notes.txt", "new text")
+
+Returns
+-------
+str
+    ``"Updated <path>"`` on success or an error message if the file is missing or cannot be written.
+"""
+
+
 class EditFileTool:
     """Overwrite a text file with new content."""
 
