@@ -31,6 +31,8 @@ class Orchestrator:
         self.judge_panel = JudgePanel()
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
+        self.hypothesis_dir = os.path.join(self.output_dir, "hypothesis")
+        os.makedirs(self.hypothesis_dir, exist_ok=True)
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
         self.stages = {
@@ -99,7 +101,7 @@ class Orchestrator:
                 token = record_agreed_hypothesis(
                     sci_hyp,
                     res_hyp,
-                    path=os.path.join(self.output_dir, "leading_hypothesis.txt"),
+                    path=os.path.join(self.hypothesis_dir, "leading_hypothesis.txt"),
                     researcher=self.researcher,
                 )
                 if token:

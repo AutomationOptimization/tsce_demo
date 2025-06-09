@@ -51,5 +51,6 @@ def test_output_files_created(tmp_path, monkeypatch):
 
     orch.run()
 
-    assert (tmp_path / "leading_hypothesis.txt").exists()
+    assert (tmp_path / "hypothesis").is_dir()
+    assert (tmp_path / "hypothesis" / "leading_hypothesis.txt").exists()
     assert (tmp_path / "research.txt").exists()
