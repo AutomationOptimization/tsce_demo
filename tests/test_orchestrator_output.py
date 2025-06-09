@@ -79,7 +79,12 @@ def test_research_file_appends(tmp_path, monkeypatch):
     orch.drop_stage("evaluate")
     orch.drop_stage("judge")
 
-    orch.run()
+    history = orch.run()
 
     lines = (tmp_path / "research.txt").read_text().splitlines()
-    assert lines == ["data", "data"]
+    assert lines == ["data"]
+
+    roles = [m["role"] for m in history]
+    if "hypothesis" in roles:
+        idx = roles.index("hypothesis")
+        assert "researcher" not in roles[idx + 1 :]

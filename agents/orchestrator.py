@@ -54,14 +54,6 @@ class Orchestrator:
         """Disable a processing stage."""
         if stage in self.stages:
             self.stages[stage] = False
-            if stage == "research":
-                # Remove heavy agents until later phases
-                self.script_writer = None
-                self.simulator = None
-                self.evaluator = None
-                self.stages["script"] = False
-                self.stages["simulate"] = False
-                self.stages["evaluate"] = False
 
     def activate_stage(self, stage: str) -> None:
         """Enable a processing stage."""
@@ -112,7 +104,7 @@ class Orchestrator:
             else:
                 plan = prev_plan
 
-            if plan.strip() == prev_plan.strip():
+            if plan.strip() == prev_plan.strip() and self.stages.get("research"):
                 data = self.researcher.search(goal)
                 interject = f"INTERJECT: {data}"
                 self.history.append({"role": "researcher", "content": interject})
@@ -178,6 +170,8 @@ class Orchestrator:
                     self.drop_stage("planner")
                     # Mark hypothesis stage complete and proceed
                     self.drop_stage("hypothesis")
+                    # Research stage concludes once the hypothesis is saved
+                    self.drop_stage("research")
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):
@@ -187,7 +181,8 @@ class Orchestrator:
                     self.hypothesis_dir,
                     f"test_hypothesis_{uuid.uuid4().hex}.py",
                 )
-                self.researcher.create_file(path, script)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(script)
 
                 if self.stages.get("qa"):
                     success, qa_output = self.script_qa.act(path)
