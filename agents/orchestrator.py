@@ -111,7 +111,7 @@ class Orchestrator:
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):
-                script = self.script_writer.act(plan)
+                script, gid = self.script_writer.act(plan)
                 self.history.append({"role": "script_writer", "content": script})
                 path = os.path.join(
                     self.hypothesis_dir,
