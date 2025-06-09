@@ -1,4 +1,8 @@
 from pathlib import Path
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
 import agents.evaluator as evaluator_mod
 import agents.base_agent as base_agent_mod
 import tsce_agent_demo.tsce_chat as tsce_chat_mod
