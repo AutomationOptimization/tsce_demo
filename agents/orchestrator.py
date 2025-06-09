@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, Dict
 import os
+import uuid
 
 from .leader import Leader
 from .planner import Planner
@@ -112,7 +113,10 @@ class Orchestrator:
             if self.stages.get("script"):
                 script = self.script_writer.act(plan)
                 self.history.append({"role": "script_writer", "content": script})
-                path = "generated_script.py"
+                path = os.path.join(
+                    self.hypothesis_dir,
+                    f"test_hypothesis_{uuid.uuid4().hex}.py",
+                )
                 self.researcher.create_file(path, script)
 
                 if self.stages.get("qa"):
