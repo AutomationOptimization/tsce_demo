@@ -74,6 +74,23 @@ class Orchestrator:
                 plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
                 plan = self.chat(plan_prompt).content
                 self.history.append({"role": "planner", "content": plan})
+
+                # Allow Planner and Scientist to refine the plan through
+                # a short back-and-forth before any research begins.
+                exchange_counter = 0
+                while exchange_counter < 3:
+                    sci_prompt = (
+                        f"You are Scientist. Review the plan and provide feedback: {plan}"
+                    )
+                    sci_msg = self.chat(sci_prompt).content
+                    self.history.append({"role": "scientist", "content": sci_msg})
+                    plan_prompt = (
+                        "You are Planner. Update the plan considering this feedback: "
+                        f"{sci_msg}"
+                    )
+                    plan = self.chat(plan_prompt).content
+                    self.history.append({"role": "planner", "content": plan})
+                    exchange_counter += 1
             else:
                 plan = prev_plan
 
