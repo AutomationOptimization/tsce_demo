@@ -161,6 +161,10 @@ for step in history:
 ```
 Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to change this.
 
+When a stage emits the ``TERMINATE`` token, the orchestrator now disables the planner with
+``drop_stage('planner')``. The planner is automatically reactivated for each new goal so repeated
+planning doesn't override ongoing research.
+
 The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
 the evaluator's summary for the run to conclude.
 
