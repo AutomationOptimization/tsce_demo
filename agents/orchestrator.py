@@ -146,6 +146,10 @@ class Orchestrator:
                     self.history.append({"role": "judge_panel", "content": status})
                 if result.get("success") and approved:
                     break
+                # retry same goal on failure or rejection
+                self.leader.step -= 1
+                prev_plan = ""
+                continue
 
         return self.history
 
