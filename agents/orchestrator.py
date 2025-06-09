@@ -119,10 +119,13 @@ class Orchestrator:
                 data = self.researcher.search(goal)
                 self.history.append({"role": "researcher", "content": data})
                 plan = f"{plan}\n{data}"
-                self.researcher.create_file(
-                    os.path.join(self.output_dir, "research.txt"),
-                    data,
-                )
+                research_path = os.path.join(self.output_dir, "research.txt")
+                if os.path.exists(research_path):
+                    prev = self.researcher.read_file(research_path)
+                    new_content = prev + ("\n" if prev else "") + data
+                    self.researcher.write_file(research_path, new_content)
+                else:
+                    self.researcher.create_file(research_path, data)
                 token = record_agreed_hypothesis(
                     sci_hyp,
                     res_hyp,

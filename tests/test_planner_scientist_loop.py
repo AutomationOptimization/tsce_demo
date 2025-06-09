@@ -26,6 +26,8 @@ class DummyResearcher:
     def create_file(self, path, content=""):
         Path(path).write_text(content)
         return "ok"
+    def read_file(self, path):
+        return Path(path).read_text() if Path(path).exists() else ""
 
 
 def test_planner_scientist_exchange(tmp_path, monkeypatch):
