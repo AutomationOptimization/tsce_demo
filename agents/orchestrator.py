@@ -64,13 +64,14 @@ class Orchestrator:
 
         while True:
             goal = self.leader.act()
-            # Reactivate planner when a new goal starts
-            self.activate_stage("planner")
+            # Reactivate planner for a new goal only when research is inactive
+            if not self.stages.get("research"):
+                self.activate_stage("planner")
             self.history.append({"role": "leader", "content": goal})
             if "terminate" in goal.lower():
                 break
 
-            if self.stages.get("planner"):
+            if self.stages.get("planner") and not self.stages.get("research"):
                 plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
                 plan = self.chat(plan_prompt).content
                 self.history.append({"role": "planner", "content": plan})
