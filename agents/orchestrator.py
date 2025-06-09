@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import List, Dict
 import os
+import re
 import uuid
 
 from .leader import Leader
@@ -132,9 +133,32 @@ class Orchestrator:
 
             # --- Research aggregation --------------------------------------
             if self.stages.get("research"):
-                data = self.researcher.search(goal)
-                self.history.append({"role": "researcher", "content": data})
-                plan = f"{plan}\n{data}"
+                instr_prompt = (
+                    f"You are Scientist. Provide instructions for the Researcher to gather data: {plan}"
+                )
+                sci_instr = self.chat(instr_prompt).content
+                self.history.append({"role": "scientist", "content": sci_instr})
+                res_msg = self.researcher.send_message(sci_instr)
+                self.history.append({"role": "researcher", "content": res_msg})
+
+                data_parts: List[str] = []
+                urls = re.findall(r"https?://\S+", sci_instr)
+                for url in urls:
+                    scrap = self.researcher.scrape(url)
+                    self.history.append({"role": "researcher", "content": scrap})
+                    data_parts.append(scrap)
+
+                scripts = re.findall(r"run\s+(\S+)", sci_instr)
+                for script_path in scripts:
+                    output = self.researcher.run_script(script_path)
+                    self.history.append({"role": "researcher", "content": output})
+                    data_parts.append(output)
+
+                if not data_parts:
+                    data_parts.append(self.researcher.search(goal))
+
+                data = "\n".join(data_parts)
+                plan = f"{plan}\n{data}" if data else plan
                 research_path = os.path.join(self.output_dir, "research.txt")
                 if os.path.exists(research_path):
                     prev = self.researcher.read_file(research_path)
