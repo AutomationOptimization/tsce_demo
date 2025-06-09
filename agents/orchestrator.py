@@ -209,14 +209,14 @@ class Orchestrator:
             if self.stages.get("evaluate"):
                 result = self.evaluator.act()
                 self.history.append({"role": "evaluator", "content": result["summary"]})
-                approved = True
+
                 if self.stages.get("judge"):
-                    approved = self.judge_panel.vote(result["summary"])
-                    status = "approved" if approved else "rejected"
-                    self.history.append({"role": "judge_panel", "content": status})
-                if result.get("success") and approved:
+                    self.judge_panel.vote_until_unanimous(result["summary"])
+                    self.history.append({"role": "judge_panel", "content": "approved"})
+
+                if result.get("success"):
                     break
-                # retry same goal on failure or rejection
+                # retry same goal only when the evaluator fails
                 self.leader.step -= 1
                 prev_plan = ""
                 continue
