@@ -1,0 +1,77 @@
+import types
+from pathlib import Path
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+import agents.orchestrator as orchestrator_mod
+import agents.researcher as researcher_mod
+import tsce_agent_demo.tsce_chat as tsce_chat_mod
+import agents.base_agent as base_agent_mod
+
+
+class DummyChat:
+    def __init__(self):
+        self.calls = []
+
+    def __call__(self, messages):
+        if isinstance(messages, list):
+            content = messages[-1]["content"]
+        else:
+            content = messages
+        self.calls.append(content)
+        if "Provide instructions" in content:
+            return types.SimpleNamespace(content="scrape http://example.com run tool.py")
+        return types.SimpleNamespace(content=content)
+
+
+class DummyResearcher:
+    def __init__(self, *args, **kwargs):
+        self.history = []
+
+    def search(self, query):
+        return "search:" + query
+
+    def send_message(self, message):
+        return "ack:" + message
+
+    def write_file(self, path, content):
+        Path(path).write_text(content)
+        return "ok"
+
+    def create_file(self, path, content=""):
+        Path(path).write_text(content)
+        return "ok"
+
+    def read_file(self, path):
+        return Path(path).read_text() if Path(path).exists() else ""
+
+    def scrape(self, url):
+        return "scraped:" + url
+
+    def run_script(self, path):
+        return "ran:" + path
+
+
+def test_scientist_instructs_researcher(tmp_path, monkeypatch):
+    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
+    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
+    monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
+
+    orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
+    orch.drop_stage("script")
+    orch.drop_stage("qa")
+    orch.drop_stage("simulate")
+    orch.drop_stage("evaluate")
+    orch.drop_stage("judge")
+
+    orch.run()
+
+    lines = (tmp_path / "research.txt").read_text().splitlines()
+    assert "scraped:http://example.com" in lines[0]
+    assert "ran:tool.py" in lines[1]
+
