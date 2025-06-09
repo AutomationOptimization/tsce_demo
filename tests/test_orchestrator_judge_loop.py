@@ -46,6 +46,10 @@ class DummyJudgePanel:
     def vote(self, transcript):
         self.calls += 1
         return self.calls > 1
+    def vote_until_unanimous(self, transcript):
+        while not self.vote(transcript):
+            pass
+        return True
 
 
 def test_script_files_have_unique_names_and_marker(tmp_path, monkeypatch):
@@ -97,7 +101,12 @@ def test_judge_rejection_causes_retry(tmp_path, monkeypatch):
     history = orch.run()
 
     judge_votes = [m for m in history if m.get("role") == "judge_panel"]
-    assert len(judge_votes) == 2
+    assert len(judge_votes) == 1
+    assert judge_votes[0]["content"] == "approved"
+
+    # only one script because rejections no longer trigger a retry
     scripts = sorted((tmp_path / "hypothesis").glob("test_hypothesis_*.py"))
-    assert len(scripts) == 2
-    assert scripts[0].name != scripts[1].name
+    assert len(scripts) == 1
+
+    # but the judge was polled until approval
+    assert orch.judge_panel.calls == 2

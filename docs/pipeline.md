@@ -10,6 +10,6 @@ This document explains the long form workflow implemented by the `Orchestrator`.
 6. **ScriptWriter** – generates an executable Python script. Files are stored under `output/hypothesis/`.
 7. **ScriptQA** – optional lint / unit test pass over the generated script.
 8. **Simulator** – runs the script and saves a log file. The **Evaluator** parses this log and creates a summary report.
-9. **JudgePanel** – nine independent Judge agents vote on the evaluator’s summary. The Orchestrator only finishes when all judges vote `YES`.
+9. **JudgePanel** – nine independent Judge agents review the evaluator’s summary. The orchestrator calls `vote_until_unanimous()` so execution waits until every judge approves. Only a failed evaluation triggers a retry.
 
 The pipeline can drop or reactivate stages via `drop_stage()` or `activate_stage()` on the orchestrator instance.
