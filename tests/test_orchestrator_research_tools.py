@@ -53,6 +53,23 @@ class DummyResearcher:
         return "ran:" + path
 
 
+class DummyResearcherList(DummyResearcher):
+    def search(self, query):
+        return ["result1", "result2"]
+
+
+class DummyChatNoTools(DummyChat):
+    def __call__(self, messages):
+        if isinstance(messages, list):
+            content = messages[-1]["content"]
+        else:
+            content = messages
+        self.calls.append(content)
+        if "Provide instructions" in content:
+            return types.SimpleNamespace(content="just search")
+        return types.SimpleNamespace(content=content)
+
+
 def test_scientist_instructs_researcher(tmp_path, monkeypatch):
     monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
     monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
@@ -74,4 +91,26 @@ def test_scientist_instructs_researcher(tmp_path, monkeypatch):
     lines = (tmp_path / "research.txt").read_text().splitlines()
     assert "scraped:http://example.com" in lines[0]
     assert "ran:tool.py" in lines[1]
+
+
+def test_search_results_list_joined(tmp_path, monkeypatch):
+    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
+    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChatNoTools())
+    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChatNoTools())
+    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChatNoTools())
+    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChatNoTools())
+    monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcherList)
+    monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcherList)
+
+    orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
+    orch.drop_stage("script")
+    orch.drop_stage("qa")
+    orch.drop_stage("simulate")
+    orch.drop_stage("evaluate")
+    orch.drop_stage("judge")
+
+    orch.run()
+
+    lines = (tmp_path / "research.txt").read_text().splitlines()
+    assert lines == ["result1", "result2"]
 
