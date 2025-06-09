@@ -1,3 +1,15 @@
+"""Run arbitrary Python scripts and capture their stdout/stderr.
+
+Typical usage::
+
+    output = RunScriptTool()("my_script.py")
+
+Returns
+-------
+str
+    Combined standard output and standard error text, or an error message.
+"""
+
 import subprocess
 
 

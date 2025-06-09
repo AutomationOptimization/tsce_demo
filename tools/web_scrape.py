@@ -1,3 +1,15 @@
+"""Download a web page and strip it to plain text.
+
+Example::
+
+    WebScrape()("https://example.com")
+
+Returns
+-------
+str
+    The page text with HTML tags removed or an error message.
+"""
+
 import re
 import requests
 

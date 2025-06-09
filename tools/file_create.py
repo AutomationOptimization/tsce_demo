@@ -1,3 +1,16 @@
+"""Utility for creating files on disk.
+
+Use ``CreateFileTool()`` as a callable::
+
+    CreateFileTool()("notes.txt", "hello")
+
+Returns
+-------
+str
+    A message indicating success or describing the error encountered.
+"""
+
+
 class CreateFileTool:
     """Create a new text file."""
 

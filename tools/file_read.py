@@ -1,3 +1,16 @@
+"""Simple file reader that returns the entire file contents.
+
+Example::
+
+    text = ReadFileTool()("notes.txt")
+
+Returns
+-------
+str
+    The text content of the file or an error description.
+"""
+
+
 class ReadFileTool:
     """Read a text file."""
 
