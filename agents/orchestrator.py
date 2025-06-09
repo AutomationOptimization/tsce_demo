@@ -136,6 +136,8 @@ class Orchestrator:
                     self.history.append({"role": "hypothesis", "content": token})
                     # Planner is no longer needed once research begins
                     self.drop_stage("planner")
+                    # Mark hypothesis stage complete and proceed
+                    self.drop_stage("hypothesis")
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):

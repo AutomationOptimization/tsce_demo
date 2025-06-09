@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from .researcher import Researcher
 
 TERMINATE_TOKEN = "TERMINATE"
@@ -32,7 +33,13 @@ def record_agreed_hypothesis(
     """
     if sci_view.strip().lower() == res_view.strip().lower():
         agent = researcher or Researcher()
-        agent.write_file(path, sci_view)
+        dir_name = os.path.dirname(path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+        if os.path.exists(path):
+            agent.write_file(path, sci_view)
+        else:
+            agent.create_file(path, sci_view)
         return TERMINATE_TOKEN
     return None
 
