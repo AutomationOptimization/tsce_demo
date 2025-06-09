@@ -16,11 +16,22 @@ def run_tests(path: str | os.PathLike) -> Tuple[bool, str]:
     ``pytest`` is invoked.  Otherwise the file is executed directly with the
     current Python interpreter.
 
+    Before executing, the file is checked for a ``# GOLDEN_THREAD`` marker.  If
+    missing, the tests are skipped and an error message is returned.
+
     Returns a tuple ``(success, details)`` where ``success`` is ``True`` when
     the command exits with a zero status code and ``details`` contains the
     combined stdout/stderr output.
     """
     target = Path(path)
+
+    if target.is_file():
+        try:
+            if "# GOLDEN_THREAD" not in target.read_text():
+                return False, "Missing '# GOLDEN_THREAD' marker"
+        except Exception as exc:  # pragma: no cover - unlikely to fail
+            return False, f"Could not read {target}: {exc}"
+
     if target.is_dir() or target.name.endswith("_test.py"):
         cmd = ["pytest", str(target), "-q"]
     else:
