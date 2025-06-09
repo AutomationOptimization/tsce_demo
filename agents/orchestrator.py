@@ -37,6 +37,7 @@ class Orchestrator:
         self.chat = TSCEChat(model=model)
         self.history: List[Dict[str, str]] = []
         self.stages = {
+            "planner": True,
             "hypothesis": True,
             "research": True,
             "script": True,
@@ -63,13 +64,18 @@ class Orchestrator:
 
         while True:
             goal = self.leader.act()
+            # Reactivate planner when a new goal starts
+            self.activate_stage("planner")
             self.history.append({"role": "leader", "content": goal})
             if "terminate" in goal.lower():
                 break
 
-            plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
-            plan = self.chat(plan_prompt).content
-            self.history.append({"role": "planner", "content": plan})
+            if self.stages.get("planner"):
+                plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
+                plan = self.chat(plan_prompt).content
+                self.history.append({"role": "planner", "content": plan})
+            else:
+                plan = prev_plan
 
             if plan.strip() == prev_plan.strip():
                 data = self.researcher.search(goal)
@@ -107,7 +113,8 @@ class Orchestrator:
                 )
                 if token:
                     self.history.append({"role": "hypothesis", "content": token})
-                    break
+                    # Planner is no longer needed once research begins
+                    self.drop_stage("planner")
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):
