@@ -165,6 +165,13 @@ for msg in orc.run():
 Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to
 change this.
 
+Old scripts can still call ``run_legacy()`` to reproduce the original
+round-robin controller:
+
+```python
+history = orc.run_legacy()
+```
+
 When the ``TERMINATE`` token appears, the planner and hypothesis stages are
 deactivated automatically. The remaining agents finish the job without any manual
 stage toggling.
@@ -433,6 +440,12 @@ for msg in orc.run():
 ```
 Logs are written to ``logs/`` by default and the conversation stops only after
 the ``JudgePanel`` votes to approve the evaluation.
+
+For compatibility with earlier versions, invoke ``run_legacy()``:
+
+```python
+legacy_history = orc.run_legacy()
+```
 
 ---
 

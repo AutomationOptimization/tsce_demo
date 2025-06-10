@@ -77,12 +77,19 @@ class Orchestrator:
         return "hello world" in text.lower()
 
     def drop_stage(self, stage: str) -> None:
-        """Disable a processing stage."""
+        """Legacy helper to disable a processing stage.
+
+        This method remains for backward compatibility with older
+        scripts that toggled pipeline stages manually.
+        """
         if stage in self.stages:
             self.stages[stage] = False
 
     def activate_stage(self, stage: str) -> None:
-        """Enable a processing stage."""
+        """Legacy helper to enable a processing stage.
+
+        Provided for scripts that still toggle stages manually.
+        """
         if stage in self.stages:
             self.stages[stage] = True
             if stage == "script" and self.script_writer is None:
@@ -271,6 +278,52 @@ class Orchestrator:
                 next_goal = self.leader.act()
                 self.history.append({"role": "leader", "content": next_goal})
                 queue.append(Message("leader", ["planner"], next_goal))
+
+        return self.history
+
+    # ------------------------------------------------------------------
+    def run_legacy(self) -> List[Dict[str, str]]:
+        """Execute the original round-robin flow using the message queue."""
+        warnings.warn(
+            "run_legacy() is deprecated; use run() for the full pipeline",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+        queue: deque[Message] = deque()
+        goal = self.leader.act()
+        self.history.append({"role": "leader", "content": goal})
+        queue.append(Message("leader", ["planner"], goal))
+
+        while queue:
+            msg = queue.popleft()
+            sender = msg.sender.lower()
+            content = msg.content
+
+            if sender == "leader":
+                if "terminate" in content.lower():
+                    break
+                plan_prompt = f"You are Planner. Devise a brief plan for: {content}"
+                plan = self.chat(plan_prompt).content
+                self.history.append({"role": "planner", "content": plan})
+                if "terminate" in plan.lower():
+                    break
+                queue.append(Message("planner", ["scientist"], plan))
+
+            elif sender == "planner":
+                sci_prompt = (
+                    "You are Scientist. Based on this plan, provide your analysis:\n"
+                    f"{content}"
+                )
+                answer = self.chat(sci_prompt).content
+                self.history.append({"role": "scientist", "content": answer})
+                if "terminate" in answer.lower():
+                    break
+
+                if self.leader.step < len(self.leader.goals):
+                    next_goal = self.leader.act()
+                    self.history.append({"role": "leader", "content": next_goal})
+                    queue.append(Message("leader", ["planner"], next_goal))
 
         return self.history
 
