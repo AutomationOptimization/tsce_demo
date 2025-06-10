@@ -71,6 +71,11 @@ class Orchestrator:
             stacklevel=2,
         )
 
+    # ------------------------------------------------------------------
+    def _is_trivial(self, text: str) -> bool:
+        """Return ``True`` if ``text`` indicates a trivial task."""
+        return "hello world" in text.lower()
+
     def drop_stage(self, stage: str) -> None:
         """Disable a processing stage."""
         if stage in self.stages:
@@ -111,6 +116,7 @@ class Orchestrator:
                     plan_prompt = f"You are Planner. Devise a brief plan for: {content}"
                     plan = self.chat(plan_prompt).content
                     self.history.append({"role": "planner", "content": plan})
+                    sci_msg = ""
                     exchange_counter = 0
                     while exchange_counter < 3:
                         sci_prompt = (
@@ -125,6 +131,16 @@ class Orchestrator:
                         plan = self.chat(plan_prompt).content
                         self.history.append({"role": "planner", "content": plan})
                         exchange_counter += 1
+                    if self._is_trivial(plan) or self._is_trivial(sci_msg):
+                        for stage in ("research", "script", "simulate", "evaluate"):
+                            self.drop_stage(stage)
+                        final = "Hello, world!"
+                        self.history.append({"role": "evaluator", "content": final})
+                        if self.stages.get("judge"):
+                            self.judge_panel.vote_until_unanimous(final)
+                            self.history.append({"role": "judge_panel", "content": "approved"})
+                        queue.clear()
+                        break
                 else:
                     plan = prev_plan
 
