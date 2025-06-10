@@ -74,15 +74,7 @@ class DummyResearcherList(DummyResearcher):
 
 
 class DummyChatNoTools(DummyChat):
-    def __call__(self, messages):
-        if isinstance(messages, list):
-            content = messages[-1]["content"]
-        else:
-            content = messages
-        self.calls.append(content)
-        if "Provide instructions" in content:
-            return types.SimpleNamespace(content="just search")
-        return types.SimpleNamespace(content=content)
+    pass
 
 
 def test_scientist_instructs_researcher(tmp_path, monkeypatch):
@@ -105,6 +97,9 @@ def test_scientist_instructs_researcher(tmp_path, monkeypatch):
 
     assert ("scrape", "http://example.com") in orch.researcher.calls
     assert ("run", "tool.py") in orch.researcher.calls
+
+    run_path = Path(orch.output_dir)
+    assert (run_path / "research.txt").read_text() == "search:goal"
 
 
 def test_search_results_list_joined(tmp_path, monkeypatch):
