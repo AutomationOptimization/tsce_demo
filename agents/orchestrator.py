@@ -105,7 +105,7 @@ class Orchestrator:
             compile(script, "<string>", "exec")
         except SyntaxError:
             escaped = script.replace('"""', '\"\"\"')
-            script = f'"""\n{escaped}\n"""'
+            script = f'r"""\n{escaped}\n"""'
         return script
 
     # ------------------------------------------------------------------
