@@ -8,6 +8,7 @@ conversation history as JSON in the chosen directory.
 from __future__ import annotations
 import argparse, json, os
 from agents.orchestrator import Orchestrator
+from tsce_agent_demo.tsce_chat import TSCEReply
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,9 +26,19 @@ def main() -> None:
     os.makedirs(args.output, exist_ok=True)
     orch = Orchestrator(args.goals, model=args.model, output_dir=args.output)
     history = orch.run()
+
+    def _serialise(item):
+        if isinstance(item, TSCEReply):
+            return item.__dict__
+        if isinstance(item, list):
+            return [_serialise(x) for x in item]
+        if isinstance(item, dict):
+            return {k: _serialise(v) for k, v in item.items()}
+        return item
+
     out_path = os.path.join(args.output, "history.json")
     with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2)
+        json.dump(_serialise(history), f, indent=2)
     print(f"Run complete. History saved to {out_path}")
 
 
