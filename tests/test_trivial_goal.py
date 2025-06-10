@@ -61,4 +61,5 @@ def test_hello_world_bypasses_pipeline(tmp_path, monkeypatch):
     assert "researcher" not in roles
     assert "script_writer" not in roles
     assert "simulator" not in roles
+    assert "final_qa" in roles
     assert roles[-1] == "judge_panel"
