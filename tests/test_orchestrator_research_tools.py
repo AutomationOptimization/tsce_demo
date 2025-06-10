@@ -20,8 +20,8 @@ class DummyChat:
         else:
             content = messages
         self.calls.append(content)
-        if "Provide instructions" in content:
-            return types.SimpleNamespace(content="scrape http://example.com run tool.py")
+        if "plan" in content:
+            return types.SimpleNamespace(content="1. scrape http://example.com\n2. run tool.py")
         return types.SimpleNamespace(content=content)
 
 
@@ -54,6 +54,20 @@ class DummyResearcher:
         return "ran:" + path
 
 
+class LoggingResearcher(DummyResearcher):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.calls = []
+
+    def scrape(self, url):
+        self.calls.append(("scrape", url))
+        return super().scrape(url)
+
+    def run_script(self, path):
+        self.calls.append(("run", path))
+        return super().run_script(path)
+
+
 class DummyResearcherList(DummyResearcher):
     def search(self, query):
         return ["result1", "result2"]
@@ -77,8 +91,8 @@ def test_scientist_instructs_researcher(tmp_path, monkeypatch):
     monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
     monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
     monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
-    monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
+    monkeypatch.setattr(orchestrator_mod, "Researcher", LoggingResearcher)
+    monkeypatch.setattr(researcher_mod, "Researcher", LoggingResearcher)
 
     orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
     orch.drop_stage("script")
@@ -89,10 +103,8 @@ def test_scientist_instructs_researcher(tmp_path, monkeypatch):
 
     orch.run()
 
-    run_path = Path(orch.output_dir)
-    lines = (run_path / "research.txt").read_text().splitlines()
-    assert "scraped:http://example.com" in lines[0]
-    assert "ran:tool.py" in lines[1]
+    assert ("scrape", "http://example.com") in orch.researcher.calls
+    assert ("run", "tool.py") in orch.researcher.calls
 
 
 def test_search_results_list_joined(tmp_path, monkeypatch):
