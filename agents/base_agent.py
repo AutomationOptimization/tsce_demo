@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC
+import json
 import os
 import re
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
+
+from tools import use_tool
 
 from tsce_agent_demo.tsce_chat import TSCEChat
 
@@ -24,7 +27,21 @@ class BaseAgent(ABC):
     def send_message(self, message: str) -> str:
         """Send ``message`` to the underlying :class:`TSCEChat` instance."""
         reply = self.chat(message).content
-        formatted = compose_sections("", "", reply)
+        thoughts, critical, speak = parse_sections(reply)
+
+        result: Any = speak
+        if speak.strip().startswith("{"):
+            try:
+                payload = json.loads(speak)
+            except json.JSONDecodeError:
+                pass
+            else:
+                if isinstance(payload, dict) and "tool" in payload:
+                    result = use_tool(payload["tool"], payload.get("args", {}))
+                    if isinstance(result, list):
+                        result = "\n".join(result)
+
+        formatted = compose_sections(thoughts, critical, str(result))
         self.history.append({"role": "user", "content": message})
         self.history.append({"role": self.name.lower(), "content": formatted})
         self._write_log(message, formatted)
