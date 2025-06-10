@@ -44,7 +44,8 @@ class Orchestrator:
         self.stages = {
             "planner": True,
             "hypothesis": True,
-            "research": True,
+            # research starts disabled so the planner runs first
+            "research": False,
             "script": True,
             "qa": True,
             "simulate": True,
@@ -125,6 +126,21 @@ class Orchestrator:
                 res_hyp = self.researcher.send_message(sci_hyp)
                 self.history.append({"role": "researcher", "content": res_hyp})
 
+                token = record_agreed_hypothesis(
+                    sci_hyp,
+                    res_hyp,
+                    path=os.path.join(self.hypothesis_dir, "leading_hypothesis.txt"),
+                    researcher=self.researcher,
+                )
+                if token:
+                    self.history.append({"role": "hypothesis", "content": token})
+                    # Planner is no longer needed once research begins
+                    self.drop_stage("planner")
+                    # Mark hypothesis stage complete and proceed
+                    self.drop_stage("hypothesis")
+                    # Activate research to gather data
+                    self.activate_stage("research")
+
             # --- Research aggregation --------------------------------------
             if self.stages.get("research"):
                 instr_prompt = (
@@ -163,20 +179,8 @@ class Orchestrator:
                     self.researcher.write_file(research_path, new_content)
                 else:
                     self.researcher.create_file(research_path, data)
-                token = record_agreed_hypothesis(
-                    sci_hyp,
-                    res_hyp,
-                    path=os.path.join(self.hypothesis_dir, "leading_hypothesis.txt"),
-                    researcher=self.researcher,
-                )
-                if token:
-                    self.history.append({"role": "hypothesis", "content": token})
-                    # Planner is no longer needed once research begins
-                    self.drop_stage("planner")
-                    # Mark hypothesis stage complete and proceed
-                    self.drop_stage("hypothesis")
-                    # Research stage concludes once the hypothesis is saved
-                    self.drop_stage("research")
+                # research stage concludes once data has been aggregated
+                self.drop_stage("research")
 
             # --- Script writing -------------------------------------------
             if self.stages.get("script"):

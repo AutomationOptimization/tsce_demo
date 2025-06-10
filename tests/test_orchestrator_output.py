@@ -87,4 +87,4 @@ def test_research_file_appends(tmp_path, monkeypatch):
     roles = [m["role"] for m in history]
     if "hypothesis" in roles:
         idx = roles.index("hypothesis")
-        assert "researcher" not in roles[idx + 1 :]
+        assert "researcher" in roles[idx + 1 :]
