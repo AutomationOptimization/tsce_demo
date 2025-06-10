@@ -78,6 +78,22 @@ class Orchestrator:
         """Return ``True`` if ``text`` indicates a trivial task."""
         return "hello world" in text.lower()
 
+    def needs_code(self, plan: str) -> bool:
+        """Return ``True`` if ``plan`` suggests writing or running code."""
+        lowered = plan.lower()
+        keywords = [
+            "code",
+            "script",
+            "python",
+            "execute",
+            "run",
+            "compute",
+            "calculate",
+            "fibonacci",
+            "factorial",
+        ]
+        return any(word in lowered for word in keywords)
+
     def drop_stage(self, stage: str) -> None:
         """Legacy helper to disable a processing stage.
 
@@ -245,7 +261,11 @@ class Orchestrator:
 
             elif sender == "researcher":
                 plan = content
-                if self.stages.get("script"):
+                need_code = self.needs_code(plan)
+                if not need_code:
+                    self.drop_stage("script")
+
+                if self.stages.get("script") and need_code:
                     script, gid = self.script_writer.act(plan)
                     script = self._sanitize_script(script)
                     self.history.append({"role": "script_writer", "content": script})
