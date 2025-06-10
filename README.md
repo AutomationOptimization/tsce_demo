@@ -191,6 +191,24 @@ Additional utilities:
 * ``tsce_agent_demo/inspect_tsce_layers.py`` – analyse layer-wise variance on local models.
 * ``tsce_agent_demo/tsce_heval_test.py`` – run the HaluEval benchmark with TSCE.
 
+### Built-in Tools
+
+Agents may call helper utilities by returning a JSON object in the ``Speak`` section:
+
+```json
+{"tool": "google_search", "args": {"query": "python", "num_results": 2}}
+```
+
+Tool names:
+
+* ``google_search`` – quick Google result titles
+* ``web_scrape`` – fetch a web page and strip HTML
+* ``create_file`` – create a new text file
+* ``read_file`` – read a text file
+* ``edit_file`` – overwrite an existing file
+* ``delete_file`` – remove a file
+* ``run_script`` – execute a Python script
+
 ---
 
 ### Troubleshooting <a name="troubleshooting"></a>

@@ -5,6 +5,8 @@ from unittest.mock import mock_open
 import requests
 import subprocess
 import os
+import pytest
+import tools
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
@@ -16,6 +18,7 @@ from tools import (
     EditFileTool,
     DeleteFileTool,
     RunScriptTool,
+    use_tool,
 )
 
 
@@ -147,3 +150,17 @@ def test_run_script_missing(monkeypatch):
     tool = RunScriptTool()
     msg = tool("script.py")
     assert msg == "Error: script.py not found"
+
+
+def test_use_tool_dispatch(monkeypatch):
+    class Dummy:
+        def __call__(self, **kw):
+            return "ok"
+
+    monkeypatch.setitem(tools.__dict__["TOOL_CLASSES"], "dummy", Dummy)
+    assert use_tool("dummy") == "ok"
+
+
+def test_use_tool_unknown():
+    with pytest.raises(ValueError):
+        use_tool("nope")
