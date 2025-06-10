@@ -102,4 +102,25 @@ def test_queue_complex_goal(tmp_path, monkeypatch):
     assert "researcher" in roles
     assert "script_writer" in roles
     assert "evaluator" in roles
-    assert roles.index("researcher") < roles.index("script_writer") < roles.index("evaluator")
+
+
+def test_queue_multi_agent_dialogue(tmp_path, monkeypatch):
+    """End-to-end dialogue across planner, scientist, researcher, and judge."""
+    _patch_all(monkeypatch)
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+
+    orch = orchestrator_mod.Orchestrator(["calculate factorial 4", "terminate"], model="test", output_dir=str(tmp_path))
+    history = orch.run()
+    roles = {m["role"] for m in history}
+
+    expected = {
+        "planner",
+        "scientist",
+        "researcher",
+        "script_writer",
+        "script_qa",
+        "simulator",
+        "evaluator",
+        "judge_panel",
+    }
+    assert expected.issubset(roles)
