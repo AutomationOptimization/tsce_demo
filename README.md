@@ -151,26 +151,39 @@ streamlit run streamlit_chat.py
 
 ### Orchestrator Demo <a name="orchestrator-demo"></a>
 
-An extended workflow coordinates all agents in stages. Create an
-``Orchestrator`` with a list of goals and call ``run()``:
+The orchestrator now routes chat messages through each agent. Instantiate it
+with your goals and iterate over ``run()`` to inspect the conversation:
 
 ```python
 from agents import Orchestrator
 
 goals = ["Print hello world", "TERMINATE"]
-orc = Orchestrator(goals, log_dir="logs")  # logs conversations to logs/*.log
-history = orc.run()
-for step in history:
-    print(step["role"], step["content"])
+orc = Orchestrator(goals, log_dir="logs")
+for msg in orc.run():
+    print(msg["role"], msg["content"])
 ```
-Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to change this.
+Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to
+change this.
 
-When a stage emits the ``TERMINATE`` token, the orchestrator disables the planner
-automatically. The research stage starts only after the hypothesis is written, so
-planning resumes on the next goal without any manual ``drop_stage()`` calls.
+When the ``TERMINATE`` token appears, the planner and hypothesis stages are
+deactivated automatically. The remaining agents finish the job without any manual
+stage toggling.
 
-The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
-the evaluator's summary for the run to conclude.
+Sample ``hello world`` session:
+
+```
+leader Print hello world
+planner Use Python's ``print``
+scientist Looks good
+hypothesis TERMINATE
+script_writer print("Hello, world!")
+simulator Hello, world!
+evaluator success
+judge_panel approved
+```
+
+The run concludes only when the nine-member ``JudgePanel`` unanimously approves
+the evaluator's summary.
 
 ### Pipeline Overview <a name="pipeline-overview"></a>
 
@@ -408,19 +421,18 @@ streamlit run streamlit_chat.py
 
 ### Orchestrator Demo <a name="orchestrator-demo"></a>
 
-Use the orchestrator to run each agent stage in sequence:
+Run all agents as a single chat session:
 
 ```python
 from agents import Orchestrator
 
 goals = ["Print hello world", "TERMINATE"]
 orc = Orchestrator(goals, log_dir="logs")
-orc.run()
+for msg in orc.run():
+    print(msg["role"], msg["content"])
 ```
-Logs are written to ``logs/`` by default.
-
-The run finishes only when the ``JudgePanel`` unanimously approves the final
-evaluation.
+Logs are written to ``logs/`` by default and the conversation stops only after
+the ``JudgePanel`` votes to approve the evaluation.
 
 ---
 
