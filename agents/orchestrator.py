@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import List, Dict
+from typing import Any, List, Dict
 import os
 import re
 import uuid
+from dataclasses import dataclass, field
+from collections import deque
+import warnings
 
 from .leader import Leader
 from .planner import Planner
@@ -16,6 +19,16 @@ from .evaluator import Evaluator
 from .hypothesis import record_agreed_hypothesis
 from .judge import JudgePanel
 from tsce_agent_demo.tsce_chat import TSCEChat
+
+
+@dataclass
+class Message:
+    """Simple container for agent communication."""
+
+    sender: str
+    recipients: List[str]
+    content: str
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 
 class Orchestrator:
@@ -52,6 +65,11 @@ class Orchestrator:
             "evaluate": True,
             "judge": True,
         }
+        warnings.warn(
+            "stage flags are deprecated and will be removed in a future version",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
     def drop_stage(self, stage: str) -> None:
         """Disable a processing stage."""
@@ -73,162 +91,173 @@ class Orchestrator:
     def run(self) -> List[Dict[str, str]]:
         """Run the group chat following the long-form pipeline."""
         prev_plan = ""
+        queue: deque[Message] = deque()
 
-        while True:
-            goal = self.leader.act()
-            # Reactivate planner for a new goal only when research is inactive
-            if not self.stages.get("research"):
-                self.activate_stage("planner")
-            self.history.append({"role": "leader", "content": goal})
-            if "terminate" in goal.lower():
-                break
+        goal = self.leader.act()
+        self.history.append({"role": "leader", "content": goal})
+        queue.append(Message("leader", ["planner"], goal))
 
-            if self.stages.get("planner") and not self.stages.get("research"):
-                plan_prompt = f"You are Planner. Devise a brief plan for: {goal}"
-                plan = self.chat(plan_prompt).content
-                self.history.append({"role": "planner", "content": plan})
+        while queue:
+            msg = queue.popleft()
+            sender = msg.sender.lower()
+            content = msg.content
 
-                # Allow Planner and Scientist to refine the plan through
-                # a short back-and-forth before any research begins.
-                exchange_counter = 0
-                while exchange_counter < 3:
-                    sci_prompt = (
-                        f"You are Scientist. Review the plan and provide feedback: {plan}"
-                    )
-                    sci_msg = self.chat(sci_prompt).content
-                    self.history.append({"role": "scientist", "content": sci_msg})
-                    plan_prompt = (
-                        "You are Planner. Update the plan considering this feedback: "
-                        f"{sci_msg}"
-                    )
+            if sender == "leader":
+                if not self.stages.get("research"):
+                    self.activate_stage("planner")
+                if "terminate" in content.lower():
+                    break
+                if self.stages.get("planner") and not self.stages.get("research"):
+                    plan_prompt = f"You are Planner. Devise a brief plan for: {content}"
                     plan = self.chat(plan_prompt).content
                     self.history.append({"role": "planner", "content": plan})
-                    exchange_counter += 1
-            else:
-                plan = prev_plan
-
-            if plan.strip() == prev_plan.strip() and self.stages.get("research"):
-                data = self.researcher.search(goal)
-                interject = f"INTERJECT: {data}"
-                self.history.append({"role": "researcher", "content": interject})
-                self.leader.observe(interject)
-            prev_plan = plan
-
-            if "terminate" in plan.lower():
-                break
-
-            # --- Hypothesis -------------------------------------------------
-            if self.stages.get("hypothesis"):
-                sci_hyp = self.chat(
-                    f"You are Scientist. Propose a short hypothesis for: {plan}"
-                ).content
-                self.history.append({"role": "scientist", "content": sci_hyp})
-                res_hyp = self.researcher.send_message(sci_hyp)
-                self.history.append({"role": "researcher", "content": res_hyp})
-
-                token = record_agreed_hypothesis(
-                    sci_hyp,
-                    res_hyp,
-                    path=os.path.join(self.hypothesis_dir, "leading_hypothesis.txt"),
-                    researcher=self.researcher,
-                )
-                if token:
-                    self.history.append({"role": "hypothesis", "content": token})
-                    # Planner is no longer needed once research begins
-                    self.drop_stage("planner")
-                    # Mark hypothesis stage complete and proceed
-                    self.drop_stage("hypothesis")
-                    # Activate research to gather data
-                    self.activate_stage("research")
-
-            # --- Research aggregation --------------------------------------
-            if self.stages.get("research"):
-                instr_prompt = (
-                    f"You are Scientist. Provide instructions for the Researcher to gather data: {plan}"
-                )
-                sci_instr = self.chat(instr_prompt).content
-                self.history.append({"role": "scientist", "content": sci_instr})
-                res_msg = self.researcher.send_message(sci_instr)
-                self.history.append({"role": "researcher", "content": res_msg})
-
-                data_parts: List[str] = []
-                urls = re.findall(r"https?://\S+", sci_instr)
-                for url in urls:
-                    scrap = self.researcher.scrape(url)
-                    self.history.append({"role": "researcher", "content": scrap})
-                    data_parts.append(scrap)
-
-                scripts = re.findall(r"run\s+(\S+)", sci_instr)
-                for script_path in scripts:
-                    output = self.researcher.run_script(script_path)
-                    self.history.append({"role": "researcher", "content": output})
-                    data_parts.append(output)
-
-                if not data_parts:
-                    search_results = self.researcher.search(goal)
-                    if isinstance(search_results, list):
-                        search_results = "\n".join(search_results)
-                    data_parts.append(search_results)
-
-                data = "\n".join(data_parts)
-                plan = f"{plan}\n{data}" if data else plan
-                research_path = os.path.join(self.output_dir, "research.txt")
-                if os.path.exists(research_path):
-                    prev = self.researcher.read_file(research_path)
-                    new_content = prev + ("\n" if prev else "") + data
-                    self.researcher.write_file(research_path, new_content)
+                    exchange_counter = 0
+                    while exchange_counter < 3:
+                        sci_prompt = (
+                            f"You are Scientist. Review the plan and provide feedback: {plan}"
+                        )
+                        sci_msg = self.chat(sci_prompt).content
+                        self.history.append({"role": "scientist", "content": sci_msg})
+                        plan_prompt = (
+                            "You are Planner. Update the plan considering this feedback: "
+                            f"{sci_msg}"
+                        )
+                        plan = self.chat(plan_prompt).content
+                        self.history.append({"role": "planner", "content": plan})
+                        exchange_counter += 1
                 else:
-                    self.researcher.create_file(research_path, data)
-                # research stage concludes once data has been aggregated
-                self.drop_stage("research")
+                    plan = prev_plan
 
-            # --- Script writing -------------------------------------------
-            if self.stages.get("script"):
-                script, gid = self.script_writer.act(plan)
-                self.history.append({"role": "script_writer", "content": script})
-                path = os.path.join(
-                    self.hypothesis_dir,
-                    f"test_hypothesis_{uuid.uuid4().hex}.py",
-                )
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(script)
+                if plan.strip() == prev_plan.strip() and self.stages.get("research"):
+                    data = self.researcher.search(content)
+                    interject = f"INTERJECT: {data}"
+                    self.history.append({"role": "researcher", "content": interject})
+                    self.leader.observe(interject)
+                prev_plan = plan
 
-                if self.stages.get("qa"):
-                    success, qa_output = self.script_qa.act(path)
-                    self.history.append(
-                        {
-                            "role": "script_qa",
-                            "content": qa_output,
-                            "success": success,
-                        }
-                    )
-
-                if self.stages.get("simulate"):
-                    log_path = self.simulator.act(path)
-                    self.history.append({"role": "simulator", "content": log_path})
-                    sim_result = self.evaluator.parse_simulator_log(
-                        log_path, dest_dir=self.results_dir
-                    )
-                    self.history.append({"role": "evaluator", "content": sim_result["summary_file"]})
-
-            # --- Evaluation -------------------------------------------------
-            if self.stages.get("evaluate"):
-                result = self.evaluator.act()
-                self.history.append({"role": "evaluator", "content": result["summary"]})
-
-                if self.stages.get("judge"):
-                    self.judge_panel.vote_until_unanimous(result["summary"])
-                    self.history.append({"role": "judge_panel", "content": "approved"})
-
-                if result.get("success"):
+                if "terminate" in plan.lower():
                     break
-                # retry same goal only when the evaluator fails
-                self.leader.step -= 1
-                prev_plan = ""
-                continue
+
+                queue.append(Message("planner", ["scientist"], plan))
+
+            elif sender == "planner":
+                plan = content
+                if self.stages.get("hypothesis"):
+                    sci_hyp = self.chat(
+                        f"You are Scientist. Propose a short hypothesis for: {plan}"
+                    ).content
+                    self.history.append({"role": "scientist", "content": sci_hyp})
+                    res_hyp = self.researcher.send_message(sci_hyp)
+                    self.history.append({"role": "researcher", "content": res_hyp})
+
+                    token = record_agreed_hypothesis(
+                        sci_hyp,
+                        res_hyp,
+                        path=os.path.join(self.hypothesis_dir, "leading_hypothesis.txt"),
+                        researcher=self.researcher,
+                    )
+                    if token:
+                        self.history.append({"role": "hypothesis", "content": token})
+                        self.drop_stage("planner")
+                        self.drop_stage("hypothesis")
+                        self.activate_stage("research")
+
+                queue.append(Message("scientist", ["researcher"], plan))
+
+            elif sender == "scientist":
+                plan = content
+                if self.stages.get("research"):
+                    instr_prompt = (
+                        f"You are Scientist. Provide instructions for the Researcher to gather data: {plan}"
+                    )
+                    sci_instr = self.chat(instr_prompt).content
+                    self.history.append({"role": "scientist", "content": sci_instr})
+                    res_msg = self.researcher.send_message(sci_instr)
+                    self.history.append({"role": "researcher", "content": res_msg})
+
+                    data_parts: List[str] = []
+                    urls = re.findall(r"https?://\S+", sci_instr)
+                    for url in urls:
+                        scrap = self.researcher.scrape(url)
+                        self.history.append({"role": "researcher", "content": scrap})
+                        data_parts.append(scrap)
+
+                    scripts = re.findall(r"run\s+(\S+)", sci_instr)
+                    for script_path in scripts:
+                        output = self.researcher.run_script(script_path)
+                        self.history.append({"role": "researcher", "content": output})
+                        data_parts.append(output)
+
+                    if not data_parts:
+                        search_results = self.researcher.search(self.leader.history[-1])
+                        if isinstance(search_results, list):
+                            search_results = "\n".join(search_results)
+                        data_parts.append(search_results)
+
+                    data = "\n".join(data_parts)
+                    plan = f"{plan}\n{data}" if data else plan
+                    research_path = os.path.join(self.output_dir, "research.txt")
+                    if os.path.exists(research_path):
+                        prev = self.researcher.read_file(research_path)
+                        new_content = prev + ("\n" if prev else "") + data
+                        self.researcher.write_file(research_path, new_content)
+                    else:
+                        self.researcher.create_file(research_path, data)
+                    self.drop_stage("research")
+
+                queue.append(Message("researcher", ["script_writer"], plan))
+
+            elif sender == "researcher":
+                plan = content
+                if self.stages.get("script"):
+                    script, gid = self.script_writer.act(plan)
+                    self.history.append({"role": "script_writer", "content": script})
+                    path = os.path.join(
+                        self.hypothesis_dir,
+                        f"test_hypothesis_{uuid.uuid4().hex}.py",
+                    )
+                    with open(path, "w", encoding="utf-8") as f:
+                        f.write(script)
+
+                    if self.stages.get("qa"):
+                        success, qa_output = self.script_qa.act(path)
+                        self.history.append(
+                            {"role": "script_qa", "content": qa_output, "success": success}
+                        )
+
+                    if self.stages.get("simulate"):
+                        log_path = self.simulator.act(path)
+                        self.history.append({"role": "simulator", "content": log_path})
+                        sim_result = self.evaluator.parse_simulator_log(
+                            log_path, dest_dir=self.results_dir
+                        )
+                        self.history.append({"role": "evaluator", "content": sim_result["summary_file"]})
+
+                queue.append(Message("script_writer", ["evaluator"], ""))
+
+            elif sender == "script_writer":
+                if self.stages.get("evaluate"):
+                    result = self.evaluator.act()
+                    self.history.append({"role": "evaluator", "content": result["summary"]})
+                    if self.stages.get("judge"):
+                        self.judge_panel.vote_until_unanimous(result["summary"])
+                        self.history.append({"role": "judge_panel", "content": "approved"})
+                    if result.get("success"):
+                        queue.clear()
+                        break
+                    self.leader.step -= 1
+                    prev_plan = ""
+                    next_goal = self.leader.act()
+                    self.history.append({"role": "leader", "content": next_goal})
+                    queue.append(Message("leader", ["planner"], next_goal))
+
+            if not queue and self.leader.step < len(self.leader.goals):
+                next_goal = self.leader.act()
+                self.history.append({"role": "leader", "content": next_goal})
+                queue.append(Message("leader", ["planner"], next_goal))
 
         return self.history
 
 
-__all__ = ["Orchestrator"]
+__all__ = ["Orchestrator", "Message"]
 
