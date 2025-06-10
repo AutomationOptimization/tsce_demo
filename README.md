@@ -152,7 +152,9 @@ streamlit run streamlit_chat.py
 ### Orchestrator Demo <a name="orchestrator-demo"></a>
 
 The orchestrator now routes chat messages through each agent. Instantiate it
-with your goals and iterate over ``run()`` to inspect the conversation:
+with your goals and iterate over ``run()`` to inspect the conversation. The
+Planner proposes a step-by-step plan, then the Leader tasks the Scientist to
+carry it out:
 
 ```python
 from agents import Orchestrator
@@ -195,8 +197,10 @@ the evaluator's summary.
 ### Pipeline Overview <a name="pipeline-overview"></a>
 
 See [docs/pipeline.md](docs/pipeline.md) for a detailed walk through of each
-stage in the orchestrator. The nine-member ``JudgePanel`` must unanimously
-approve the final evaluation before the run terminates.
+stage in the orchestrator. The Leader pulls the next goal, the Planner drafts a
+plan, and the Leader tasks the Scientist to carry it out. The nine-member
+``JudgePanel`` must unanimously approve the final evaluation before the run
+terminates.
 
 ### CLI Usage
 
@@ -428,7 +432,8 @@ streamlit run streamlit_chat.py
 
 ### Orchestrator Demo <a name="orchestrator-demo"></a>
 
-Run all agents as a single chat session:
+Run all agents as a single chat session. The Planner suggests a plan which the
+Leader then tasks the Scientist to execute:
 
 ```python
 from agents import Orchestrator
