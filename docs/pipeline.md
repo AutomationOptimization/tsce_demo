@@ -6,7 +6,7 @@ This document explains the long form workflow implemented by the `Orchestrator`.
 2. **Planner** – produces a step-by-step plan that the **Scientist** can inspect.
 3. **Scientist** – critiques and iteratively refines the plan with the Planner.
 4. **Researcher** – performs web or file searches to gather data for the plan.
-5. **Hypothesis** – Scientist and Researcher must agree on a written hypothesis. When they do, a `TERMINATE` token is written to disk and the planner stage is disabled.
+5. **Hypothesis** – Scientist and Researcher must agree on a written hypothesis. When they do, a `TERMINATE` token is written to disk, the planner stage is disabled and the research stage is activated.
 6. **ScriptWriter** – generates an executable Python script. Files are stored under `output/hypothesis/`.
 7. **ScriptQA** – optional lint / unit test pass over the generated script.
 8. **Simulator** – runs the script and saves a log file. The **Evaluator** parses this log and creates a summary report.

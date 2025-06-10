@@ -45,7 +45,8 @@ def test_planner_scientist_exchange(tmp_path, monkeypatch):
     orch.drop_stage("simulate")
     orch.drop_stage("evaluate")
     orch.drop_stage("judge")
-    orch.drop_stage("research")  # enable planner messages
+    # keep research disabled so the planner runs
+    orch.drop_stage("research")
 
     history = orch.run()
     roles = [m["role"] for m in history]
@@ -71,6 +72,8 @@ def test_planner_silent_with_research_active(tmp_path, monkeypatch):
     orch.drop_stage("evaluate")
     orch.drop_stage("judge")
 
+    # research active from the start should silence the planner
+    orch.activate_stage("research")
     history = orch.run()
     roles = [m["role"] for m in history]
     first_research = roles.index("researcher")

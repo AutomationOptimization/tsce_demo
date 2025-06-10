@@ -165,9 +165,9 @@ for step in history:
 ```
 Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to change this.
 
-When a stage emits the ``TERMINATE`` token, the orchestrator disables the planner with
-``drop_stage('planner')``. Planner messages only appear when ``self.stages["research"]``
-is inactive, so drop the research stage when you want planning to resume.
+When a stage emits the ``TERMINATE`` token, the orchestrator disables the planner
+automatically. The research stage starts only after the hypothesis is written, so
+planning resumes on the next goal without any manual ``drop_stage()`` calls.
 
 The final stage now invokes a nine-member ``JudgePanel``. All judges must approve
 the evaluator's summary for the run to conclude.

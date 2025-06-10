@@ -33,7 +33,8 @@ class DummyResearcher:
         return "search:" + query
 
     def send_message(self, message):
-        return "ack:" + message
+        # echo back the scientist's hypothesis so the stage advances
+        return message
 
     def write_file(self, path, content):
         Path(path).write_text(content)
