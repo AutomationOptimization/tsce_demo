@@ -17,3 +17,63 @@ class Scientist(BaseAgent):
         """Provide step-by-step guidance to the Researcher agent."""
         self.send_message(instructions)
         return researcher.send_message(instructions)
+
+    def execute_plan(self, plan: str, researcher: BaseAgent) -> None:
+        """Execute each numbered step in ``plan`` using ``researcher``.
+
+        Plan lines starting with a number (``1.``, ``Step 1:``, etc.) are
+        interpreted as individual tasks.  For each task the method attempts to
+        call a matching helper on ``researcher`` such as ``search`` or
+        ``scrape``.  If no direct helper is recognised, the step is forwarded to
+        the researcher via :meth:`direct_researcher`.
+
+        All actions and their results are appended to ``self.history``.
+        """
+
+        import re
+
+        step_re = re.compile(r"^\s*(?:Step\s*)?\d+[:.)-]?\s*(.*)", re.I)
+        steps = []
+        for line in plan.splitlines():
+            m = step_re.match(line)
+            if m:
+                steps.append(m.group(1).strip())
+
+        if not steps and plan.strip():
+            steps = [plan.strip()]
+
+        for step in steps:
+            lower = step.lower()
+            result: str
+
+            if lower.startswith("search"):
+                query = step.partition("search")[2].strip()
+                result = researcher.search(query)
+            elif lower.startswith("scrape"):
+                match = re.search(r"https?://\S+", step)
+                url = match.group(0) if match else step.partition("scrape")[2].strip()
+                result = researcher.scrape(url)
+            elif lower.startswith("read"):
+                path = step.partition("read")[2].strip()
+                result = researcher.read_file(path)
+            elif lower.startswith("write"):
+                remainder = step.partition("write")[2].strip()
+                if " " in remainder:
+                    path, content = remainder.split(" ", 1)
+                else:
+                    path, content = remainder, ""
+                result = researcher.write_file(path, content)
+            elif lower.startswith("create"):
+                path = step.partition("create")[2].strip()
+                result = researcher.create_file(path)
+            elif lower.startswith("delete"):
+                path = step.partition("delete")[2].strip()
+                result = researcher.delete_file(path)
+            elif lower.startswith("run"):
+                path = step.partition("run")[2].strip()
+                result = researcher.run_script(path)
+            else:
+                result = self.direct_researcher(researcher, step)
+
+            self.history.append({"role": "scientist", "content": step})
+            self.history.append({"role": "researcher", "content": str(result)})
