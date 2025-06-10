@@ -29,7 +29,9 @@ class Orchestrator:
         self.script_writer = ScriptWriter(log_dir=log_dir)
         self.script_qa = ScriptQA(log_dir=log_dir)
         self.simulator = Simulator(log_dir=log_dir)
-        self.results_dir = "tsce_agent_demo/results"
+        # Store all results in the project’s top‑level ``results`` directory
+        # so that no artifacts end up under ``tsce_agent_demo``.
+        self.results_dir = "results"
         self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=log_dir)
         self.judge_panel = JudgePanel()
         self.output_dir = output_dir

@@ -43,7 +43,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/` | Harness & task sets that produced the results below. |
 | `tsce_agent_demo/tsce_agent_test.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
 | `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
-| `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
+| `results/` | Entropy, KL, cosine-violin plots ready to share. |
 | `tsce_agent_demo/run_orchestrator.py` | Command-line interface for the pipeline |
 | `tsce_agent_demo/inspect_tsce_layers.py` | Layer variance tool using transformer-lens |
 | `tsce_agent_demo/tsce_heval_test.py` | Evaluate the HaluEval benchmark |
@@ -282,7 +282,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/` | Harness & task sets that produced the results below. |
 | `tsce_agent_demo/tsce_agent_test.py` | Baseline vs TSCE, prints both answers, writes `report.json`. |
 | `tsce_agent_demo/tsce_chat.py` | Main TSCE wheel |
-| `tsce_agent_demo/results/` | Entropy, KL, cosine-violin plots ready to share. |
+| `results/` | Entropy, KL, cosine-violin plots ready to share. |
 | `tsce_agent_demo/run_orchestrator.py` | Command-line interface for the pipeline |
 | `tsce_agent_demo/inspect_tsce_layers.py` | Layer variance tool using transformer-lens |
 | `tsce_agent_demo/tsce_heval_test.py` | Evaluate the HaluEval benchmark |
