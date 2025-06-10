@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from typing import Tuple
 
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, compose_sections
 
 
 def run_tests(path: str | os.PathLike) -> Tuple[bool, str]:
@@ -50,7 +50,8 @@ class ScriptQA(BaseAgent):
 
     def send_message(self, message: str) -> str:  # pragma: no cover
         success, output = self.act(message)
-        return output if success else output
+        formatted = compose_sections("", "", output)
+        return formatted
 
     # ------------------------------------------------------------------
     def act(self, path: str | os.PathLike) -> Tuple[bool, str]:

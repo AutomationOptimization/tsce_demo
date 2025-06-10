@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import List
 
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, compose_sections
 
 
 class Planner(BaseAgent):
@@ -28,4 +28,5 @@ class Planner(BaseAgent):
 
     def send_message(self, message: str) -> str:  # pragma: no cover
         self.context = message
-        return "\n".join(self.act())
+        output = "\n".join(self.act())
+        return compose_sections("", "", output)

@@ -31,14 +31,16 @@ def test_send_message_history(monkeypatch):
     monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: simple)
     def patched_send(self, m):
         reply = researcher_mod.Researcher.chat(self, m)
+        formatted = base_agent_mod.compose_sections("", "", reply)
         self.history.append(m)
-        self.history.append(reply)
-        return reply
+        self.history.append(formatted)
+        return formatted
     monkeypatch.setattr(researcher_mod.Researcher, "send_message", patched_send)
     r = researcher_mod.Researcher(model="test-model")
     result = r.send_message("hello")
-    assert result == "ack:hello"
-    assert r.history[-2:] == ["hello", "ack:hello"]
+    expected = base_agent_mod.compose_sections("", "", "ack:hello")
+    assert result == expected
+    assert r.history[-2:] == ["hello", expected]
     assert dummy.called_with[0]["role"] == "system"
 
 def test_env_model(monkeypatch):
@@ -50,9 +52,10 @@ def test_env_model(monkeypatch):
     monkeypatch.setattr(base_agent_mod, "TSCEChat", fake_chat)
     def patched_send(self, m):
         reply = researcher_mod.Researcher.chat(self, m)
+        formatted = base_agent_mod.compose_sections("", "", reply)
         self.history.append(m)
-        self.history.append(reply)
-        return reply
+        self.history.append(formatted)
+        return formatted
     monkeypatch.setattr(researcher_mod.Researcher, "send_message", patched_send)
     monkeypatch.setenv("MODEL_NAME", "env-model")
     r = researcher_mod.Researcher()

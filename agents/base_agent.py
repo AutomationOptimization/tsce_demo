@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from abc import ABC
 import os
-from typing import Dict, List
+import re
+from typing import Dict, List, Tuple
 
 from tsce_agent_demo.tsce_chat import TSCEChat
 
@@ -23,10 +24,11 @@ class BaseAgent(ABC):
     def send_message(self, message: str) -> str:
         """Send ``message`` to the underlying :class:`TSCEChat` instance."""
         reply = self.chat(message).content
+        formatted = compose_sections("", "", reply)
         self.history.append({"role": "user", "content": message})
-        self.history.append({"role": self.name.lower(), "content": reply})
-        self._write_log(message, reply)
-        return reply
+        self.history.append({"role": self.name.lower(), "content": formatted})
+        self._write_log(message, formatted)
+        return formatted
 
     # ------------------------------------------------------------------
     def _write_log(self, message: str, reply: str) -> None:
@@ -36,3 +38,24 @@ class BaseAgent(ABC):
         with open(self.log_file, "a", encoding="utf-8") as f:
             f.write(f"USER: {message}\n")
             f.write(f"{self.name.upper()}: {reply}\n")
+
+
+# ----------------------------------------------------------------------
+def compose_sections(thoughts: str, critical: str, speak: str) -> str:
+    """Return a unified message string with the standard sections."""
+    return (
+        "Thoughts:\n" + thoughts.strip() +
+        "\n\nCritical Thinking:\n" + critical.strip() +
+        "\n\nSpeak:\n" + speak.strip()
+    )
+
+
+def parse_sections(text: str) -> Tuple[str, str, str]:
+    """Return the (thoughts, critical thinking, speak) tuple from ``text``."""
+    pattern = (
+        r"Thoughts:\s*(.*?)\n\s*Critical Thinking:\s*(.*?)\n\s*Speak:\s*(.*)"
+    )
+    m = re.search(pattern, text, re.S)
+    if not m:
+        return "", "", text.strip()
+    return tuple(part.strip() for part in m.groups())
