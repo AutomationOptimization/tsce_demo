@@ -11,6 +11,7 @@ import warnings
 
 from .leader import Leader
 from .planner import Planner
+from .domain_planner import DomainAwarePlanner
 from .scientist import Scientist
 from .researcher import Researcher
 from .script_writer import ScriptWriter
@@ -36,9 +37,10 @@ class Message:
 class Orchestrator:
     """Coordinate a simple round-robin conversation between agents."""
 
-    def __init__(self, goals: List[str], *, model: str | None = None, output_dir: str = "output", log_dir: str | None = None) -> None:
+    def __init__(self, goals: List[str], *, model: str | None = None, output_dir: str = "output", log_dir: str | None = None, use_domain_planner: bool = False) -> None:
         self.leader = Leader(goals=goals, log_dir=log_dir)
-        self.planner = Planner(name="Planner", log_dir=log_dir)
+        planner_cls = DomainAwarePlanner if use_domain_planner else Planner
+        self.planner = planner_cls(name="Planner", log_dir=log_dir)
         self.scientist = Scientist(name="Scientist", log_dir=log_dir)
         self.researcher = Researcher(log_dir=log_dir)
         self.script_writer = ScriptWriter(log_dir=log_dir)
