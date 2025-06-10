@@ -21,13 +21,15 @@ class Researcher(BaseAgent):
     """Agent capable of searching the web and reading/writing files."""
 
     def __init__(self, model: str | None = None, *, log_dir: str | None = None) -> None:
-        super().__init__(name="Researcher", log_dir=log_dir)
+        model_name = model or os.getenv("MODEL_NAME", "gpt-3.5-turbo")
+        self._chat = TSCEChat(model=model_name)
+        super().__init__(name="Researcher", chat=self._chat, log_dir=log_dir)
+        del self.chat
         self.system_message = (
             "You are a meticulous research assistant. "
             "Use your search and file tools when helpful."
         )
-        self.model = model or os.getenv("MODEL_NAME", "gpt-3.5-turbo")
-        self._chat = TSCEChat(model=self.model)
+        self.model = model_name
         self.history: List[str] = []
         self.search_tool = GoogleSearch()
         self.scrape_tool = WebScrape()
