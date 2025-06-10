@@ -84,7 +84,7 @@ def test_research_file_appends(tmp_path, monkeypatch):
 
     run_path = Path(orch.output_dir)
     lines = (run_path / "research.txt").read_text().splitlines()
-    assert lines == ["data"]
+    assert lines == ["data", "data"]
 
     roles = [m["role"] for m in history]
     if "hypothesis" in roles:

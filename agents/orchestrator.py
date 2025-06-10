@@ -150,6 +150,30 @@ class Orchestrator:
             content = msg.content
 
             if sender == "leader":
+                if content.lower().startswith("execute this plan:"):
+                    plan = content.split(":", 1)[1].strip()
+                    start = len(self.scientist.history)
+                    self.scientist.execute_plan(plan, self.researcher)
+                    for entry in self.scientist.history[start:]:
+                        self.history.append(entry)
+
+                    search_results = self.researcher.search(self.leader.history[-1])
+                    if isinstance(search_results, list):
+                        search_results = "\n".join(search_results)
+                    data = str(search_results)
+
+                    plan_with_data = f"{plan}\n{data}" if data else plan
+                    research_path = os.path.join(self.output_dir, "research.txt")
+                    if os.path.exists(research_path):
+                        prev = self.researcher.read_file(research_path)
+                        new_content = prev + ("\n" if prev else "") + data
+                        self.researcher.write_file(research_path, new_content)
+                    else:
+                        self.researcher.create_file(research_path, data)
+                    self.drop_stage("research")
+                    queue.append(Message("researcher", ["script_writer"], plan_with_data))
+                    continue
+
                 if not self.stages.get("research"):
                     self.activate_stage("planner")
                 if "terminate" in content.lower():
@@ -222,50 +246,11 @@ class Orchestrator:
                         self.drop_stage("hypothesis")
                         self.activate_stage("research")
 
-                queue.append(Message("scientist", ["researcher"], plan))
+                queue.append(Message("leader", ["scientist"], f"Execute this plan: {plan}"))
 
             elif sender == "scientist":
-                plan = content
-                if self.stages.get("research"):
-                    instr_prompt = (
-                        f"You are Scientist. Provide instructions for the Researcher to gather data: {plan}"
-                    )
-                    sci_instr = self.chat(instr_prompt).content
-                    self.history.append({"role": "scientist", "content": sci_instr})
-                    res_msg = self.researcher.send_message(sci_instr)
-                    self.history.append({"role": "researcher", "content": res_msg})
-
-                    data_parts: List[str] = []
-                    urls = re.findall(r"https?://\S+", sci_instr)
-                    for url in urls:
-                        scrap = self.researcher.scrape(url)
-                        self.history.append({"role": "researcher", "content": scrap})
-                        data_parts.append(scrap)
-
-                    scripts = re.findall(r"run\s+(\S+)", sci_instr)
-                    for script_path in scripts:
-                        output = self.researcher.run_script(script_path)
-                        self.history.append({"role": "researcher", "content": output})
-                        data_parts.append(output)
-
-                    if not data_parts:
-                        search_results = self.researcher.search(self.leader.history[-1])
-                        if isinstance(search_results, list):
-                            search_results = "\n".join(search_results)
-                        data_parts.append(search_results)
-
-                    data = "\n".join(data_parts)
-                    plan = f"{plan}\n{data}" if data else plan
-                    research_path = os.path.join(self.output_dir, "research.txt")
-                    if os.path.exists(research_path):
-                        prev = self.researcher.read_file(research_path)
-                        new_content = prev + ("\n" if prev else "") + data
-                        self.researcher.write_file(research_path, new_content)
-                    else:
-                        self.researcher.create_file(research_path, data)
-                    self.drop_stage("research")
-
-                queue.append(Message("researcher", ["script_writer"], plan))
+                # direct scientist messages are no longer used
+                continue
 
             elif sender == "researcher":
                 plan = content
