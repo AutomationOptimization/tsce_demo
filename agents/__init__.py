@@ -9,6 +9,7 @@ from .script_writer import ScriptWriter
 from .script_qa import ScriptQA
 from .simulator import Simulator
 from .evaluator import Evaluator
+from .final_qa import FinalQA
 from .judge import Judge, JudgePanel
 from .orchestrator import Orchestrator
 from .hypothesis import record_agreed_hypothesis, TERMINATE_TOKEN
@@ -23,6 +24,7 @@ __all__ = [
     "ScriptQA",
     "Simulator",
     "Evaluator",
+    "FinalQA",
     "Judge",
     "JudgePanel",
     "Orchestrator",

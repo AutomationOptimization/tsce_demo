@@ -16,6 +16,7 @@ from .script_writer import ScriptWriter
 from .script_qa import ScriptQA
 from .simulator import Simulator
 from .evaluator import Evaluator
+from .final_qa import FinalQA
 from .hypothesis import record_agreed_hypothesis
 from .judge import JudgePanel
 from tsce_agent_demo.tsce_chat import TSCEChat
@@ -46,6 +47,7 @@ class Orchestrator:
         # so that no artifacts end up under ``tsce_agent_demo``.
         self.results_dir = "results"
         self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=log_dir)
+        self.final_qa = FinalQA(log_dir=log_dir)
         self.judge_panel = JudgePanel()
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -152,6 +154,8 @@ class Orchestrator:
                             self.drop_stage(stage)
                         final = "Hello, world!"
                         self.history.append({"role": "evaluator", "content": final})
+                        verdict = self.final_qa.act(final)
+                        self.history.append({"role": "final_qa", "content": str(verdict)})
                         if self.stages.get("judge"):
                             self.judge_panel.vote_until_unanimous(final)
                             self.history.append({"role": "judge_panel", "content": "approved"})
@@ -272,6 +276,8 @@ class Orchestrator:
                 if self.stages.get("evaluate"):
                     result = self.evaluator.act()
                     self.history.append({"role": "evaluator", "content": result["summary"]})
+                    verdict = self.final_qa.act(result["summary"])
+                    self.history.append({"role": "final_qa", "content": str(verdict)})
                     if self.stages.get("judge"):
                         self.judge_panel.vote_until_unanimous(result["summary"])
                         self.history.append({"role": "judge_panel", "content": "approved"})

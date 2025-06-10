@@ -87,6 +87,7 @@ def test_queue_simple_goal(tmp_path, monkeypatch):
     history = orch.run()
     roles = [m["role"] for m in history]
     assert roles[-1] == "judge_panel"
+    assert "final_qa" in roles
     assert "researcher" not in roles
     assert "script_writer" not in roles
     assert "simulator" not in roles
@@ -102,6 +103,7 @@ def test_queue_complex_goal(tmp_path, monkeypatch):
     assert "researcher" in roles
     assert "script_writer" in roles
     assert "evaluator" in roles
+    assert "final_qa" in roles
 
 
 def test_queue_multi_agent_dialogue(tmp_path, monkeypatch):
@@ -121,6 +123,7 @@ def test_queue_multi_agent_dialogue(tmp_path, monkeypatch):
         "script_qa",
         "simulator",
         "evaluator",
+        "final_qa",
         "judge_panel",
     }
     assert expected.issubset(roles)
