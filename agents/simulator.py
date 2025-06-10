@@ -5,7 +5,7 @@ import sys
 import time
 import shutil
 
-from .base_agent import BaseAgent
+from .base_agent import BaseAgent, compose_sections
 
 
 def run_simulation(path: str) -> str:
@@ -55,7 +55,8 @@ class Simulator(BaseAgent):
         self.output_dir.mkdir(exist_ok=True)
 
     def send_message(self, message: str) -> str:  # pragma: no cover
-        return self.act(message)
+        output = self.act(message)
+        return compose_sections("", "", output)
 
     # ------------------------------------------------------------------
     def act(self, path: str) -> str:

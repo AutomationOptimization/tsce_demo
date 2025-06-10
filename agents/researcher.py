@@ -15,6 +15,7 @@ from tools import (
 )
 
 from .base import BaseAgent
+from .base_agent import compose_sections
 
 class Researcher(BaseAgent):
     """Agent capable of searching the web and reading/writing files."""
@@ -48,9 +49,10 @@ class Researcher(BaseAgent):
     def send_message(self, message: str) -> str:
         """Send ``message`` to the model and return the reply."""
         reply = self.chat(message)
+        formatted = compose_sections("", "", reply)
         self.history.append(message)
-        self.history.append(reply)
-        return reply
+        self.history.append(formatted)
+        return formatted
 
     # Convenience wrappers -------------------------------------------------
     def search(self, query: str) -> str:
