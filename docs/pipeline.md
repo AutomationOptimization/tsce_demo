@@ -4,8 +4,8 @@ This document explains the long form workflow implemented by the `Orchestrator`.
 Each stage is a distinct agent that feeds its output to the next.
 
 1. **Leader** – pulls the next goal from the list.
-2. **Planner** – produces a step-by-step plan that the **Scientist** can inspect.
-3. **Scientist** – critiques and iteratively refines the plan with the Planner.
+2. **Planner** – drafts a step-by-step plan that the **Leader** assigns to the **Scientist**.
+3. **Scientist** – executes the assigned plan, critiquing and iteratively refining it with the Planner.
 4. **Researcher** – performs web or file searches to gather data for the plan.
 5. **Hypothesis** – Scientist and Researcher must agree on a written hypothesis.
    When they do, a `TERMINATE` token is logged, the planner stage is disabled and
