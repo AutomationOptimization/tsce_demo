@@ -89,7 +89,8 @@ def test_scientist_instructs_researcher(tmp_path, monkeypatch):
 
     orch.run()
 
-    lines = (tmp_path / "research.txt").read_text().splitlines()
+    run_path = Path(orch.output_dir)
+    lines = (run_path / "research.txt").read_text().splitlines()
     assert "scraped:http://example.com" in lines[0]
     assert "ran:tool.py" in lines[1]
 
@@ -112,6 +113,7 @@ def test_search_results_list_joined(tmp_path, monkeypatch):
 
     orch.run()
 
-    lines = (tmp_path / "research.txt").read_text().splitlines()
+    run_path = Path(orch.output_dir)
+    lines = (run_path / "research.txt").read_text().splitlines()
     assert lines == ["result1", "result2"]
 

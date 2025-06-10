@@ -53,9 +53,10 @@ def test_output_files_created(tmp_path, monkeypatch):
 
     orch.run()
 
-    assert (tmp_path / "hypothesis").is_dir()
-    assert (tmp_path / "hypothesis" / "leading_hypothesis.txt").exists()
-    assert (tmp_path / "research.txt").exists()
+    run_path = Path(orch.output_dir)
+    assert (run_path / "hypothesis").is_dir()
+    assert (run_path / "hypothesis" / "leading_hypothesis.txt").exists()
+    assert (run_path / "research.txt").exists()
 
 
 def test_research_file_appends(tmp_path, monkeypatch):
@@ -81,7 +82,8 @@ def test_research_file_appends(tmp_path, monkeypatch):
 
     history = orch.run()
 
-    lines = (tmp_path / "research.txt").read_text().splitlines()
+    run_path = Path(orch.output_dir)
+    lines = (run_path / "research.txt").read_text().splitlines()
     assert lines == ["data"]
 
     roles = [m["role"] for m in history]
