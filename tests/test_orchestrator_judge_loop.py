@@ -62,11 +62,15 @@ def test_script_files_have_unique_names_and_marker(tmp_path, monkeypatch):
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
-    orch = orchestrator_mod.Orchestrator([
-        "goal1",
-        "goal2",
-        "terminate",
-    ], model="test", output_dir=str(tmp_path))
+    orch = orchestrator_mod.Orchestrator(
+        [
+            "compute fibonacci 2",
+            "compute factorial 3",
+            "terminate",
+        ],
+        model="test",
+        output_dir=str(tmp_path),
+    )
     orch.drop_stage("qa")
     orch.drop_stage("simulate")
     orch.drop_stage("evaluate")
@@ -94,7 +98,11 @@ def test_judge_rejection_causes_retry(tmp_path, monkeypatch):
     monkeypatch.setattr(orchestrator_mod, "JudgePanel", DummyJudgePanel)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
-    orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
+    orch = orchestrator_mod.Orchestrator(
+        ["compute fibonacci 2", "terminate"],
+        model="test",
+        output_dir=str(tmp_path),
+    )
     orch.drop_stage("qa")
     orch.drop_stage("simulate")
 

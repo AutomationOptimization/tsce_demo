@@ -83,12 +83,12 @@ def test_queue_simple_goal(tmp_path, monkeypatch):
     _patch_all(monkeypatch)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
-    orch = orchestrator_mod.Orchestrator(["say hello world", "terminate"], model="test", output_dir=str(tmp_path))
+    orch = orchestrator_mod.Orchestrator(["tell me a joke", "terminate"], model="test", output_dir=str(tmp_path))
     history = orch.run()
     roles = [m["role"] for m in history]
     assert roles[-1] == "judge_panel"
     assert "final_qa" in roles
-    assert "researcher" not in roles
+    assert "researcher" in roles
     assert "script_writer" not in roles
     assert "simulator" not in roles
 
