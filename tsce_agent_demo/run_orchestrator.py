@@ -36,7 +36,7 @@ def main() -> None:
             return {k: _serialise(v) for k, v in item.items()}
         return item
 
-    out_path = os.path.join(args.output, "history.json")
+    out_path = os.path.join(orch.output_dir, "history.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(_serialise(history), f, indent=2)
     print(f"Run complete. History saved to {out_path}")

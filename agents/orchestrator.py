@@ -4,6 +4,7 @@ from typing import Any, List, Dict
 import os
 import re
 import uuid
+import shutil
 from dataclasses import dataclass, field
 from collections import deque
 import warnings
@@ -42,15 +43,22 @@ class Orchestrator:
         self.researcher = Researcher(log_dir=log_dir)
         self.script_writer = ScriptWriter(log_dir=log_dir)
         self.script_qa = ScriptQA(log_dir=log_dir)
-        self.simulator = Simulator(log_dir=log_dir)
-        # Store all results in the project’s top‑level ``results`` directory
-        # so that no artifacts end up under ``tsce_agent_demo``.
-        self.results_dir = "results"
-        self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=log_dir)
+
+        # Each run gets its own directory under ``output_dir``.
+        self.output_root = output_dir
+        self.run_id = uuid.uuid4().hex
+        self.output_dir = os.path.join(self.output_root, f"run_{self.run_id}")
+        os.makedirs(self.output_dir, exist_ok=True)
+
+        # Agents that emit artifacts should place them in ``self.output_dir``.
+        self.simulator = Simulator(log_dir=log_dir, output_dir=self.output_dir)
+
+        # ``results`` remains a convenient aggregation point for the latest run.
+        self.global_results_dir = "results"
+        self.evaluator = Evaluator(results_dir=self.output_dir, log_dir=log_dir)
         self.final_qa = FinalQA(log_dir=log_dir)
         self.judge_panel = JudgePanel()
-        self.output_dir = output_dir
-        os.makedirs(self.output_dir, exist_ok=True)
+
         self.hypothesis_dir = os.path.join(self.output_dir, "hypothesis")
         os.makedirs(self.hypothesis_dir, exist_ok=True)
         self.chat = TSCEChat(model=model)
@@ -113,9 +121,9 @@ class Orchestrator:
             if stage == "script" and self.script_writer is None:
                 self.script_writer = ScriptWriter(log_dir=self.log_dir)
             elif stage == "simulate" and self.simulator is None:
-                self.simulator = Simulator(log_dir=self.log_dir)
+                self.simulator = Simulator(log_dir=self.log_dir, output_dir=self.output_dir)
             elif stage == "evaluate" and self.evaluator is None:
-                self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=self.log_dir)
+                self.evaluator = Evaluator(results_dir=self.output_dir, log_dir=self.log_dir)
 
     def _sanitize_script(self, script: str) -> str:
         """Return ``script`` wrapped in a docstring if it fails to compile."""
@@ -286,9 +294,11 @@ class Orchestrator:
                         log_path = self.simulator.act(path)
                         self.history.append({"role": "simulator", "content": log_path})
                         sim_result = self.evaluator.parse_simulator_log(
-                            log_path, dest_dir=self.results_dir
+                            log_path, dest_dir=self.output_dir
                         )
                         self.history.append({"role": "evaluator", "content": sim_result["summary_file"]})
+                        # keep a copy of the summary in the shared results directory
+                        shutil.copy(sim_result["summary_file"], self.global_results_dir)
 
                 queue.append(Message("script_writer", ["evaluator"], ""))
 

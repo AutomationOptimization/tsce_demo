@@ -11,7 +11,8 @@ Each stage is a distinct agent that feeds its output to the next.
    When they do, a `TERMINATE` token is logged, the planner stage is disabled and
    the research stage is activated.
 6. **ScriptWriter** – generates an executable Python script. Files are stored
-   under `output/hypothesis/`.
+   under `output/run_<id>/hypothesis/` where `<id>` is a unique identifier for
+   each run.
 7. **ScriptQA** – optional lint / unit test pass over the generated script.
 8. **Simulator** – runs the script and saves a log file. The **Evaluator** parses
    this log and creates a summary report.

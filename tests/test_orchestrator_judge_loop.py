@@ -78,7 +78,8 @@ def test_script_files_have_unique_names_and_marker(tmp_path, monkeypatch):
 
     orch.run()
 
-    scripts = sorted((tmp_path / "hypothesis").glob("test_hypothesis_*.py"))
+    run_path = Path(orch.output_dir)
+    scripts = sorted((run_path / "hypothesis").glob("test_hypothesis_*.py"))
     names = [s.name for s in scripts]
     assert len(names) == 2
     assert len(set(names)) == 2
@@ -113,7 +114,8 @@ def test_judge_rejection_causes_retry(tmp_path, monkeypatch):
     assert judge_votes[0]["content"] == "approved"
 
     # only one script because rejections no longer trigger a retry
-    scripts = sorted((tmp_path / "hypothesis").glob("test_hypothesis_*.py"))
+    run_path = Path(orch.output_dir)
+    scripts = sorted((run_path / "hypothesis").glob("test_hypothesis_*.py"))
     assert len(scripts) == 1
 
     # but the judge was polled until approval
