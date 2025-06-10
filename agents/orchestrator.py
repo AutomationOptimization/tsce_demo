@@ -99,6 +99,15 @@ class Orchestrator:
             elif stage == "evaluate" and self.evaluator is None:
                 self.evaluator = Evaluator(results_dir=self.results_dir, log_dir=self.log_dir)
 
+    def _sanitize_script(self, script: str) -> str:
+        """Return ``script`` wrapped in a docstring if it fails to compile."""
+        try:
+            compile(script, "<string>", "exec")
+        except SyntaxError:
+            escaped = script.replace('"""', '\"\"\"')
+            script = f'"""\n{escaped}\n"""'
+        return script
+
     # ------------------------------------------------------------------
     def run(self) -> List[Dict[str, str]]:
         """Run the group chat following the long-form pipeline."""
@@ -234,6 +243,7 @@ class Orchestrator:
                 plan = content
                 if self.stages.get("script"):
                     script, gid = self.script_writer.act(plan)
+                    script = self._sanitize_script(script)
                     self.history.append({"role": "script_writer", "content": script})
                     path = os.path.join(
                         self.hypothesis_dir,
