@@ -130,17 +130,8 @@ AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ### Quick Start <a name="quick-start"></a>
 
 ```bash
-python tsce_agent_test.py
-```
-
-Sample output:
-
-```
-==========
->>> ENTERING EMBEDDING ANALYTICS
->>> EMBEDDINGS DONE, choosing scatter solver
->>> running t-SNE with {'method': 'barnes_hut', 'perplexity': 30, 'n_iter': 1000}
-...
+$ tsce-demo "What is the best catalyst for ..."
+{"task_id": "...", "status": "success", "summary_file": ".../summary.md"}
 ```
 
 For an interactive UI that lets you compare the baseline and TSCE answers, run:

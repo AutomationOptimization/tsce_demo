@@ -31,6 +31,13 @@ except ModuleNotFoundError as exc:
 Backend = Literal["openai", "azure", "ollama"]
 LOGPROB = os.getenv("LOGPROB", "0") not in {"0", "false", "no"}
 
+# Rough USD price per thousand tokens for cost tracking
+PRICE_PER_1K = {
+    "gpt-4o-mini": 0.01,
+    "gpt-3.5-turbo": 0.002,
+    "gpt-4": 0.03,
+}
+
 # ----------------------------------------------------------------------
 # Helper: recursively turn dict→object so callers can use `.attr` access
 # ----------------------------------------------------------------------
@@ -243,6 +250,8 @@ class TSCEChat:
             self._client_picker = None
 
         self._stats: dict[str, Any] = {}
+        self.total_tokens = 0
+        self.total_cost_usd = 0.0
 
     # ---------------------------------------------------------------------
     # Helper: normalise caller input to a `Chat`
@@ -329,7 +338,12 @@ class TSCEChat:
 
     # ----------------------------------------------------------------
 
-        self._stats = {"latency_s": round(time.time() - start, 2)}
+        anchor_tokens = anchor_resp.get("usage", {}).get("total_tokens", 0)
+        final_tokens = final_resp.get("usage", {}).get("total_tokens", 0)
+        self._stats = {
+            "latency_s": round(time.time() - start, 2),
+            "tokens": anchor_tokens + final_tokens,
+        }
 
         reply = TSCEReply(content=final_text, anchor=anchor_text,
                           anchor_model=anchor_model, final_model=final_model)
@@ -372,7 +386,13 @@ class TSCEChat:
             params["model"] = self.deployment_id or self._auto_deployment
         else:
             params["model"] = self.model or "gpt-35-turbo"
-        return self.client.chat.completions.create(**params, timeout=120,).model_dump()
+        resp = self.client.chat.completions.create(**params, timeout=120,).model_dump()
+        usage = resp.get("usage", {})
+        tokens = usage.get("total_tokens", 0)
+        self.total_tokens += tokens
+        price = PRICE_PER_1K.get(params.get("model"), 0.01)
+        self.total_cost_usd += price * tokens / 1000
+        return resp
 
     def _completion_anchor(
         self,
@@ -409,11 +429,21 @@ class TSCEChat:
             params["model"] = self.deployment_id or self._auto_deployment
         else:
             params["model"] = self.model or "gpt-35-turbo"
-        return self.client.chat.completions.create(**params, timeout=120,).model_dump()
+        resp = self.client.chat.completions.create(**params, timeout=120,).model_dump()
+        usage = resp.get("usage", {})
+        tokens = usage.get("total_tokens", 0)
+        self.total_tokens += tokens
+        price = PRICE_PER_1K.get(params.get("model"), 0.01)
+        self.total_cost_usd += price * tokens / 1000
+        return resp
 
     # Public accessor ---------------------------------------------------
     def last_stats(self):
         return self._stats
+
+    def totals(self) -> tuple[int, float]:
+        """Return cumulative tokens and estimated cost."""
+        return self.total_tokens, round(self.total_cost_usd, 6)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
