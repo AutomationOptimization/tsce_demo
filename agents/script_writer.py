@@ -4,6 +4,8 @@ import re
 import textwrap
 import uuid
 
+from tsce_agent_demo.models.research_task import MethodPlan
+
 from .base_agent import BaseAgent
 
 
@@ -17,14 +19,19 @@ class ScriptWriter(BaseAgent):
         return self.act(message)
 
     # ------------------------------------------------------------------
-    def act(self, request: str) -> tuple[str, str]:
+    def act(self, request: MethodPlan | str) -> tuple[str, str]:
         """Return a short Python code snippet for ``request``.
 
         The implementation is intentionally lightweight and recognises only a
         few common patterns.  If the request cannot be handled, a comment
         describing the limitation is returned instead of code.
         """
-        lower = request.lower()
+        if isinstance(request, MethodPlan):
+            req_str = " ".join(request.steps)
+        else:
+            req_str = request
+
+        lower = req_str.lower()
         gid = uuid.uuid4().hex
 
         if "hello" in lower and "world" in lower:
@@ -61,7 +68,7 @@ class ScriptWriter(BaseAgent):
             script = f"# GOLDEN_THREAD:{gid}\n{script}"
             return script, gid
 
-        script = f"# TODO: unable to generate script for: {request}"
+        script = f"# TODO: unable to generate script for: {req_str}"
         script = f"# GOLDEN_THREAD:{gid}\n{script}"
         return script, gid
 

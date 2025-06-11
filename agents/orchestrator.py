@@ -14,6 +14,7 @@ from .planner import Planner
 from .scientist import Scientist
 from .researcher import Researcher
 from .script_writer import ScriptWriter
+from tsce_agent_demo.models.research_task import MethodPlan
 from .script_qa import ScriptQA
 from .simulator import Simulator
 from .evaluator import Evaluator
@@ -259,7 +260,15 @@ class Orchestrator:
                     self.drop_stage("script")
 
                 if self.stages.get("script") and need_code:
-                    script, gid = self.script_writer.act(plan)
+                    steps = []
+                    for line in plan.splitlines():
+                        line = line.strip()
+                        if not line:
+                            continue
+                        line = re.sub(r"^Step\s*\d+\s*:\s*", "", line, flags=re.I)
+                        steps.append(line)
+                    method_plan = MethodPlan(steps=steps or [plan])
+                    script, gid = self.script_writer.act(method_plan)
                     script = self._sanitize_script(script)
                     self.history.append({"role": "script_writer", "content": script})
                     path = os.path.join(
