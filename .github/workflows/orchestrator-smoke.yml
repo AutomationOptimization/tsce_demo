@@ -1,0 +1,20 @@
+name: Orchestrator Smoke Test
+on:
+  pull_request:
+    paths:
+      - 'agents/**'
+      - 'simulators/**'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY_CI_SMALL }}
+        run: python -m tsce_agent_demo.orchestrator --question "Toy harmonic oscillator"
