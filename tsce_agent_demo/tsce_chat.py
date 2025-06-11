@@ -299,11 +299,11 @@ class TSCEChat:
         )
         final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat 
         final_resp = self._completion(
-        final_msg,
-        temperature=0.01,
-        top_p=1.0,
-        logprobs=LOGPROB,             # NEW
-        top_logprobs=5 if LOGPROB else None,
+            final_msg,
+            temperature=0.01,
+            top_p=1.0,
+            logprobs=LOGPROB,  # NEW
+            top_logprobs=5 if LOGPROB else None,
         )
         final_model = final_resp.get("model")
          # ── DEBUG: catch filtered / empty content ─────────────────────────
@@ -329,7 +329,12 @@ class TSCEChat:
 
     # ----------------------------------------------------------------
 
-        self._stats = {"latency_s": round(time.time() - start, 2)}
+        anchor_tok = anchor_resp.get("usage", {}).get("total_tokens", 0)
+        final_tok = final_resp.get("usage", {}).get("total_tokens", 0)
+        self._stats = {
+            "latency_s": round(time.time() - start, 2),
+            "total_tokens": anchor_tok + final_tok,
+        }
 
         reply = TSCEReply(content=final_text, anchor=anchor_text,
                           anchor_model=anchor_model, final_model=final_model)
