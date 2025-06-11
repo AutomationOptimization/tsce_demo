@@ -22,10 +22,8 @@ class DummyChat:
         return self.total_tokens, self.total_cost_usd
 
 
-def test_orchestrator_end_to_end(tmp_path, monkeypatch):
-    monkeypatch.setattr(chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setenv("OPENAI_API_KEY", "test")
+def test_orchestrator_end_to_end(tmp_path, mock_tsce_chat, monkeypatch):
+    monkeypatch.setattr(chat_mod, "TSCEChat", lambda model=None: mock_tsce_chat)
 
     out_json = tmp_path / "run.json"
     monkeypatch.setattr(sys, "argv", [

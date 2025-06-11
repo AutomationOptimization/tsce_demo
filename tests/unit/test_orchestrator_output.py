@@ -34,15 +34,9 @@ class DummyResearcher:
         return Path(path).read_text() if Path(path).exists() else ""
 
 
-def test_output_files_created(tmp_path, monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
+def test_output_files_created(tmp_path, mock_tsce_chat, monkeypatch):
     monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
     orch.drop_stage("script")
@@ -59,15 +53,9 @@ def test_output_files_created(tmp_path, monkeypatch):
     assert (run_path / "research.txt").exists()
 
 
-def test_research_file_appends(tmp_path, monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
+def test_research_file_appends(tmp_path, mock_tsce_chat, monkeypatch):
     monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator([
         "goal1",
