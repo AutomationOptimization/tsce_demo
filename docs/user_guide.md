@@ -74,4 +74,6 @@ Copy `.env.example` to `.env` and populate any keys you plan to use.
 | **`RDKit` wheel cannot find `GLIBCXX`** | Ensure your GCC/GLIBC packages are up to date. On Ubuntu, run `sudo apt-get install libstdc++6`. |
 | **401 Unauthorized** | Wrong or expired API key; verify it matches the endpoint type. |
 | **`ValueError: model not found`** | Set `MODEL_NAME` or `AZURE_OPENAI_DEPLOYMENT` correctly in your environment. |
+| **`FileNotFoundError: No summary files found`** | Earlier stages failed and no artifacts were produced. Check `logs/orchestrator_failure_<id>.json` and verify your API keys and dependencies. |
+| **`OPENAI_API_KEY environment variable not set`** | Set `OPENAI_API_KEY` or configure Azure/Ollama credentials. |
 
