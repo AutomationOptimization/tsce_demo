@@ -19,4 +19,4 @@ jobs:
       - name: Run orchestrator
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY_CI_SMALL }}
-        run: timeout 150 python -m tsce_demo --question "Toy harmonic oscillator"
+        run: timeout 150 python -m tsce_agent_demo --question "Toy harmonic oscillator"
