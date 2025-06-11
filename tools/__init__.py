@@ -15,6 +15,8 @@ from .file_read import ReadFileTool
 from .file_edit import EditFileTool
 from .file_delete import DeleteFileTool
 from .run_script import RunScriptTool
+from .literature_search.arxiv import ArxivSearch
+from .literature_search.pubmed import PubMedSearch
 
 TOOL_CLASSES = {
     "google_search": GoogleSearch,
