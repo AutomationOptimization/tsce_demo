@@ -15,6 +15,8 @@ from .file_read import ReadFileTool
 from .file_edit import EditFileTool
 from .file_delete import DeleteFileTool
 from .run_script import RunScriptTool
+from .arxiv_search import ArxivSearch
+from .pubmed_search import PubMedSearch
 
 TOOL_CLASSES = {
     "google_search": GoogleSearch,
@@ -24,6 +26,8 @@ TOOL_CLASSES = {
     "edit_file": EditFileTool,
     "delete_file": DeleteFileTool,
     "run_script": RunScriptTool,
+    "arxiv_search": ArxivSearch,
+    "pubmed_search": PubMedSearch,
 }
 
 
@@ -51,5 +55,7 @@ __all__ = [
     "EditFileTool",
     "DeleteFileTool",
     "RunScriptTool",
+    "ArxivSearch",
+    "PubMedSearch",
     "use_tool",
 ]

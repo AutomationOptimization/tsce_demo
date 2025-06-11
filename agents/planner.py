@@ -3,6 +3,9 @@ from __future__ import annotations
 
 from typing import List
 
+from tools import ArxivSearch, PubMedSearch
+from tsce_agent_demo.models.research_task import ResearchTask
+
 from .base_agent import BaseAgent, compose_sections
 
 
@@ -30,3 +33,21 @@ class Planner(BaseAgent):
         self.context = message
         output = "\n".join(self.act())
         return compose_sections("", "", output)
+
+
+def plan(task: ResearchTask) -> ResearchTask:
+    """Phase-1: build ranked bibliography."""
+    searchers = [ArxivSearch(), PubMedSearch()]
+    results = []
+    for s in searchers:
+        results.extend(s.run(task.question, k=20))
+    # dedupe by title
+    seen = set()
+    unique = []
+    for p in results:
+        if p.title.lower() not in seen:
+            unique.append(p)
+            seen.add(p.title.lower())
+    # rank: newer first, then arXiv ID or PubMed PMID
+    task.literature = sorted(unique, key=lambda p: (-p.year, p.title))
+    return task
