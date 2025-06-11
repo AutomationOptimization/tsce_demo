@@ -158,16 +158,6 @@ for msg in orc.run():
 Logs are saved under ``logs/`` by default; set ``LOG_DIR`` in your ``.env`` to
 change this.
 
-Old scripts can still call ``run_legacy()`` to reproduce the original
-round-robin controller:
-
-```python
-history = orc.run_legacy()
-```
-
-When the ``TERMINATE`` token appears, the planner and hypothesis stages are
-deactivated automatically. The remaining agents finish the job without any manual
-stage toggling.
 
 Sample ``hello world`` session:
 
@@ -209,7 +199,7 @@ stage.
 Run the orchestrator directly from the command line:
 
 ```bash
-python tsce_agent_demo/run_orchestrator.py "Print hello world" TERMINATE
+python -m tsce_agent_demo --question "Print hello world"
 ```
 
 Additional utilities:

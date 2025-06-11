@@ -33,13 +33,6 @@ task such as printing ``hello world``, planning is skipped and later stages run
 immediately. This short‑circuit behaviour lets simple prompts finish without any
 manual stage management.
 
-## Legacy Manual Control
-
-Older versions allowed you to drop or reactivate stages via ``drop_stage()`` and
-``activate_stage()`` on the orchestrator. These methods remain for backward
-compatibility but are rarely needed now that routing and short‑circuit logic are
-automatic.
-
 ## Demo Simulators
 
 | ID  | Parameters | Defaults | Output files |
