@@ -77,7 +77,13 @@ def _make_client() -> tuple[Backend, object, str]:
         return "azure", client, deployment
 
     # plain OpenAI
-    return "openai", openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY")), ""
+    key = os.getenv("OPENAI_API_KEY")
+    if not key:
+        raise EnvironmentError(
+            "OPENAI_API_KEY environment variable not set. "
+            "Please set it or configure Azure/Ollama backends."
+        )
+    return "openai", openai.OpenAI(api_key=key), ""
 
 
 # ─────────────────────────────────────────────────────────────────────────────
