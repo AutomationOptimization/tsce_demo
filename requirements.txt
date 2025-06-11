@@ -12,4 +12,5 @@ numpy>=1.26,<2
 rdkit-pypi>=2023.9.5
 pdfplumber
 openai
-
+langchain
+faiss-cpu
