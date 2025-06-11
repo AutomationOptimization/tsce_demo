@@ -8,7 +8,7 @@ import os
 import pytest
 import tools
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from tools import (
     GoogleSearch,

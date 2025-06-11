@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import types
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 import agents.script_writer as script_writer_mod
 import agents.base_agent as base_agent_mod
