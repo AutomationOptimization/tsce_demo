@@ -3,6 +3,11 @@ from __future__ import annotations
 
 from typing import List
 
+from tsce_demo.models.research_task import ResearchTask
+from tsce_agent_demo.models.research_task import MethodPlan
+from tsce_agent_demo.utils.vector_store import query
+from openai import OpenAI
+
 from .base_agent import BaseAgent, compose_sections
 
 
@@ -30,3 +35,26 @@ class Planner(BaseAgent):
         self.context = message
         output = "\n".join(self.act())
         return compose_sections("", "", output)
+
+
+def design_method(task: ResearchTask, model: str = "gpt-4o-mini") -> ResearchTask:
+    """Generate a JSON MethodPlan using LLM + retrieved evidence."""
+
+    evidence = "\n\n".join(query(task.question, k=8))
+    prompt = f"""You are a lab PI. Draft a JSON experiment plan.
+
+Question: {task.question}
+
+Relevant literature snippets:
+{evidence}
+
+Return ONLY valid JSON matching this schema:
+{MethodPlan.schema_json()}
+"""
+    client = OpenAI()
+    resp = client.chat.completions.create(
+        model=model, messages=[{"role": "user", "content": prompt}]
+    )
+    plan_json = resp.choices[0].message.content
+    task.method_plan = MethodPlan.model_validate_json(plan_json)
+    return task

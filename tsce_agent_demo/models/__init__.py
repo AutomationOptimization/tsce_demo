@@ -1,2 +1,3 @@
-from .research_task import PaperMeta
-__all__ = ["PaperMeta"]
+from .research_task import PaperMeta, MethodPlan
+
+__all__ = ["PaperMeta", "MethodPlan"]

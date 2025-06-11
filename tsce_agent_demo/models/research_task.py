@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Any, List
+
+from pydantic import BaseModel, ConfigDict
 
 @dataclass
 class PaperMeta:
@@ -10,3 +12,10 @@ class PaperMeta:
     authors: List[str]
     year: int
     abstract: str
+
+
+class MethodPlan(BaseModel):
+    """Structured method plan for an experiment."""
+
+    steps: List[str] = []
+    model_config = ConfigDict(extra="allow")
