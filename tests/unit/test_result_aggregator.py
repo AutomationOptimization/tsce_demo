@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import pytest
-import tsce_demo.utils.result_aggregator as agg
+import tsce_agent_demo.utils.result_aggregator as agg
 
 
 def test_summary_contains_artifacts(tmp_path):

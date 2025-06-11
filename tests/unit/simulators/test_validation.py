@@ -2,8 +2,8 @@ import pytest
 from pathlib import Path
 import importlib
 
-ode = importlib.import_module('tsce_demo.simulators.ode')
-chem = importlib.import_module('tsce_demo.simulators.chem')
+ode = importlib.import_module('tsce_agent_demo.simulators.ode')
+chem = importlib.import_module('tsce_agent_demo.simulators.chem')
 
 
 def test_bad_ode_function():

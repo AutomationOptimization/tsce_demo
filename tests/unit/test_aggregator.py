@@ -1,6 +1,6 @@
 import json
 from freezegun import freeze_time
-from tsce_demo.utils import result_aggregator as agg
+from tsce_agent_demo.utils import result_aggregator as agg
 
 
 def test_details_and_citations(tmp_path):

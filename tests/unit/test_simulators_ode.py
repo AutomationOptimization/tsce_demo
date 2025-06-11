@@ -1,7 +1,7 @@
 import json
 import pytest
 from freezegun import freeze_time
-from tsce_demo.simulators import ode
+from tsce_agent_demo.simulators import ode
 
 
 def test_prepare_inputs_compiles():
