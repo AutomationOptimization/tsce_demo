@@ -7,6 +7,9 @@ scikit-learn
 sentence-transformers
 matplotlib
 torch
-scipy
+scipy>=1.12,<2
+numpy>=1.26,<2
+rdkit-pypi>=2023.9.5
 pdfplumber
 openai
+
