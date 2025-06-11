@@ -14,16 +14,7 @@ class DummyChat:
         return types.SimpleNamespace(content=content)
 
 
-def _patch(monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-
-
-def test_run_legacy_round_robin(tmp_path, monkeypatch):
-    _patch(monkeypatch)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+def test_run_legacy_round_robin(tmp_path, mock_tsce_chat):
 
     orch = orchestrator_mod.Orchestrator(["goal", "terminate"], model="test", output_dir=str(tmp_path))
     history = orch.run_legacy()

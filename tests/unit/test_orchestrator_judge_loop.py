@@ -52,15 +52,9 @@ class DummyJudgePanel:
         return True
 
 
-def test_script_files_have_unique_names_and_marker(tmp_path, monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
+def test_script_files_have_unique_names_and_marker(tmp_path, mock_tsce_chat, monkeypatch):
     monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(
         [
@@ -87,17 +81,11 @@ def test_script_files_have_unique_names_and_marker(tmp_path, monkeypatch):
         assert s.read_text().startswith("# GOLDEN_THREAD:")
 
 
-def test_judge_rejection_causes_retry(tmp_path, monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
+def test_judge_rejection_causes_retry(tmp_path, mock_tsce_chat, monkeypatch):
     monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(orchestrator_mod, "Evaluator", DummyEvaluator)
     monkeypatch.setattr(orchestrator_mod, "JudgePanel", DummyJudgePanel)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(
         ["compute fibonacci 2", "terminate"],

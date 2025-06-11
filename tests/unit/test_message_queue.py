@@ -62,11 +62,6 @@ class DummyQA:
 
 
 def _patch_all(monkeypatch):
-    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
-    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(orchestrator_mod, "TSCEChat", lambda model=None: DummyChat())
-    monkeypatch.setattr(researcher_mod, "TSCEChat", lambda model=None: DummyChat())
     monkeypatch.setattr(orchestrator_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(researcher_mod, "Researcher", DummyResearcher)
     monkeypatch.setattr(orchestrator_mod, "Evaluator", lambda *a, **kw: DummyEvaluator())
@@ -79,9 +74,8 @@ def _patch_all(monkeypatch):
 
 # ---------------------------------------------------------------------------
 
-def test_queue_simple_goal(tmp_path, monkeypatch):
+def test_queue_simple_goal(tmp_path, mock_tsce_chat, monkeypatch):
     _patch_all(monkeypatch)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(["tell me a joke", "terminate"], model="test", output_dir=str(tmp_path))
     history = orch.run()
@@ -93,9 +87,8 @@ def test_queue_simple_goal(tmp_path, monkeypatch):
     assert "simulator" not in roles
 
 
-def test_queue_complex_goal(tmp_path, monkeypatch):
+def test_queue_complex_goal(tmp_path, mock_tsce_chat, monkeypatch):
     _patch_all(monkeypatch)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(["compute fibonacci 5", "terminate"], model="test", output_dir=str(tmp_path))
     history = orch.run()
@@ -106,10 +99,9 @@ def test_queue_complex_goal(tmp_path, monkeypatch):
     assert "final_qa" in roles
 
 
-def test_queue_multi_agent_dialogue(tmp_path, monkeypatch):
+def test_queue_multi_agent_dialogue(tmp_path, mock_tsce_chat, monkeypatch):
     """End-to-end dialogue across planner, scientist, researcher, and judge."""
     _patch_all(monkeypatch)
-    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
     orch = orchestrator_mod.Orchestrator(["calculate factorial 4", "terminate"], model="test", output_dir=str(tmp_path))
     history = orch.run()
