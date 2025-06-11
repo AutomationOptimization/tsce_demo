@@ -39,3 +39,14 @@ Older versions allowed you to drop or reactivate stages via ``drop_stage()`` and
 ``activate_stage()`` on the orchestrator. These methods remain for backward
 compatibility but are rarely needed now that routing and short‑circuit logic are
 automatic.
+
+## Demo Simulators
+
+| ID  | Parameters | Defaults | Output files |
+|-----|------------|----------|--------------|
+| ode | func, y0, t-span, precision, seed | precision=float64, seed=None | `ode_results.json`, `ode_results.meta.json` |
+| chem | reactants, seed | seed=None | `reaction_product.json`, `reaction_product.meta.json` |
+
+SciPy's ``odeint`` is used for its stability on stiff systems while keeping the
+implementation short. RDKit's ``CombineMols`` merely concatenates molecules as a
+stand-in for real reaction prediction.
