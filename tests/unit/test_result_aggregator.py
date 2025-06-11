@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import pytest
 import tsce_demo.utils.result_aggregator as agg
 
 
@@ -15,3 +16,12 @@ def test_summary_contains_artifacts(tmp_path):
     text = summary.read_text()
     assert "file1.meta.json" in text
     assert text.count("[") == 3
+
+
+def test_empty_artifacts_raise(tmp_path):
+    art = tmp_path / agg.ART_DIR
+    art.mkdir()
+    (art / "empty.json").write_text("")
+    with pytest.raises(FileNotFoundError):
+        agg.create_summary("Q", tmp_path, bibliography="")
+

@@ -17,9 +17,9 @@ def gather_artifacts(work_dir: str | Path) -> list[Path]:
     art_dir = work / ART_DIR
     if not art_dir.is_dir():
         raise FileNotFoundError(f"{art_dir} missing")
-    files = list(art_dir.iterdir())
+    files = [f for f in art_dir.iterdir() if f.is_file() and f.stat().st_size]
     if not files:
-        raise FileNotFoundError("no artifacts found")
+        raise FileNotFoundError("no artifacts found or artifacts empty")
     return files
 
 
