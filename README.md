@@ -93,8 +93,7 @@ Note: TSCE uses two passes, so raw joules/token cost ≈2× single-shot; we comp
 ### Installation <a name="installation"></a>
 
 ```bash
-git clone https://github.com/<your-username>/tsce_demo.git
-cd tsce_demo
+git clone https://github.com/<your-username>/tsce_agent_demo.git
 cd tsce_agent_demo
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
@@ -130,7 +129,7 @@ AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ### Quick Start <a name="quick-start"></a>
 
 ```bash
-$ tsce-demo "What is the best catalyst for ..."
+$ tsce-agent-demo "What is the best catalyst for ..."
 {"task_id": "...", "status": "success", "summary_file": ".../summary.md"}
 ```
 

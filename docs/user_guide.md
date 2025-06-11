@@ -7,8 +7,8 @@ This page collects setup notes and helpful tips for running the demo agents.
 ### Pip
 1. Clone the repository
    ```bash
-   git clone https://github.com/<your-username>/tsce_demo.git
-   cd tsce_demo
+   git clone https://github.com/<your-username>/tsce_agent_demo.git
+   cd tsce_agent_demo
    ```
 2. Create a virtual environment and install requirements
    ```bash
@@ -30,8 +30,8 @@ This page collects setup notes and helpful tips for running the demo agents.
 ### Docker
 A simple Dockerfile is provided. Build and run:
 ```bash
-docker build -t tsce_demo .
-docker run --rm -it tsce_demo
+docker build -t tsce_agent_demo .
+docker run --rm -it tsce_agent_demo
 ```
 If you are on an ARM machine (e.g. Apple Silicon) see the FAQ below.
 
@@ -59,7 +59,7 @@ Copy `.env.example` to `.env` and populate any keys you plan to use.
 1. Ensure your API credentials are set in `.env`.
 2. Run the orchestrator with a question:
    ```bash
-   python -m tsce_demo --question "How does TSCE reduce hallucinations?"
+   python -m tsce_agent_demo --question "How does TSCE reduce hallucinations?"
    ```
    The script walks through several phases and prints a JSON result when done.
 3. Inspect the generated summary file reported in the output.
