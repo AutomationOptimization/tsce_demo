@@ -4,8 +4,8 @@ import types
 from pathlib import Path
 import pytest
 
-import tsce_demo.__main__ as cli
-from tsce_demo.utils import result_aggregator as agg
+import tsce_agent_demo.__main__ as cli
+from tsce_agent_demo.utils import result_aggregator as agg
 
 
 class DummyOrchestrator:
@@ -28,7 +28,7 @@ def _patch(monkeypatch, tmp_path, cost):
 
 def test_aborts_on_overrun(monkeypatch, tmp_path, capsys):
     _patch(monkeypatch, tmp_path, 0.2)
-    monkeypatch.setattr(sys, "argv", ["tsce_demo", "--question", "Q", "--max-cost", "0.05"])
+    monkeypatch.setattr(sys, "argv", ["tsce_agent_demo", "--question", "Q", "--max-cost", "0.05"])
     with pytest.raises(SystemExit):
         cli.main()
     out = capsys.readouterr().out.splitlines()[-1]
@@ -39,7 +39,7 @@ def test_aborts_on_overrun(monkeypatch, tmp_path, capsys):
 
 def test_success_json(monkeypatch, tmp_path, capsys):
     orch = _patch(monkeypatch, tmp_path, 0.01)
-    monkeypatch.setattr(sys, "argv", ["tsce_demo", "--question", "Q", "--max-cost", "0.05"])
+    monkeypatch.setattr(sys, "argv", ["tsce_agent_demo", "--question", "Q", "--max-cost", "0.05"])
     cli.main()
     out = capsys.readouterr().out.splitlines()[-1]
     data = json.loads(out)

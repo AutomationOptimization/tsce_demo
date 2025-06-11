@@ -1,8 +1,8 @@
 import importlib
 import pytest
-import tsce_demo.utils.result_aggregator as agg
+import tsce_agent_demo.utils.result_aggregator as agg
 
-ode = importlib.import_module("tsce_demo.simulators.ode")
+ode = importlib.import_module("tsce_agent_demo.simulators.ode")
 
 if importlib.util.find_spec("numpy") is None:
     pytest.skip("numpy not installed", allow_module_level=True)

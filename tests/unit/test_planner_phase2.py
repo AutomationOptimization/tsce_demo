@@ -11,7 +11,7 @@ sys.modules.setdefault(
 )
 
 import agents.planner as planner_mod
-from tsce_demo.models.research_task import ResearchTask
+from tsce_agent_demo.models.research_task import ResearchTask
 from tsce_agent_demo.models.research_task import MethodPlan
 
 class DummyClient:

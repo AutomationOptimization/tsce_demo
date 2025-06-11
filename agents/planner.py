@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import List
 
-from tsce_demo.models.research_task import ResearchTask
+from tsce_agent_demo.models.research_task import ResearchTask
 from tsce_agent_demo.models.research_task import MethodPlan
 from tsce_agent_demo.utils.vector_store import query
 from openai import OpenAI

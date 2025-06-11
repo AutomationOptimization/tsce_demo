@@ -5,8 +5,8 @@ from pathlib import Path
 from freezegun import freeze_time
 import pytest
 
-import tsce_demo.__main__ as cli
-from tsce_demo.models.research_task import ResearchTask
+import tsce_agent_demo.__main__ as cli
+from tsce_agent_demo.models.research_task import ResearchTask
 import tsce_agent_demo.tsce_chat as chat_mod
 
 
@@ -29,7 +29,7 @@ def test_orchestrator_end_to_end(tmp_path, monkeypatch):
 
     out_json = tmp_path / "run.json"
     monkeypatch.setattr(sys, "argv", [
-        "tsce_demo",
+        "tsce_agent_demo",
         "--question",
         "Toy harmonic oscillator",
         "--max-cost",

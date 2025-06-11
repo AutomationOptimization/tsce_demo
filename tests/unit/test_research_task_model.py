@@ -2,7 +2,7 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from tsce_demo.models.research_task import ResearchTask
+from tsce_agent_demo.models.research_task import ResearchTask
 
 
 def test_schema_validation():

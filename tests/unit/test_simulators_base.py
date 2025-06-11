@@ -1,5 +1,5 @@
 import pytest
-from tsce_demo.simulators.base import BaseSimulator
+from tsce_agent_demo.simulators.base import BaseSimulator
 
 
 def test_abstract_instantiation_fails():

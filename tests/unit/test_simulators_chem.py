@@ -1,6 +1,6 @@
 import json
 import pytest
-from tsce_demo.simulators import chem
+from tsce_agent_demo.simulators import chem
 
 
 def test_invalid_smiles():
