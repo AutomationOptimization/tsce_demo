@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsce-agent-demo"
+version = "0.1.0"
+description = "Two-Step Contextual Enrichment demo"
+authors = [{name = "AutomationOptimization"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "streamlit",
+    "python-dotenv",
+    "requests",
+    "tiktoken",
+    "pandas",
+    "scikit-learn",
+    "sentence-transformers",
+    "matplotlib",
+    "torch",
+    "scipy>=1.12,<2",
+    "numpy>=1.26,<2",
+    "rdkit-pypi>=2023.9.5",
+    "pdfplumber",
+    "openai",
+    "langchain",
+    "faiss-cpu",
+]
+
+[project.scripts]
+tsce-demo = "tsce_agent_demo.run_orchestrator:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "tsce_agent_demo",
+    "agents",
+    "tools",
+    "hypothesis",
+]
+exclude = ["tests*"]
+
