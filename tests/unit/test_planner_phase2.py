@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import types
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 # provide dummy vector_store before importing planner
 sys.modules.setdefault(

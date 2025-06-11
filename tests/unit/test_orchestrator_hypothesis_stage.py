@@ -1,7 +1,7 @@
 import types
 from pathlib import Path
 import sys
-sys.path.append(str(Path(__file__).resolve().parents[1]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 import agents.orchestrator as orchestrator_mod
 import agents.researcher as researcher_mod
