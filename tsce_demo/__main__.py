@@ -38,6 +38,7 @@ def main() -> None:
         art_dir = os.path.join(tmp, agg.ART_DIR)
         os.makedirs(art_dir, exist_ok=True)
         orch = Orchestrator([args.question, "terminate"], model=args.model, output_dir=tmp)
+        fail_log = os.path.join("logs", f"orchestrator_failure_{orch.run_id}.json")
         for idx, name in enumerate(phases, 1):
             phase_start = time.time()
             try:
@@ -55,10 +56,29 @@ def main() -> None:
                 }
                 with open(os.path.join(tmp, "failure.json"), "w", encoding="utf-8") as f:
                     json.dump(fail, f)
-                print(json.dumps({"task_id": orch.run_id, "status": "failure", "reason": fail["error_type"]}))
+                with open(fail_log, "w", encoding="utf-8") as f:
+                    json.dump(fail, f)
+                print(
+                    json.dumps(
+                        {
+                            "task_id": orch.run_id,
+                            "status": "failure",
+                            "reason": fail["error_type"],
+                            "failure_log": fail_log,
+                        }
+                    )
+                )
                 if args.json_out:
                     with open(args.json_out, "w", encoding="utf-8") as f:
-                        json.dump({"task_id": orch.run_id, "status": "failure", "reason": fail["error_type"]}, f)
+                        json.dump(
+                            {
+                                "task_id": orch.run_id,
+                                "status": "failure",
+                                "reason": fail["error_type"],
+                                "failure_log": fail_log,
+                            },
+                            f,
+                        )
                 sys.exit(10 + idx)
             phase_end = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             with open(tlog, "a", encoding="utf-8") as f:

@@ -63,6 +63,8 @@ Copy `.env.example` to `.env` and populate any keys you plan to use.
    ```
    The script walks through several phases and prints a JSON result when done.
 3. Inspect the generated summary file reported in the output.
+4. If a phase fails, a JSON error report is saved under `logs/` using the
+   run ID, e.g. `logs/orchestrator_failure_<id>.json`.
 
 ## Troubleshooting FAQ
 
