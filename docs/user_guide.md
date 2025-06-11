@@ -32,6 +32,7 @@ A simple Dockerfile is provided. Build and run:
 ```bash
 docker build -t tsce_agent_demo .
 docker run --rm -it tsce_agent_demo
+docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
 ```
 If you are on an ARM machine (e.g. Apple Silicon) see the FAQ below.
 

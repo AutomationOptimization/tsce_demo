@@ -99,6 +99,10 @@ python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 cp .env.example .env          # then edit .env with your creds
+# If you need a ready-to-use environment, pull the sandbox image:
+```bash
+docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
+```
 ---
 
 ### Configuration <a name="configuration"></a>
