@@ -118,3 +118,19 @@ def test_chembl_tool(monkeypatch):
     res = bio.ChEMBLTool()("CHEMBL297")
     assert res["smiles"] == "C"
     assert res["activities"][0]["standardType"] == "IC50"
+
+
+def test_vina_tool_returns_energy():
+    bio = import_bio_with_patch(SimpleNamespace())
+    receptor = "/usr/share/autodock/Tests/1pgp_rigid.pdbqt"
+    ligand = "/usr/share/autodock/Tests/1pgp_lig.pdbqt"
+    dg = bio.VinaDockingTool()(receptor, ligand)
+    assert dg is not None
+    assert dg <= 0
+
+
+def test_qsar_tool_shape():
+    bio = import_bio_with_patch(SimpleNamespace())
+    probs = bio.QSARTool()("CCO")
+    assert isinstance(probs, list)
+    assert len(probs) == 12
