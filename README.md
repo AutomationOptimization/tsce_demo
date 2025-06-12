@@ -7,20 +7,20 @@ Why TSCE? In many real-world tasks, LLMs either hallucinate or lose track of com
 ### Table of Contents
 1. [What is TSCE?](#what-is-tsce)
 2. [Repo Highlights](#repo-highlights)
-3. [Prerequisites](#prerequisites)
-4. [Installation](#installation)
-5. [Configuration](#configuration)
-6. [Quick Start](#quick-start)
-7. [Orchestrator Demo](#orchestrator-demo)
-8. [Pipeline Overview](#pipeline-overview)
-9. [Usage Examples](#usage-examples)
-10. [How TSCE Works](#how-tsce-works)
-11. [Benchmarks & Latest Results](#benchmarks--latest-results)
-12. [Troubleshooting](#troubleshooting)
-13. [Extending the Demo](#extending-the-demo)
-14. [Contributing](#contributing)
-15. [License](#license)
-
+3. [How TSCE Works](#how-tsce-works)
+4. [Benchmarks & Latest Results](#benchmarks--latest-results)
+5. [Prerequisites](#prerequisites)
+6. [Installation](#installation)
+7. [Configuration](#configuration)
+8. [Quick Start](#quick-start)
+9. [Orchestrator Demo](#orchestrator-demo)
+10. [Pipeline Overview](#pipeline-overview)
+11. [CLI Usage](#cli-usage)
+12. [Built-in Tools](#built-in-tools)
+13. [Troubleshooting](#troubleshooting)
+14. [Extending the Demo](#extending-the-demo)
+15. [Contributing](#contributing)
+16. [License](#license)
 ---
 
 ### What is TSCE? <a name="what-is-tsce"></a>
@@ -199,7 +199,7 @@ The orchestrator runs a queue of specialized agents in sequence:
 See [docs/pipeline.md](docs/pipeline.md) for a deeper walk through of each
 stage.
 
-### CLI Usage
+### CLI Usage <a name="cli-usage"></a>
 
 Run the orchestrator directly from the command line:
 
@@ -212,7 +212,7 @@ Additional utilities:
 * ``tsce_agent_demo/inspect_tsce_layers.py`` – analyse layer-wise variance on local models.
 * ``tsce_agent_demo/tsce_heval_test.py`` – run the HaluEval benchmark with TSCE.
 
-### Built-in Tools
+### Built-in Tools <a name="built-in-tools"></a>
 
 Agents may call helper utilities by returning a JSON object in the ``Speak`` section:
 
