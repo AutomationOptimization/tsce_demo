@@ -10,8 +10,6 @@ from Bio import Entrez
 class PubMedTool:
     """Return PubMed abstracts for a query string."""
 
-    description = "Search PubMed and return a list of abstracts for a query."
-
     def __call__(self, query: str, top_k: int = 5) -> list[dict]:
         try:
             search_handle = Entrez.esearch(db="pubmed", term=query, retmax=top_k)

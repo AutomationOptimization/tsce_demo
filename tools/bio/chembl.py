@@ -8,8 +8,6 @@ import requests
 class ChEMBLTool:
     """Return SMILES and activities for a ChEMBL ID."""
 
-    description = "Retrieve canonical SMILES and bioactivity data from ChEMBL."
-
     endpoint = "https://www.ebi.ac.uk/chembl/api/graphql"
 
     def __call__(self, chembl_id: str) -> dict:
