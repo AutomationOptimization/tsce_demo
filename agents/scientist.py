@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from .base_agent import BaseAgent
 from core.config import get_settings
+from tools import TOOL_CLASSES, use_tool
+import inspect
+import json
+from types import SimpleNamespace
 
 
 # Prompt injected into every Scientist call to the language model
@@ -15,6 +19,32 @@ SYSTEM_PROMPT = (
 
 class Scientist(BaseAgent):
     """High-level planner that coordinates research tasks."""
+
+    @staticmethod
+    def _tool_schema(name: str, cls) -> dict:
+        """Return an OpenAI-compatible function schema for ``cls``."""
+        sig = inspect.signature(cls.__call__)
+        properties = {}
+        required = []
+        for param in sig.parameters.values():
+            typ = "string"
+            if param.annotation is int:
+                typ = "integer"
+            elif param.annotation is float:
+                typ = "number"
+            elif param.annotation is bool:
+                typ = "boolean"
+            properties[param.name] = {"type": typ}
+            if param.default is inspect.Parameter.empty:
+                required.append(param.name)
+        schema = {"type": "object", "properties": properties}
+        if required:
+            schema["required"] = required
+        return {
+            "name": name,
+            "description": getattr(cls, "description", cls.__doc__ or ""),
+            "parameters": schema,
+        }
 
     def __init__(
         self,
@@ -30,13 +60,46 @@ class Scientist(BaseAgent):
         self._chat = self.chat
         del self.chat
         self.system_prompt = SYSTEM_PROMPT
+        self.functions = [
+            self._tool_schema(n, c)
+            for n, c in TOOL_CLASSES.items()
+            if getattr(c, "description", None)
+        ]
 
     def chat(self, prompt: str):
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": prompt},
         ]
-        return self._chat(messages)
+        try:
+            resp = self._chat(
+                messages,
+                functions=self.functions,
+                function_call="auto",
+            )
+        except TypeError:
+            resp = self._chat(messages)
+        msg = resp.choices[0].message if hasattr(resp, "choices") else resp
+        fc = getattr(msg, "function_call", None)
+        content = getattr(msg, "content", "")
+        if fc:
+            try:
+                args = json.loads(fc.get("arguments", "{}"))
+                result = use_tool(fc["name"], args)
+            except Exception:
+                return SimpleNamespace(content=content or "")
+            messages.append(
+                {"role": "function", "name": fc["name"], "content": json.dumps(result)}
+            )
+            try:
+                follow = self._chat(
+                    messages, functions=self.functions, function_call="none"
+                )
+            except TypeError:
+                follow = self._chat(messages)
+            final = follow.choices[0].message if hasattr(follow, "choices") else follow
+            return SimpleNamespace(content=getattr(final, "content", ""))
+        return SimpleNamespace(content=content)
 
     def request_information(self, researcher: BaseAgent, query: str) -> str:
         """Ask the Researcher agent to gather information about *query*."""

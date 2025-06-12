@@ -17,6 +17,7 @@ from .file_delete import DeleteFileTool
 from .run_script import RunScriptTool
 from .literature_search.arxiv import ArxivSearch
 from .literature_search.pubmed import PubMedSearch
+from .bio import PubMedTool, ChEMBLTool
 import os
 from pathlib import Path
 import numpy as np
@@ -49,6 +50,8 @@ TOOL_CLASSES = {
     "edit_file": EditFileTool,
     "delete_file": DeleteFileTool,
     "run_script": RunScriptTool,
+    "pubmedtool": PubMedTool,
+    "chembltool": ChEMBLTool,
 }
 
 
@@ -92,6 +95,8 @@ __all__ = [
     "EditFileTool",
     "DeleteFileTool",
     "RunScriptTool",
+    "PubMedTool",
+    "ChEMBLTool",
     "use_tool",
     "memory_search",
     "embed_text",
