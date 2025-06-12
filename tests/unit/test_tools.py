@@ -45,6 +45,34 @@ def test_google_search_error(monkeypatch):
     assert res == ["Search error: bad"]
 
 
+def test_google_search_pubmed(monkeypatch):
+    class DummyHandle:
+        def __init__(self, data):
+            self.data = data
+
+        def close(self):
+            pass
+
+    search_handle = DummyHandle({"IdList": ["1", "2"]})
+    fetch_handle = DummyHandle({
+        "PubmedArticle": [
+            {"MedlineCitation": {"Article": {"ArticleTitle": "A"}}},
+            {"MedlineCitation": {"Article": {"ArticleTitle": "B"}}},
+        ]
+    })
+
+    ent = SimpleNamespace(
+        esearch=lambda **kw: search_handle,
+        efetch=lambda **kw: fetch_handle,
+        read=lambda h: h.data,
+    )
+    bio = SimpleNamespace(Entrez=ent)
+    monkeypatch.setitem(sys.modules, "Bio", bio)
+
+    res = GoogleSearch()("PUBMED: foo", num_results=2)
+    assert res == ["A", "B"]
+
+
 def test_web_scrape_success(monkeypatch):
     html = "<html><body><h1>Title</h1><script>x</script><p>hi</p></body></html>"
 
