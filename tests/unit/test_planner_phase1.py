@@ -46,3 +46,11 @@ def test_act_empty_context():
     planner = make_planner()
     planner.context = "   "
     assert planner.act() == ["Step 1: No context provided."]
+
+
+def test_act_limits_steps():
+    planner = make_planner()
+    planner.context = "\n".join(str(i) for i in range(7))
+    assert planner.act() == [
+        f"Step {i + 1}: {i}" for i in range(planner_mod.MAX_STEPS)
+    ]

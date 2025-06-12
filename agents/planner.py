@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import List
 
+MAX_STEPS = 5
+
 from tsce_agent_demo.models.research_task import ResearchTask
 from tsce_agent_demo.models.research_task import MethodPlan
 from tsce_agent_demo.utils.vector_store import query
@@ -28,6 +30,8 @@ class Planner(BaseAgent):
         parts = [p.strip() for p in context.splitlines() if p.strip()]
         if len(parts) <= 1:
             parts = [p.strip() for p in context.split(".") if p.strip()]
+
+        parts = parts[:MAX_STEPS]
 
         return [f"Step {i + 1}: {part}" for i, part in enumerate(parts)]
 
