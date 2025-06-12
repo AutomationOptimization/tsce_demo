@@ -27,6 +27,7 @@ dependencies = [
     "openai",
     "langchain",
     "faiss-cpu",
+    "biopython>=1.83",  # for Entrez PubMed
 ]
 
 [project.scripts]
