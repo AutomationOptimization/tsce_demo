@@ -135,7 +135,7 @@ AZURE_OPENAI_KEY=<azure-key>             # or reuse OPENAI_API_KEY
 ### Quick Start <a name="quick-start"></a>
 
 ```bash
-$ tsce-agent-demo "What is the best catalyst for ..."
+$ python -m tsce_agent_demo.run_orchestrator "What is the best catalyst for ..."
 {"task_id": "...", "status": "success", "summary_file": ".../summary.md"}
 ```
 
