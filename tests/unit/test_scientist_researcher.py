@@ -1,6 +1,6 @@
 import types
 
-from agents.scientist import Scientist
+from agents.scientist import Scientist, SYSTEM_PROMPT
 from agents.base_agent import BaseAgent
 import agents.base_agent as base_agent_mod
 
@@ -45,24 +45,22 @@ def test_request_information_uses_researcher_and_logs():
     sci = Scientist(name="Scientist", chat=chat)
     res = DummyResearcher(name="Researcher", chat=chat)
     reply = sci.request_information(res, "planet mass")
-    expected = base_agent_mod.compose_sections(
-        "",
-        "",
-        "reply:Research the following and report back: planet mass",
-    )
+    expected = base_agent_mod.compose_sections("", "", f"reply:{chat.prompts[1]}")
     assert reply == expected
     assert sci.history[0]["content"] == "planet mass" or "Research" in sci.history[0]["content"]
     assert res.history
+    assert chat.prompts[0][0]["content"] == SYSTEM_PROMPT
 
 def test_direct_researcher_forwards_instructions():
     chat = FakeChat()
     sci = Scientist(name="Scientist", chat=chat)
     res = DummyResearcher(name="Researcher", chat=chat)
     reply = sci.direct_researcher(res, "Do thing A")
-    expected = base_agent_mod.compose_sections("", "", "reply:Do thing A")
+    expected = base_agent_mod.compose_sections("", "", f"reply:{chat.prompts[1]}")
     assert reply == expected
     assert sci.history
     assert res.history
+    assert chat.prompts[0][0]["content"] == SYSTEM_PROMPT
 
 
 def test_execute_plan_invokes_tools_and_logs():
