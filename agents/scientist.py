@@ -3,8 +3,38 @@ from __future__ import annotations
 from .base_agent import BaseAgent
 
 
+# Prompt injected into every Scientist call to the language model
+SYSTEM_PROMPT = (
+    "When the plan involves biomedical targets, you may:\n"
+    "\u2022 call google_search with a \"PUBMED:\" prefix\n"
+    "\u2022 inspect MeSH terms from the returned JSON\n"
+    "\u2022 rank findings by in-vitro potency (IC50) and drug-likeness"
+)
+
+
 class Scientist(BaseAgent):
     """High-level planner that coordinates research tasks."""
+
+    def __init__(
+        self,
+        name: str = "Scientist",
+        *,
+        chat=None,
+        model: str | None = None,
+        log_dir: str | None = None,
+    ) -> None:
+        super().__init__(name=name, chat=chat, model=model, log_dir=log_dir)
+        # preserve the underlying chat object and expose a method instead
+        self._chat = self.chat
+        del self.chat
+        self.system_prompt = SYSTEM_PROMPT
+
+    def chat(self, prompt: str):
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": prompt},
+        ]
+        return self._chat(messages)
 
     def request_information(self, researcher: BaseAgent, query: str) -> str:
         """Ask the Researcher agent to gather information about *query*."""
