@@ -1,0 +1,7 @@
+[run]
+omit =
+    tsce_agent_demo/tsce_agent_test.py
+    tsce_agent_demo/tsce_heval_test.py
+    tsce_agent_demo/inspect_tsce_layers.py
+    tsce_agent_demo/run_orchestrator.py
+    tsce_agent_demo/tsce_chat.py
