@@ -66,8 +66,10 @@ def _make_client() -> tuple[Backend, object, str]:
 
     # --- Azure ----------------------------------------------------------------
     if os.getenv("AZURE_OPENAI_ENDPOINT"):
+        from core.config import get_settings
+        settings = get_settings()
         client = openai.AzureOpenAI(
-            api_key=os.getenv("AZURE_OPENAI_KEY"),
+            api_key=settings.openai_key,
             azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
             api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview"),
         )
@@ -77,13 +79,9 @@ def _make_client() -> tuple[Backend, object, str]:
         return "azure", client, deployment
 
     # plain OpenAI
-    key = os.getenv("OPENAI_API_KEY")
-    if not key:
-        raise EnvironmentError(
-            "OPENAI_API_KEY environment variable not set. "
-            "Please set it or configure Azure/Ollama backends."
-        )
-    return "openai", openai.OpenAI(api_key=key), ""
+    from core.config import get_settings
+    settings = get_settings()
+    return "openai", openai.OpenAI(api_key=settings.openai_key), ""
 
 
 # ─────────────────────────────────────────────────────────────────────────────

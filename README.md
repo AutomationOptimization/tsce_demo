@@ -117,6 +117,8 @@ OPENAI_ENDPOINT=https://api.openai.com/v1/chat/completions
 MODEL_NAME=gpt-3.5-turbo
 LOG_DIR=logs  # optional agent conversation logs
 ```
+The app loads these values via `core.config.get_settings()` so any agent can
+access them using `settings = get_settings()`.
 
 #### Azure OpenAI
 

@@ -9,7 +9,7 @@ description = "Two-Step Contextual Enrichment demo"
 authors = [{name = "AutomationOptimization"}]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "streamlit",
     "python-dotenv",
@@ -27,6 +27,7 @@ dependencies = [
     "openai",
     "langchain",
     "faiss-cpu",
+    "structlog",
     "biopython>=1.83",  # for Entrez PubMed
 ]
 
