@@ -73,3 +73,23 @@ def test_download_http_error(tmp_path, monkeypatch, caplog):
         caplog.set_level("ERROR")
         pdf_ingest.ingest_papers([paper], index_dir=str(tmp_path))
         assert any("404" in r.message for r in caplog.records)
+
+
+def test_skip_existing(tmp_path, monkeypatch):
+    class FAISSLoaded(DummyFAISS):
+        @staticmethod
+        def load_local(path, embeddings):
+            return existing
+
+    existing = DummyFAISS()
+    existing.store.metas = [{"title": "t", "url": "u"}]
+
+    monkeypatch.setattr(pdf_ingest, "OpenAIEmbeddings", lambda: types.SimpleNamespace(embed_query=lambda x: x, embedding_size=1))
+    monkeypatch.setattr(pdf_ingest, "FAISS", FAISSLoaded)
+    monkeypatch.setattr(pdf_ingest, "_download_pdf", lambda *a, **kw: (_ for _ in ()).throw(AssertionError("download")))
+    monkeypatch.setattr(pdf_ingest.subprocess, "check_output", lambda *a, **kw: (_ for _ in ()).throw(AssertionError("should not call")))
+    monkeypatch.setattr(pdf_ingest, "requests", real_requests)
+
+    tmp_path.mkdir(exist_ok=True)
+    paper = types.SimpleNamespace(url="u", title="t")
+    pdf_ingest.ingest_papers([paper], index_dir=str(tmp_path))
