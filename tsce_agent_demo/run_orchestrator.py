@@ -7,8 +7,11 @@ conversation history as JSON in the chosen directory.
 """
 from __future__ import annotations
 import argparse, json, os
+from pathlib import Path
 from agents.orchestrator import Orchestrator
 from tsce_agent_demo.tsce_chat import TSCEReply
+import pandas as pd
+from tools import embed_text
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,6 +42,24 @@ def main() -> None:
     out_path = os.path.join(orch.output_dir, "history.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(_serialise(history), f, indent=2)
+
+    # ---- Update memory store -------------------------------------------
+    mem_path = Path("logs/memory.parquet")
+    mem_path.parent.mkdir(exist_ok=True)
+    rows = []
+    for msg in history:
+        text = msg.get("content", "")
+        if not text:
+            continue
+        rows.append({"embedding": embed_text(text), "text": text})
+
+    if rows:
+        df_new = pd.DataFrame(rows)
+        if mem_path.exists():
+            df = pd.read_parquet(mem_path)
+            df_new = pd.concat([df, df_new], ignore_index=True)
+        df_new.to_parquet(mem_path, index=False)
+
     print(f"Run complete. History saved to {out_path}")
 
 
