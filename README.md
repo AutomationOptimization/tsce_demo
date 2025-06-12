@@ -229,6 +229,7 @@ Tool names:
 * ``edit_file`` – overwrite an existing file
 * ``delete_file`` – remove a file
 * ``run_script`` – execute a Python script
+* ``google_search`` — also understands “PUBMED: <query>” for biomedical literature
 
 ---
 
