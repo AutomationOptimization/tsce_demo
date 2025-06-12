@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .base_agent import BaseAgent
+from core.config import get_settings
 
 
 # Prompt injected into every Scientist call to the language model
@@ -24,6 +25,7 @@ class Scientist(BaseAgent):
         log_dir: str | None = None,
     ) -> None:
         super().__init__(name=name, chat=chat, model=model, log_dir=log_dir)
+        self.settings = get_settings()
         # preserve the underlying chat object and expose a method instead
         self._chat = self.chat
         del self.chat

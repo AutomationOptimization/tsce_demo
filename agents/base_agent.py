@@ -4,7 +4,11 @@ from abc import ABC
 import json
 import os
 import re
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Callable
+import functools
+import structlog
+
+from core.logging_setup import setup_logging
 
 from tools import use_tool
 
@@ -15,6 +19,7 @@ class BaseAgent(ABC):
     """Minimal interface for conversational agents using :class:`TSCEChat`."""
 
     def __init__(self, name: str, *, chat: TSCEChat | None = None, model: str | None = None, log_dir: str | None = None) -> None:
+        setup_logging()
         self.name = name
         self.history: List[Dict[str, str]] = []
         self.chat = chat or TSCEChat(model=model)
@@ -22,6 +27,23 @@ class BaseAgent(ABC):
         if log_dir:
             os.makedirs(log_dir, exist_ok=True)
             self.log_file = os.path.join(log_dir, f"{self.name.lower()}_history.log")
+        self._wrap_act()
+
+    def _wrap_act(self) -> None:
+        if hasattr(self, "act"):
+            method = getattr(self, "act")
+            if callable(method) and not getattr(method, "_wrapped", False):
+                logger = structlog.get_logger(self.name)
+
+                @functools.wraps(method)
+                def wrapper(*args, **kwargs):
+                    logger.info("act.start")
+                    result = method(*args, **kwargs)
+                    logger.info("act.end", result=str(result))
+                    return result
+
+                wrapper._wrapped = True
+                setattr(self, "act", wrapper)
 
     # ------------------------------------------------------------------
     def send_message(self, message: str) -> str:
