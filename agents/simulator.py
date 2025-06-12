@@ -59,9 +59,35 @@ class Simulator(BaseAgent):
         return compose_sections("", "", output)
 
     # ------------------------------------------------------------------
-    def act(self, path: str) -> str:
-        """Run ``path`` and return the log file location."""
-        return self.run_simulation(path)
+    def act(self, job: str | dict) -> str | dict:
+        """Execute a simulation ``job`` and return the result.
+
+        Parameters
+        ----------
+        job : str | dict
+            Either a path to a Python script or a job dictionary with a
+            ``"type"`` key describing the action to perform.
+        """
+
+        if isinstance(job, dict):
+            job_type = job.get("type")
+            if job_type == "script":
+                return self.run_simulation(job["path"])
+            elif job_type == "molecule_eval":
+                from rdkit.Chem import Descriptors, MolFromSmiles
+
+                smi = job["smiles"]
+                mol = MolFromSmiles(smi)
+                return {
+                    "MW": Descriptors.MolWt(mol),
+                    "logP": Descriptors.MolLogP(mol),
+                    "TPSA": Descriptors.TPSA(mol),
+                }
+            else:
+                raise ValueError(f"Unknown job type: {job_type}")
+
+        # backward compatibility with ``path`` strings
+        return self.run_simulation(job)
 
     # ------------------------------------------------------------------
     def run_simulation(self, path: str) -> str:

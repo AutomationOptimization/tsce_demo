@@ -29,3 +29,13 @@ def test_run_simulation_moves_log(tmp_path, monkeypatch):
 
     # original results directory should not contain the log
     assert not (Path("results") / Path(log_path).name).exists()
+
+
+def test_molecule_eval_job(monkeypatch):
+    monkeypatch.setattr(base_agent_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(tsce_chat_mod, "TSCEChat", lambda model=None: DummyChat())
+    monkeypatch.setattr(tsce_chat_mod, "_make_client", lambda: ("dummy", object(), ""))
+
+    sim = simulator_mod.Simulator()
+    result = sim.act({"type": "molecule_eval", "smiles": "CCO"})
+    assert set(result) == {"MW", "logP", "TPSA"}
