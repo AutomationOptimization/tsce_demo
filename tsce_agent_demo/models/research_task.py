@@ -19,3 +19,12 @@ class MethodPlan(BaseModel):
 
     steps: List[str] = []
     model_config = ConfigDict(extra="allow")
+
+
+class ResearchTask(BaseModel):
+    """Information about a research goal and related plan."""
+
+    question: str
+    id: str | None = None
+    method_plan: Any | None = None
+    model_config = ConfigDict(extra="allow")
