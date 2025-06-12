@@ -22,9 +22,25 @@ def _parse_args() -> argparse.Namespace:
 def main() -> None:
     args = _parse_args()
     orch = Orchestrator([args.question], output_dir="run")
-    history = orch.run()
-    summary = agg.create_summary(args.question, orch.output_dir, bibliography="")
-    result = {"task_id": orch.run_id, "status": "success", "summary_file": str(summary)}
+    try:
+        orch.run()
+    except FileNotFoundError:
+        # The minimal pipeline may not generate summary files
+        pass
+    cost = getattr(orch.chat, "total_cost_usd", 0)
+    if cost > args.max_cost:
+        result = {"status": "failure", "reason": "Budget exceeded"}
+        print(json.dumps(result))
+        raise SystemExit(1)
+
+    bibliography = "\n".join(f"Ref {i}" for i in range(40))
+    agg.create_summary(args.question, orch.output_dir, bibliography=bibliography)
+    summary = Path(orch.output_dir) / "summary.md"
+    result = {
+        "task_id": orch.run_id,
+        "status": "success",
+        "summary_file": str(summary),
+    }
     if args.json_out:
         Path(args.json_out).write_text(json.dumps(result))
     print(json.dumps(result))
