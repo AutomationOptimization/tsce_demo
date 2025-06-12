@@ -47,7 +47,7 @@ Intuition: Imagine you ask a model, “Summarize this 1,000-word legal brief.”
 | `tsce_agent_demo/run_orchestrator.py` | Command-line interface for the pipeline |
 | `tsce_agent_demo/inspect_tsce_layers.py` | Layer variance tool using transformer-lens |
 | `tsce_agent_demo/tsce_heval_test.py` | Evaluate the HaluEval benchmark |
-| `.env.example` | Copy → `.env`, add your keys. |
+| `.env.example` | Copy → `.env`, add your keys **and edit before committing**. |
 | `prompts/phase1.txt`, `prompts/phase2.txt` | Default templates for each phase |
 | `agents/hypothesis.py` | Record agreed hypothesis and emit `TERMINATE` |
 
@@ -99,6 +99,7 @@ python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 cp .env.example .env          # then edit .env with your creds
+# Update `.env.example` and do not commit your filled-in `.env`
 # If you need a ready-to-use environment, pull the sandbox image:
 ```bash
 docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
@@ -110,7 +111,7 @@ docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
 #### OpenAI Cloud
 
 ```env
-OPENAI_API_KEY=sk-********************************
+OPENAI_API_KEY=your-key-here
 # optional
 OPENAI_ENDPOINT=https://api.openai.com/v1/chat/completions
 MODEL_NAME=gpt-3.5-turbo
