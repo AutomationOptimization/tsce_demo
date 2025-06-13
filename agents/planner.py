@@ -62,3 +62,19 @@ Return ONLY valid JSON matching this schema:
     plan_json = resp.choices[0].message.content
     task.method_plan = MethodPlan.model_validate_json(plan_json)
     return task
+
+
+def plan(step_text: str, retriever, *, k: int = 5) -> List[str]:
+    """Generate a numbered plan for ``step_text`` using retrieval first."""
+    hits = retriever.search(step_text)
+    context = "\n".join(hits[:k])
+    if context:
+        context += "\n" + step_text
+    else:
+        context = step_text
+
+    p = Planner(name="Planner")
+    p.context = context
+    steps = p.act()
+    plan.retriever_hits = len(hits)
+    return steps

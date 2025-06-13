@@ -16,3 +16,4 @@ langchain
 faiss-cpu
 structlog
 biopython>=1.83  # for Entrez PubMed
+opensearch-py
