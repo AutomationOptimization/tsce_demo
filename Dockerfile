@@ -11,6 +11,7 @@ RUN apt-get update && \
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir selfies tqdm
 
 COPY . .
 RUN chmod +x scripts/start-opensearch.sh

@@ -15,6 +15,9 @@ from .file_read import ReadFileTool
 from .file_edit import EditFileTool
 from .file_delete import DeleteFileTool
 from .run_script import RunScriptTool
+from .chemvae import ChemVAE
+from .scoring import score_batch
+from .report import create_report
 from .literature_search.arxiv import ArxivSearch
 from .literature_search.pubmed import PubMedSearch
 import os
@@ -49,6 +52,7 @@ TOOL_CLASSES = {
     "edit_file": EditFileTool,
     "delete_file": DeleteFileTool,
     "run_script": RunScriptTool,
+    "chemvae": ChemVAE,
 }
 
 
@@ -92,7 +96,11 @@ __all__ = [
     "EditFileTool",
     "DeleteFileTool",
     "RunScriptTool",
+    "ChemVAE",
     "use_tool",
     "memory_search",
     "embed_text",
+    "ChemVAE",
+    "score_batch",
+    "create_report",
 ]
