@@ -35,5 +35,11 @@ def mock_tsce_chat(monkeypatch):
     dummy = DummyChat()
     _install(monkeypatch, dummy)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_KEY", "test-key")
     return dummy
+
+
+@pytest.fixture(autouse=True)
+def set_dummy_key(monkeypatch):
+    monkeypatch.setenv("OPENAI_KEY", "test-key")
 

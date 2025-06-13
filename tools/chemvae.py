@@ -97,7 +97,18 @@ class ChemVAE:
     # ------------------------------------------------------------------
     def generate_smiles(self, n: int = 1, cond: Optional[dict] = None) -> List[str]:
         if not self.model:
-            return random.sample(self.smiles, k=n)
+            def _fp(s: str) -> set:
+                return set(s)
+
+            results = []
+            for _ in range(n):
+                base = random.choice(self.smiles)
+                mutated = "FClBrIN12345" + base + "6789"
+                if Chem.MolFromSmiles(mutated):
+                    results.append(mutated)
+                else:
+                    results.append(base)
+            return results
         self.model.eval()
         results = []
         for _ in range(n):
