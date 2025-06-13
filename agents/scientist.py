@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from .base_agent import BaseAgent
 from core.config import get_settings
+import json
+from tools import ChemVAE
 
 
 # Prompt injected into every Scientist call to the language model
@@ -11,6 +13,22 @@ SYSTEM_PROMPT = (
     "\u2022 inspect MeSH terms from the returned JSON\n"
     "\u2022 rank findings by in-vitro potency (IC50) and drug-likeness"
 )
+
+# Tools available to the Scientist via JSON function calls
+TOOLS = {
+    "generate_molecules": {
+        "name": "generate_molecules",
+        "description": "Generate SMILES strings via a ChemVAE model",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "n": {"type": "integer", "minimum": 1, "default": 1},
+                "cond": {"type": "object"},
+            },
+            "required": ["n"],
+        },
+    }
+}
 
 
 class Scientist(BaseAgent):
@@ -109,3 +127,27 @@ class Scientist(BaseAgent):
 
             self.history.append({"role": "scientist", "content": step})
             self.history.append({"role": "researcher", "content": str(result)})
+
+    # ------------------------------------------------------------------
+    def act(self, prompt: str) -> str:
+        """Send ``prompt`` to the model and execute tool calls."""
+        reply = self._chat([
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": prompt},
+        ]).content
+        try:
+            data = json.loads(reply)
+        except Exception:
+            self.history.append({"role": "scientist", "content": reply})
+            return reply
+        tool = data.get("tool")
+        args = data.get("args", {})
+        if tool == "generate_molecules":
+            n = int(args.get("n", 1))
+            cond = args.get("cond")
+            smi = ChemVAE().generate_smiles(n, cond)
+            result = "\n".join(smi)
+        else:
+            result = reply
+        self.history.append({"role": "scientist", "content": result})
+        return result

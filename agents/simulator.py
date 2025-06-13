@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import time
 import shutil
+import os
 
 from .base_agent import BaseAgent, compose_sections
 
@@ -107,6 +108,18 @@ class Simulator(BaseAgent):
                 pass
         log_path = str(dest)
         self.history.append(log_path)
+
+        try:
+            from tools.scoring import score_batch
+            receptor = os.getenv("RECEPTOR_PDBQT", "")
+            if receptor and Path(receptor).exists():
+                for smi_file in self.output_dir.glob("*.smi"):
+                    smiles = [l.strip() for l in smi_file.read_text().splitlines() if l.strip()]
+                    if smiles:
+                        df = score_batch(smiles, receptor)
+                        df.to_csv(smi_file.with_name("scored.csv"), index=False)
+        except Exception:
+            pass
         return log_path
 
 

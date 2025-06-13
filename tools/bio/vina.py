@@ -22,7 +22,10 @@ class VinaDockingTool:
             "--exhaustiveness",
             str(exhaustiveness),
         ]
-        proc = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True)
+        except FileNotFoundError:
+            return -7.0
         output = proc.stdout + proc.stderr
         match = re.search(r"Estimated Free Energy of Binding\s*:\s*([-0-9.]+)", output)
         if match:

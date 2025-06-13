@@ -5,6 +5,7 @@ import os
 import re
 import uuid
 import shutil
+from pathlib import Path
 from dataclasses import dataclass, field
 from collections import deque
 import warnings
@@ -305,6 +306,13 @@ class Orchestrator:
                     if self.stages.get("judge"):
                         self.judge_panel.vote_until_unanimous(result["summary"])
                         self.history.append({"role": "judge_panel", "content": "approved"})
+                        scored = Path(self.output_dir) / "scored.csv"
+                        if scored.exists():
+                            import pandas as pd
+                            from tools.report import create_report
+                            df = pd.read_csv(scored)
+                            rep = create_report(df, self.output_dir)
+                            self.history.append({"role": "report", "content": str(rep)})
                     if result.get("success"):
                         queue.clear()
                         break

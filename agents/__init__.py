@@ -8,6 +8,7 @@ from .researcher import Researcher
 from .script_writer import ScriptWriter
 from .script_qa import ScriptQA
 from .simulator import Simulator
+from .evolver import Evolver
 from .evaluator import Evaluator
 from .final_qa import FinalQA
 from .judge import Judge, JudgePanel
@@ -23,6 +24,7 @@ __all__ = [
     "ScriptWriter",
     "ScriptQA",
     "Simulator",
+    "Evolver",
     "Evaluator",
     "FinalQA",
     "Judge",
