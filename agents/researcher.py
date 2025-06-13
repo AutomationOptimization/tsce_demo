@@ -57,9 +57,26 @@ class Researcher(BaseAgent):
         return formatted
 
     # Convenience wrappers -------------------------------------------------
-    def search(self, query: str) -> str:
-        """Return top Google results for ``query`` and log the call."""
-        result = self.search_tool(query)
+    def search(self, query: str, *, backend: str | None = None):
+        """Return search results for ``query`` using the selected backend."""
+        backend = backend or os.getenv("SEARCH_BACKEND", "google").lower()
+        if backend == "opensearch":
+            from opensearchpy import OpenSearch
+            from tools import embed_text
+
+            host = os.getenv("OPENSEARCH_HOST", "localhost")
+            index = os.getenv("OPENSEARCH_INDEX", "pubmed_fibrosis")
+            client = OpenSearch([{"host": host, "port": 9200}])
+            vec = embed_text(query)
+            body = {
+                "size": 5,
+                "query": {"knn": {"embedding": {"vector": vec, "k": 5}}},
+            }
+            resp = client.search(index=index, body=body)
+            result = [h["_source"]["abstract"] for h in resp["hits"]["hits"]]
+        else:
+            result = self.search_tool(query)
+
         self.history.append(f"search({query!r}) -> {result!r}")
         return result
 

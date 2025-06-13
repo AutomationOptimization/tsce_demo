@@ -103,6 +103,8 @@ cp .env.example .env          # then edit .env with your creds
 # If you need a ready-to-use environment, pull the sandbox image:
 ```bash
 docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
+# GPU-enabled image
+docker run --rm -it --gpus all ghcr.io/<owner>/tsce_demo_gpu:latest
 ```
 ---
 
@@ -232,6 +234,10 @@ Tool names:
 * ``delete_file`` – remove a file
 * ``run_script`` – execute a Python script
 * ``google_search`` — also understands “PUBMED: <query>” for biomedical literature
+* ``docking`` – AutoDock Vina binding energy
+* ``qsar`` – toy Tox21 predictor
+* ``pubmed_search`` – fetch PubMed abstracts
+* ``chembl_lookup`` – query ChEMBL
 
 ---
 
