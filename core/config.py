@@ -1,25 +1,28 @@
 from functools import lru_cache
-from pydantic import ValidationError
-from pydantic_settings import BaseSettings
+import os
 
-class Settings(BaseSettings):
-    """Central runtime configuration loaded from environment variables."""
-    openai_key: str
-    openai_endpoint: str | None = None
-    model_name: str = "gpt-3.5-turbo"
-    log_dir: str = "logs"
+try:
+    from pydantic import ValidationError  # type: ignore
+    from pydantic_settings import BaseSettings  # type: ignore
+except ModuleNotFoundError:  # pragma: no cover - optional dependency
+    ValidationError = Exception
 
-    class Config:
-        env_file = ".env"
+class Settings:
+    """Minimal runtime configuration loaded from environment variables."""
+
+    def __init__(self) -> None:
+        self.openai_key = os.getenv("OPENAI_KEY") or os.getenv("OPENAI_API_KEY")
+        self.openai_endpoint = os.getenv("OPENAI_ENDPOINT")
+        self.model_name = os.getenv("MODEL_NAME", "gpt-3.5-turbo")
+        self.log_dir = os.getenv("LOG_DIR", "logs")
+        if not self.openai_key:
+            msg = (
+                "Missing required configuration. Ensure OPENAI_KEY is set in your"
+                " environment or .env file."
+            )
+            raise EnvironmentError(msg)
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Return cached application settings."""
-    try:
-        return Settings()
-    except ValidationError as exc:
-        msg = (
-            "Missing required configuration. Ensure OPENAI_KEY is set in your"
-            " environment or .env file."
-        )
-        raise EnvironmentError(msg) from exc
+    return Settings()

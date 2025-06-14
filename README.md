@@ -98,6 +98,7 @@ cd tsce_agent_demo
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
+# or: export PYTHONPATH=$PWD
 cp .env.example .env          # then edit .env with your creds
 # Update `.env.example` and do not commit your filled-in `.env`
 # If you need a ready-to-use environment, pull the sandbox image:
@@ -105,6 +106,8 @@ cp .env.example .env          # then edit .env with your creds
 docker run --rm -it ghcr.io/<owner>/tsce_sandbox:latest
 # GPU-enabled image
 docker run --rm -it --gpus all ghcr.io/<owner>/tsce_demo_gpu:latest
+docker compose up --build                # local run
+docker compose -f docker-compose.ci.yml up --build   # in CI
 ```
 ---
 

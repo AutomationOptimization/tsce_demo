@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  cpu:
+    build: .
+    command: pytest -q
+  gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    runtime: nvidia
+    command: pytest -q -m "not cpu_only"

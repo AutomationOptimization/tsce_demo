@@ -9,7 +9,15 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     torch = None
     nn = None
-from selfies import encoder as sf_encode, decoder as sf_decode
+
+try:
+    from selfies import encoder as sf_encode, decoder as sf_decode
+except Exception:  # pragma: no cover - optional dependency
+    def sf_encode(s: str) -> str:
+        return s
+
+    def sf_decode(s: str) -> str:
+        return s
 from rdkit import Chem
 
 
