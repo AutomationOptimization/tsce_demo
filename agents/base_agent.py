@@ -6,7 +6,11 @@ import os
 import re
 from typing import Any, Dict, List, Tuple, Callable
 import functools
-import structlog
+import logging
+try:
+    import structlog
+except ModuleNotFoundError:  # pragma: no cover - optional dependency
+    structlog = None
 
 from core.logging_setup import setup_logging
 
@@ -33,7 +37,10 @@ class BaseAgent(ABC):
         if hasattr(self, "act"):
             method = getattr(self, "act")
             if callable(method) and not getattr(method, "_wrapped", False):
-                logger = structlog.get_logger(self.name)
+                if structlog:
+                    logger = structlog.get_logger(self.name)
+                else:  # fallback
+                    logger = logging.getLogger(self.name)
 
                 @functools.wraps(method)
                 def wrapper(*args, **kwargs):
