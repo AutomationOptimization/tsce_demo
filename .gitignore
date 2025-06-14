@@ -8,3 +8,4 @@ __pycache__/
 
 results/*
 !results/README.md
+tsce_agent_demo.egg-info/
