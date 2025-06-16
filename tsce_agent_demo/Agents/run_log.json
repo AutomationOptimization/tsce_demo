@@ -1,0 +1,35 @@
+{
+  "prompt": "Write me a script that uses gpt through azure openai to first scrape a webpage, then summarize it given the url",
+  "few_shots": [
+    "few_shot_1.txt"
+  ],
+  "start_time": "2025-06-05T15:54:51+00:00",
+  "events": [
+    {
+      "time": "2025-06-05T15:54:51+00:00",
+      "level": "INFO",
+      "message": "Added few\u2011shot exemplars",
+      "data": {
+        "count": 1
+      }
+    },
+    {
+      "time": "2025-06-05T15:54:51+00:00",
+      "level": "INFO",
+      "message": "Requesting completion via TSCEChat"
+    },
+    {
+      "time": "2025-06-05T15:54:58+00:00",
+      "level": "INFO",
+      "message": "Saved generated code",
+      "data": {
+        "path": "scrape_and_summarize03.py",
+        "bytes": 1568
+      }
+    }
+  ],
+  "status": "success",
+  "output": "scrape_and_summarize03.py",
+  "latency_s": 7.0,
+  "end_time": "2025-06-05T15:54:58+00:00"
+}

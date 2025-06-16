@@ -1,0 +1,235 @@
+#!/usr/bin/env python3
+"""
+summarize_url_agent.py  ·  multimodal scraper + TSCE summary + JSON log (v2)
+=====================================================================
+- **JSON‑first output**: prints a single pretty‑formatted JSON object to
+  stdout that mirrors the log line *and* includes the model’s summary.
+- **Screenshot filename hardening**: each run saves its screenshot as
+  `screenshot_<UTC‑TIMESTAMP>_<8‑char‑RAND>.png`, preventing collisions.
+
+Schema *(fields may expand in future)*::
+
+    {
+      "ts": "2025-06-05T21:15:17.123Z",  # ISO‑8601 UTC
+      "url": "https://…",                # page scraped
+      "instruction": "…",                # user prompt (truncated to 200 chars)
+      "chars": 13111,                     # characters extracted from HTML
+      "screenshot": "…/screenshot_20250605T211517Z_beefcafe.png",
+      "summary_tokens": 243,              # len(tiktoken.encode(summary))
+      "latency_s": 8.42,                  # wall‑clock runtime
+      "summary": "One‑paragraph recap …"  # ⬅ NEW
+    }
+"""
+from __future__ import annotations
+
+import base64
+import datetime as _dt
+import json
+import logging
+import mimetypes
+import os
+import sys
+import textwrap
+import uuid
+from pathlib import Path
+from time import perf_counter
+from typing import Iterable
+
+import requests
+from bs4 import BeautifulSoup
+from openai import AzureOpenAI
+import tiktoken
+from playwright.sync_api import sync_playwright
+from tsce_chat import TSCEChat
+
+###############################################################################
+# JSON logger (one‑liner formatter)
+###############################################################################
+
+def _setup_logger(path: str = "summarize_url.log") -> logging.Logger:
+    logger = logging.getLogger("summarize_url")
+    logger.setLevel(logging.INFO)
+    if not logger.handlers:
+        h = logging.FileHandler(path)
+        h.setFormatter(logging.Formatter("%(message)s"))  # raw JSON line
+        logger.addHandler(h)
+    return logger
+
+LOG = _setup_logger()
+
+###############################################################################
+# Deployment → model mapping for tiktoken
+###############################################################################
+
+DEPLOYMENT_TO_MODEL = {
+    "gpt-4.1-mini-2": "gpt-4o",
+    "my-gpt35":       "gpt-3.5-turbo",
+}
+DEFAULT_FALLBACK_ENCODER = "cl100k_base"
+
+
+def _encoder_for(deployment: str):
+    model_name = DEPLOYMENT_TO_MODEL.get(deployment, deployment)
+    try:
+        return tiktoken.encoding_for_model(model_name)
+    except KeyError:
+        return tiktoken.get_encoding(DEFAULT_FALLBACK_ENCODER)
+
+###############################################################################
+# Scraping helpers
+###############################################################################
+
+def scrape_url(url: str, *, timeout: int = 15) -> str:
+    resp = requests.get(url, timeout=timeout)
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    for tag in soup(["script", "style", "noscript", "header", "footer", "nav"]):
+        tag.extract()
+    return " ".join(soup.stripped_strings)
+
+###############################################################################
+# Screenshot helpers (Playwright)
+###############################################################################
+
+def screenshot_url(url: str, *, path: str | Path, viewport=(1280, 800)) -> str:
+    """Capture a full‑page screenshot and return the file path."""
+    path = Path(path)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": viewport[0], "height": viewport[1]})
+        page.goto(url, timeout=30_000)
+        page.screenshot(path=str(path), full_page=True)
+        browser.close()
+    return str(path)
+
+
+def image_file_to_data_uri(path: str | Path) -> str:
+    mime = mimetypes.guess_type(str(path))[0] or "image/png"
+    with open(path, "rb") as fh:
+        b64 = base64.b64encode(fh.read()).decode()
+    return f"data:{mime};base64,{b64}"
+
+###############################################################################
+# Token helpers
+###############################################################################
+
+def split_into_chunks(text: str, *, deployment: str, max_tokens: int = 7000):
+    enc = _encoder_for(deployment)
+    tokens = enc.encode(text)
+    for i in range(0, len(tokens), max_tokens):
+        yield enc.decode(tokens[i : i + max_tokens])
+
+###############################################################################
+# Azure OpenAI client (v1 style)
+###############################################################################
+
+def get_client() -> AzureOpenAI:
+    try:
+        return AzureOpenAI(
+            api_key=os.environ["AZURE_OPENAI_KEY_C"],
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+            azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT_C"],
+        )
+    except KeyError as miss:
+        sys.exit(f"Missing environment variable: {miss}")
+
+###############################################################################
+# Summarisation logic (multimodal via TSCE)
+###############################################################################
+
+def summarize_with_vision(
+    client: AzureOpenAI,
+    *,
+    text: str,
+    screenshot_path: str,
+    instruction: str,
+    deployment: str,
+) -> str:
+    tsce = TSCEChat(client=client, model=deployment)
+    text_excerpt = text[:15_000]
+
+    reply = tsce([
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": (
+                        f"{instruction}\n\n(First the page text, after you read it and internalized it reply with .,88'\"88,.. Then you'll be given the full-page screenshot.)"
+                    ),
+                },
+                {"type": "text", "text": text_excerpt},
+            ]
+        },
+        {
+            "role": "assistant",
+            "content": [
+                {"type": "text", "text": ".,88'\"88,."},
+            ]
+        },
+        {
+            "role": "user",
+            "content": [
+                {"type": "image_url", "image_url": {"url": image_file_to_data_uri(screenshot_path)}},
+            ]
+        }
+    ])
+    return reply.content.strip()
+
+###############################################################################
+# CLI entry‑point
+###############################################################################
+
+def main() -> None:
+    if len(sys.argv) < 3:
+        sys.exit("Usage: python summarize_url.py <URL> \"<summary instruction>\"")
+
+    url, instruction = sys.argv[1], " ".join(sys.argv[2:])
+    deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_C", "gpt-4o")
+    client = get_client()
+
+    t0 = perf_counter()
+
+    # 1. Scrape
+    print(f"Scraping {url} …", file=sys.stderr)
+    text = scrape_url(url)
+    print(f"Extracted {len(text):,} characters.", file=sys.stderr)
+
+    # 2. Screenshot with unique name ------------------------------------------------
+    shot_name = f"screenshot_{_dt.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}_{uuid.uuid4().hex[:8]}.png"
+    print("Capturing screenshot …", file=sys.stderr)
+    shot_path = screenshot_url(url, path=shot_name)
+    print(f"Saved screenshot to {shot_path}.", file=sys.stderr)
+
+    # 3. Summarise
+    print("Generating summary …", file=sys.stderr)
+    summary = summarize_with_vision(
+        client,
+        text=text,
+        screenshot_path=shot_path,
+        instruction=instruction,
+        model=deployment,
+    )
+
+    # 4. Build JSON output ----------------------------------------------------------
+    enc = _encoder_for(deployment)
+    summary_tokens = len(enc.encode(summary))
+    log_entry = {
+        "ts": _dt.datetime.utcnow().isoformat(timespec="milliseconds") + "Z",
+        "url": url,
+        "instruction": instruction[:200],
+        "chars": len(text),
+        "screenshot": shot_path,
+        "summary_tokens": summary_tokens,
+        "latency_s": round(perf_counter() - t0, 2),
+        "summary": summary,
+    }
+
+    # 5. Persist & echo -------------------------------------------------------------
+    LOG.info(json.dumps(log_entry, ensure_ascii=False))
+    print(json.dumps(log_entry, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

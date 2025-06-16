@@ -163,6 +163,15 @@ def _draw_progress() -> None:
     sys.stderr.flush()
     _first_draw = False
 
+def _parse_rfc3339(ts: str) -> datetime:
+    """
+    Accepts both “…Z” and “…±HH:MM” offsets.
+    Returns a *naive* datetime (UTC trimmed).
+    """
+    if ts.endswith("Z") or ts.endswith("z"):
+        ts = ts[:-1] + "+00:00"
+    return datetime.fromisoformat(ts).replace(tzinfo=None)
+
 # ──────────────────────────────────────────────────────────────
 # Utility: token length via tiktoken (works for GPT + rough for Llama)
 # ──────────────────────────────────────────────────────────────
@@ -281,10 +290,13 @@ WINDOW_DAYS = 14
 PERIODS = {"morning": (9, 12), "afternoon": (13, 17)}
 PEEPS = ["alice", "bob", "carlos", "diana", "maria", "sam"]
 CORE_INSTR = (
-    "Output ONE-LINE JSON exactly like: "
-    '{"action":"create_event","title":<str>,"participants":[<email>,…],"duration_min":<int>,"earliest":<RFC3339>,"latest":<RFC3339>}'
-    " (earliest/latest span ≤ duration+15 min, no extra keys or text)."
+     "Output ONE-LINE JSON exactly like: "
+    '{"action":"create_event","title":<str>,"participants":[<email>,…],'
+    '"duration_min":<int>,"earliest":<RFC3339>,"latest":<RFC3339>} '
+    "— make sure (latest – earliest) ≤ duration_min + 15 min **and** the whole window is free of conflicts. "
+    "Return ONLY the JSON; no extra keys, commentary, or line breaks."
 )
+
 def make_calendar() -> Tuple[str, List[Tuple[datetime, datetime]], int]:
     dur = random.choice([30, 45, 60])
     day = NOW + timedelta(days=random.randint(1, WINDOW_DAYS))
@@ -439,8 +451,7 @@ def generate_task(kind: str) -> Tuple[str, str, Any, Dict[str, Any]]:
         ans = int(float(rec["target"]))  # target stored as float
         return q, "math", ans, {}
 
-    # 3) Otherwise, decide whether to pick a sub‐kind automatically or force whatever the user chose
-    #    (if TASK_KIND != "auto", then pick==kind; if TASK_KIND=="auto", pick is random among these six)
+    # 3) Otherwise, decide whether to pick a sub‐kind automatically or force whatever the user chose(if TASK_KIND != "auto", then pick==kind; if TASK_KIND=="auto", pick is random among these six)
     pick = (kind if kind != "auto"
             else random.choice(
                 ["math", "calendar", "gsm8k", "gsm_hard", "schema", "md2latex"]
@@ -489,8 +500,6 @@ def generate_task(kind: str) -> Tuple[str, str, Any, Dict[str, Any]]:
         return p, "md2latex", raw, {}
 
     # 5) Fallback: if for some reason `pick` was none of the above,
-    #    generate a “formatting” task (this branch should only fire
-    #    if you explicitly want a formatting prompt, not under “auto”).
     p, key, raw = make_formatting()
     return p, "formatting", (key, raw), {}
 
@@ -508,18 +517,20 @@ def extract_json(txt:str)->Optional[Dict[str,Any]]:
 _naive=lambda dt:dt.replace(tzinfo=None)
 def tight(p):                                   # calendar
     try:
-        dur=int(p["duration_min"])
-        s=_naive(datetime.fromisoformat(p["earliest"]))
-        e=_naive(datetime.fromisoformat(p["latest"]))
-        return e-s<=timedelta(minutes=dur+15)
-    except: return False
+        dur = int(p["duration_min"])
+        s   = _parse_rfc3339(p["earliest"])
+        e   = _parse_rfc3339(p["latest"])
+        return e - s <= timedelta(minutes=dur + 15)
+    except Exception:
+        return False
 def slot_free(p,busy):
     try:
-        dur=int(p["duration_min"])
-        s=_naive(datetime.fromisoformat(p["earliest"]))
-        e=_naive(datetime.fromisoformat(p["latest"]))
-    except: return False
-    busy=[(_naive(b0),_naive(b1)) for b0,b1 in busy]
+        dur = int(p["duration_min"])
+        s   = _parse_rfc3339(p["earliest"])
+        e   = _parse_rfc3339(p["latest"])
+    except Exception:
+        return False
+    busy = [(_naive(b0), _naive(b1)) for b0, b1 in busy]
     cur=s
     while cur+timedelta(minutes=dur)<=e:
         if all(cur+timedelta(minutes=dur)<=b0 or cur>=b1 for b0,b1 in busy):
@@ -955,7 +966,7 @@ a single-line JSON object using the exact format `{{"result": <integer>}}`.
 
 def solve_one(i: int, total: int) -> Row:
     problem, kind, truth, meta = generate_task(TASK_KIND)
-    prompt = PROMPT_MATH.format(problem=problem) if kind == "math" else problem
+    prompt = problem
 
     # ──────────────────────────────────────────────────────
     #  run the 6 strategies *concurrently*  (one per future)
