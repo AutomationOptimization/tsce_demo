@@ -58,7 +58,7 @@ Compressing natural language always risks dropping nuance, but our benchmarks sh
 
 ---
 
-### Benchmarks & Latest Results <a name="benchmarks--latest-results"></a>
+### Benchmarks & Latest Results (Trends hold across more than 10,000 prompt/response pairs)<a name="benchmarks--latest-results"></a>
 
 | Model | Task Suite | One-Shot | **TSCE** | Token × |
 |------|-------------|---------|-------|--------|
