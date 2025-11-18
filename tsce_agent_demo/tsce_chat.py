@@ -18,6 +18,7 @@ Released under MIT License.
 from __future__ import annotations
 import json
 import os
+import sys
 import time
 from types import SimpleNamespace
 from typing import Any, List, Sequence, Dict, Union, Literal
@@ -279,7 +280,6 @@ class TSCEChat:
         if raw_final is None:
             # dump the entire response and the messages we sent:
             print("⚠️ [TSCE DEBUG] final_resp was filtered or empty!", file=sys.stderr)
-            import json, sys
             print("==== messages sent to model ====", file=sys.stderr)
             print(json.dumps(final_msg, indent=2)[:2000], file=sys.stderr)
             print("==== raw API response ====", file=sys.stderr)
