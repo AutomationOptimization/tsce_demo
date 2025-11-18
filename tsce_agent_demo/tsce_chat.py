@@ -245,13 +245,16 @@ class TSCEChat:
         if not any(m["role"] == "user" for m in chat):
             raise ValueError("Chat must contain at least one 'user' message.")
 
-        phase2_stub_body = self._phase2_body_stub(chat)
+        phase2_body_no_anchor = json.dumps(
+            [{"role": "system", "content": self._final_system_prompt("")}] + chat,
+            ensure_ascii=False,
+        )
         anchor_text: str | None = None
         anchor_model: str | None = None
 
         if ANCHOR_ENDPOINT:
             try:
-                anchor_text, anchor_model = _request_external_anchor(phase2_stub_body)
+                anchor_text, anchor_model = _request_external_anchor(phase2_body_no_anchor)
                 if anchor_model is None:
                     anchor_model = "external-anchor"
             except Exception as exc:
@@ -261,15 +264,7 @@ class TSCEChat:
             anchor_text, anchor_model = self._local_anchor(chat)
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
-        final_sys_content = (
-            SECOND_PASS_BRIEF
-            +
-            anchor_text +
-            "##END Embedding Space Control Prompt##\n"
-            +
-            "Continue with primary directive below:\n\n"
-            + self.final_prefix
-        )
+        final_sys_content = self._final_system_prompt(anchor_text)
         final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat
         final_resp = self._completion(
         final_msg,
@@ -325,18 +320,14 @@ class TSCEChat:
         anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
         return anchor_text, anchor_resp.get("model")
 
-    def _phase2_body_stub(self, chat: Chat) -> str:
-        """Create a JSON string representing the phase 2 body without the anchor."""
-        stubbed_system = (
+    def _final_system_prompt(self, anchor_text: str = "") -> str:
+        """Return the full system prompt used in phase 2, inserting `anchor_text`."""
+        return (
             SECOND_PASS_BRIEF
-            + "<<TSCE_EXTERNAL_ANCHOR>>"
+            + (anchor_text or "")
             + "##END Embedding Space Control Prompt##\n"
             + "Continue with primary directive below:\n\n"
             + self.final_prefix
-        )
-        return json.dumps(
-            [{"role": "system", "content": stubbed_system}] + chat,
-            ensure_ascii=False,
         )
 
     # ------------------------------------------------------------------
