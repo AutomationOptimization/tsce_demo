@@ -246,9 +246,19 @@ class TSCEChat:
             raise ValueError("Chat must contain at least one 'user' message.")
 
         phase2_stub_body = self._phase2_body_stub(chat)
-        anchor_text, anchor_model = _request_external_anchor(phase2_stub_body)
-        if anchor_model is None:
-            anchor_model = "external-anchor"
+        anchor_text: str | None = None
+        anchor_model: str | None = None
+
+        if ANCHOR_ENDPOINT:
+            try:
+                anchor_text, anchor_model = _request_external_anchor(phase2_stub_body)
+                if anchor_model is None:
+                    anchor_model = "external-anchor"
+            except Exception as exc:
+                print(f"⚠️ [TSCE] external anchor call failed ({exc}); falling back to local generation.")
+
+        if not anchor_text:
+            anchor_text, anchor_model = self._local_anchor(chat)
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
@@ -298,6 +308,22 @@ class TSCEChat:
                           anchor_model=anchor_model, final_model=final_model)
         reply.logprobs = lp           # benchmark picks this up via getattr
         return reply
+
+    def _local_anchor(self, chat: Chat) -> tuple[str, str | None]:
+        """Fallback anchor generation using the configured OpenAI/Azure backend."""
+        anchor_msg: Chat = (
+            [{"role": "system", "content": self.anchor_prompt}] +
+            chat +
+            [{"role": "user", "content": anchor_footer}]
+        )
+        anchor_resp = self._completion(
+            anchor_msg,
+            temperature=0.1,   # high temperature → creative
+            top_p=0.01,        # wide nucleus → exploration
+            max_tokens=500,
+        )
+        anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
+        return anchor_text, anchor_resp.get("model")
 
     def _phase2_body_stub(self, chat: Chat) -> str:
         """Create a JSON string representing the phase 2 body without the anchor."""
