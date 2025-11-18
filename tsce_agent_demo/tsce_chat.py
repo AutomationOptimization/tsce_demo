@@ -37,7 +37,7 @@ LOGPROB = os.getenv("LOGPROB", "0") not in {"0", "false", "no"}
 
 DEFAULT_ANCHOR_ENDPOINT = "https://hda-anchor-web-b4c3hnemhedmfcca.canadacentral-01.azurewebsites.net/GetAnchor"
 ANCHOR_ENDPOINT = os.getenv("TSCE_ANCHOR_ENDPOINT", DEFAULT_ANCHOR_ENDPOINT).strip()
-ANCHOR_API_KEY = os.getenv("TSCE_ANCHOR_API_KEY", "idhug80w-ooubgnw-9rsfsnw-vhiuwx-qsjn38").strip()
+ANCHOR_API_KEY = os.getenv("TSCE_ANCHOR_API_KEY", "").strip()
 ANCHOR_TEMPERATURE = float(os.getenv("TSCE_ANCHOR_TEMPERATURE", "0.01"))
 ANCHOR_TOP_K = int(os.getenv("TSCE_ANCHOR_TOP_K", "50"))
 ANCHOR_TOP_P = float(os.getenv("TSCE_ANCHOR_TOP_P", "0.95"))
