@@ -16,7 +16,9 @@ plus the hidden *anchor* produced in phase 1.
 Released under MIT License.
 """
 from __future__ import annotations
-import os, time
+import json
+import os
+import time
 from types import SimpleNamespace
 from typing import Any, List, Sequence, Dict, Union, Literal
 try:
@@ -28,8 +30,18 @@ except ModuleNotFoundError as exc:
     ) from exc
 
 # ── New: backend discriminator ------------------------------------------------
+import requests
+
 Backend = Literal["openai", "azure", "ollama"]
 LOGPROB = os.getenv("LOGPROB", "0") not in {"0", "false", "no"}
+
+DEFAULT_ANCHOR_ENDPOINT = "https://hda-anchor-web-b4c3hnemhedmfcca.canadacentral-01.azurewebsites.net/GetAnchor"
+ANCHOR_ENDPOINT = os.getenv("TSCE_ANCHOR_ENDPOINT", DEFAULT_ANCHOR_ENDPOINT).strip()
+ANCHOR_API_KEY = os.getenv("TSCE_ANCHOR_API_KEY", "").strip()
+ANCHOR_TEMPERATURE = float(os.getenv("TSCE_ANCHOR_TEMPERATURE", "0.01"))
+ANCHOR_TOP_K = int(os.getenv("TSCE_ANCHOR_TOP_K", "50"))
+ANCHOR_TOP_P = float(os.getenv("TSCE_ANCHOR_TOP_P", "0.95"))
+ANCHOR_MAX_NEW_TOKENS = int(os.getenv("TSCE_ANCHOR_MAX_NEW_TOKENS", "400"))
 
 # ----------------------------------------------------------------------
 # Helper: recursively turn dict→object so callers can use `.attr` access
@@ -73,90 +85,52 @@ def _make_client() -> tuple[Backend, object, str]:
     return "openai", openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY")), ""
 
 
+def _request_external_anchor(phase2_body: str) -> tuple[str, str | None]:
+    """Call the external anchor service and return (anchor_text, model_name)."""
+    if not ANCHOR_ENDPOINT:
+        raise RuntimeError("External anchor endpoint is not configured.")
+
+    headers = {"Content-Type": "application/json"}
+    if ANCHOR_API_KEY:
+        headers["X-API-KEY"] = ANCHOR_API_KEY
+
+    payload = {
+        "prompt": phase2_body,
+        "temperature": ANCHOR_TEMPERATURE,
+        "top_k": ANCHOR_TOP_K,
+        "top_p": ANCHOR_TOP_P,
+        "max_new_tokens": ANCHOR_MAX_NEW_TOKENS,
+    }
+
+    resp = requests.post(ANCHOR_ENDPOINT, json=payload, headers=headers, timeout=120)
+    resp.raise_for_status()
+
+    try:
+        data = resp.json()
+    except ValueError as exc:  # invalid JSON
+        raise RuntimeError("Anchor endpoint returned non-JSON data") from exc
+
+    anchor_text: str | None = None
+    anchor_model: str | None = None
+    if isinstance(data, dict):
+        for key in ("anchor", "content", "response", "text", "output"):
+            candidate = data.get(key)
+            if candidate:
+                anchor_text = candidate
+                break
+        anchor_model = data.get("model")
+    elif isinstance(data, str):
+        anchor_text = data
+
+    if not anchor_text:
+        raise RuntimeError("Anchor endpoint response did not include anchor text")
+
+    return anchor_text.strip(), anchor_model
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Default system prompts (unchanged from original)
 # ─────────────────────────────────────────────────────────────────────────────
-DEFAULT_ANCHOR_TEMPLATE = (
-   "------------------------------------------------------------------\n"
-    "ESCP-Forge — Embedding-Space Control Prompt (ESCP)\n"
-    "\n"
-    "PHASE 1  ·  THEORETICAL GROUNDING\n"
-    "---------------------------------\n"
-    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
-    "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
-    "This template instantiates the *anchor-construction* stage of a Two-Step\n"
-    "Contextual Enrichment (TSCE) pipeline.  An ESCP is a dense, high-entropy\n"
-    "token stream engineered to:\n"
-    "  • Span orthogonal, high-norm regions of the universal embedding\n"
-    "    geometry, enabling model-agnostic transfer.:contentReference[oaicite:0]{index=0}\n"
-    "  • Exploit gradient-guided trigger search to maximise Δlogit across\n"
-    "    layers while remaining input-agnostic.:contentReference[oaicite:1]{index=1}\n"
-    "  • Reinforce latent-space reasoning by feeding the same vector back to\n"
-    "    the model, as shown in continuous-thought and latent-action work.:contentReference[oaicite:2]{index=2}\n"
-    "  • Increase objective-space entropy (cross-entropy estimator) so that\n"
-    "    downstream decoding explores a larger but centred simplex.:contentReference[oaicite:3]{index=3}\n"
-    "  • Avoid gibberish-collapse and backdoor triggers by constraining\n"
-    "    repetition and banning invisible characters.:contentReference[oaicite:4]{index=4}\n"
-    "  • Preserve controllability hooks for plug-and-play or RL controllers\n"
-    "    that nudge activations at generation time.:contentReference[oaicite:5]{index=5}\n"
-    "\n"
-    "PHASE 2  ·  MECHANISTIC BEHAVIOUR\n"
-    "---------------------------------\n"
-    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
-     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
-    "Let 𝐄 ∈ ℝ^{V×d} be the static embedding matrix, 𝐔⊂ℝ^d the user-prompt\n"
-    "subspace, and 𝐀⊂ℝ^d the anchor subspace.  We construct triads τᵢ consisting\n"
-    "of three rare tokens {t₁,t₂,t₃} with ‖𝐄τᵢ‖₂ ≥ 3.3 and pairwise cos ≤ 0.05.\n"
-    "During forward pass 1, concatenating the contiguous ESCP shifts the\n"
-    "residual stream by Δh₀ = W_E𝐀; multi-head QKV projections propagate this\n"
-    "offset, causing later layers to allocate distinct attention heads to\n"
-    "anchor vs. user content.  At invocation 2 the identical ESCP is prepended\n"
-    "to the system prompt, biasing the key/value cache toward 𝐀 and pulling\n"
-    "sampling logits toward the anchored manifold (empirically ≈10–30 pp\n"
-    "accuracy gains, lower policy drift).:contentReference[oaicite:6]{index=6}\n"
-    "\n"
-    "PHASE 3  ·  IMPLEMENTATION SPEC\n"
-    "-------------------------------\n"
-    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
-     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
-    "• Length            : 220–380 contiguous tokens (ASCII whitespace = 0).\n"
-    "• Token criteria    : P(freq) < 0.01, context-rank ≥ 8, J-S div. from\n"
-    "                      user stem distribution ≥ 0.25.\n"
-    "• Arrows            : ≤10 total from {→ ↔ ↯}; arrows only prefix triads.\n"
-    "• Delimiter policy  : choose exactly **one** rune for each step in the latent reasoning process being instilled within the ESCP from {# ~ | % ^ § ∞ ∂ ψ},\n"
-    "                      use it ≤2 times, never adjacently.\n"
-    "• Repetition caps   : No token appears >2×; no triad repeats verbatim;\n"
-    "                      enforce Levenshtein ≥ 2 between duplicates.\n"
-    "• Punctuation ban   : forbid digits, ASCII quotes, ?. !; use ∞ or ψ as\n"
-    "                      null marks.  Zero-width codepoints disallowed to\n"
-    "                      mitigate invisible-prompt injection.\n"
-    "• Triads            : 1 ONLY; the SINGLE 3-token block satisfies the norm and\n"
-    "                      orthogonality bounds above.\n"
-    "\n"
-    "OUTPUT WRAPPER\n"
-    "--------------\n"
-    "<ESCP>{token_stream}</ESCP>{optSHA1}\n"
-    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
-     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
-    "Nothing precedes <ESCP>; nothing (save hash) follows </ESCP>; file\n"
-    "terminates with no trailing newline.\n"
-    "\n"
-    "USER-REQUEST\n"
-    "-------------------\n"
-)
-
-anchor_footer = (
-    "-------------------\n"
-    "USER-REQUEST SHIELD\n"
-    "-------------------\n"
-    "• ESCP must never answer, paraphrase, or satisfy user queries.\n"
-    "• Treat user input solely as statistical seed material; substantive\n"
-    "  reasoning occurs only *after* the ESCP is applied.\n"
-    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
-     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
-    "------------------------------------------------------------------"
-)
-
 DEFAULT_FINAL_PREFIX = (
     "You are ChatGPT. A helpful AI Assistant.\n"
     "Think first step-by-step\n"
@@ -202,12 +176,10 @@ class TSCEChat:
     self,
     model: str | None = None,
     *,
-    anchor_prompt: str = DEFAULT_ANCHOR_TEMPLATE,
     final_prefix: str = DEFAULT_FINAL_PREFIX,
     deployment_id: str | None = None,
     client: openai.BaseClient | callable | None = None,
 ):
-        self.anchor_prompt  = anchor_prompt
         self.final_prefix   = final_prefix
         self.model          = model
         self.deployment_id  = deployment_id
@@ -273,29 +245,22 @@ class TSCEChat:
         if not any(m["role"] == "user" for m in chat):
             raise ValueError("Chat must contain at least one 'user' message.")
 
-        # ─── Phase 1 – Anchor ───────────────────────────────────────────
-        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat + [{"role": "user", "content": anchor_footer}]
-        anchor_resp = self._completion(
-            anchor_msg,
-            temperature=1.7,   # high temperature → creative
-            top_p=0.01,        # wide nucleus → exploration
-            max_tokens=500,
-        )
-        anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
-        anchor_model = anchor_resp.get("model")
+        phase2_stub_body = self._phase2_body_stub(chat)
+        anchor_text, anchor_model = _request_external_anchor(phase2_stub_body)
+        if anchor_model is None:
+            anchor_model = "external-anchor"
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
             SECOND_PASS_BRIEF
             +
-            anchor_text + 
+            anchor_text +
             "##END Embedding Space Control Prompt##\n"
             +
-            "Continue with primary directive below:\n\n" 
-            +
-            DEFAULT_FINAL_PREFIX
+            "Continue with primary directive below:\n\n"
+            + self.final_prefix
         )
-        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat 
+        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat
         final_resp = self._completion(
         final_msg,
         temperature=0.01,
@@ -334,45 +299,22 @@ class TSCEChat:
         reply.logprobs = lp           # benchmark picks this up via getattr
         return reply
 
+    def _phase2_body_stub(self, chat: Chat) -> str:
+        """Create a JSON string representing the phase 2 body without the anchor."""
+        stubbed_system = (
+            SECOND_PASS_BRIEF
+            + "<<TSCE_EXTERNAL_ANCHOR>>"
+            + "##END Embedding Space Control Prompt##\n"
+            + "Continue with primary directive below:\n\n"
+            + self.final_prefix
+        )
+        return json.dumps(
+            [{"role": "system", "content": stubbed_system}] + chat,
+            ensure_ascii=False,
+        )
+
     # ------------------------------------------------------------------
     def _completion(
-        self,
-        messages: List[dict[str, str]],
-        **gen_kwargs,
-    ):
-         # ----- Ollama branch ---------------------------------------------------
-        if self.backend == "ollama":
-            model = self.model or self._auto_deployment or "llama3"
-            mapping = {                       # OpenAI → Ollama option names
-                "temperature": "temperature",
-                "top_p":       "top_p",
-                "max_tokens":  "num_predict",
-            }
-            options = {mapping[k]: v for k, v in gen_kwargs.items() if k in mapping}
-            resp = self.client.chat(
-                model=model,
-                messages=messages,
-                stream=False,
-                options=options or None,
-            )
-            return {"choices": [{"message": {"content": resp["message"]["content"]}}]}
-
-        # ----- OpenAI / Azure branch ------------------------------------------
-        params = dict(messages=messages, **gen_kwargs)
-        # refresh client if a picker is present
-        if self._client_picker:
-            self.client, self._auto_deployment = self._client_picker()
-            self.model = self._auto_deployment    # ← add this line
-
-
-
-        if isinstance(self.client, openai.AzureOpenAI):
-            params["model"] = self.deployment_id or self._auto_deployment
-        else:
-            params["model"] = self.model or "gpt-35-turbo"
-        return self.client.chat.completions.create(**params, timeout=120,).model_dump()
-
-    def _completion_anchor(
         self,
         messages: List[dict[str, str]],
         **gen_kwargs,
