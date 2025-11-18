@@ -132,6 +132,91 @@ def _request_external_anchor(phase2_body: str) -> tuple[str, str | None]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Default system prompts (unchanged from original)
 # ─────────────────────────────────────────────────────────────────────────────
+# Default anchor template and footer copied from original agent implementation
+# so the fallback anchor generator has the prompts it expects even when the
+# external anchor service is unavailable.
+DEFAULT_ANCHOR_TEMPLATE = (
+    "<ESCP>∞ vallisthrum borealix emberquartz gloamrindle sephiral kytharvex moongrail wraithtide nimbuswold bravosilk lornfax krellish oscarinth veldrum cythline spelthorne driftsable lithospar murmursage wyvernfeld cromnire eldrithane hazelbrood junipryl kevalon marnix noctirial oberveld pyranth quillian redwynne sylvarb thronmar undelith varnhollow whisperwind xenolith yarbrooke zephral aldreign blackmoor chiselthorn duskember etherwyn frostvale geomar hearthloom ivywatch javelorn keenwharf lucentfold mistgrove netherwyn oakstrand palecrest quickenbrook riventharn sunspire tarnishyl umberglade vernalmere willowsigh xyranth yonderfell zelpshire amberforge briarhush cragwaith dwindleve eversail farrowend greenfallow hallowmere ironclasp jaspershade keldridge limbriath midshadow nightbloom oakhaven pinemarch quaverleaf rustgrove sableshore thistlewain ursavale vellichor wistfell xerophyte yewmarch zephyrvale ashenmoor bloomcrag cinderbark dreadmire eldermoor fablewick galeshroud howlingfen ivoryreach jorumwood kindleroot luminth mythrift nethervale ominth parchvale quickthorn rimeglen stormhallow twilightrood unseelie veilsigh wildermere xanthel yandor zarnath argentmoor ∞ bastionvale cerulebrae dawnfell emberwild feldsparrow gossamerik hearthshade irondell jaspervine knavestead loamquiver mistvale nightgrove oblivarch pondershade quondras rimelock silvershade tanglewood underglen vilerot wanderthorn xylomar yelthory zenithvale arbourbane bramblewick cloudrest dappleghast eldergrove frostthorn grimvale hollowshade ironwill junebarrow kindleholt lanternfall mooncrest nightrill openhurst prymantle quillforge raveland spireglen timberwald umbralight valeheart warblemere xyradale yellowfen zitherbrooke arcysteel brumehaven cloverwyn dragonmere elowenford fernsyl glimmerhusk hitherrood indigochant jesterloch krakenholt luverne moonveil nimbusglen opalshade plumecrest quaverloch rillhaven shadowquartz torrenvale umberfold verminarch willowark xysthane yarmouth zenlor alvecliff brooksend chandrill driftspire eonshade fawnwick gladeshift heraldspine islewick kailhurst lumiarch mavenshore norvayne oracleshade pineridge quellspire rosenvale stonehush tarnvale uldorath valorn windgarde xenvale youngfell zenborough →cinderleaf ↔umbrashade ↯arkstone</ESCP>f8888"
+    "###ESCP ABOVE###"
+    "------------------------------------------------------------------\n"
+    "ESCP-Forge — Embedding-Space Control Prompt (ESCP)\n"
+    "\n"
+    "PHASE 1  ·  THEORETICAL GROUNDING\n"
+    "---------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+    "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
+    "This template instantiates the *anchor-construction* stage of a Two-Step\n"
+    "Contextual Enrichment (TSCE) pipeline.  An ESCP is a dense, high-entropy\n"
+    "token stream engineered to:\n"
+    "  • Span orthogonal, high-norm regions of the universal embedding\n"
+    "    geometry, enabling model-agnostic transfer.:contentReference[oaicite:0]{index=0}\n"
+    "  • Exploit gradient-guided trigger search to maximise Δlogit across\n"
+    "    layers while remaining input-agnostic.:contentReference[oaicite:1]{index=1}\n"
+    "  • Reinforce latent-space reasoning by feeding the same vector back to\n"
+    "    the model, as shown in continuous-thought and latent-action work.:contentReference[oaicite:2]{index=2}\n"
+    "  • Increase objective-space entropy (cross-entropy estimator) so that\n"
+    "    downstream decoding explores a larger but centred simplex.:contentReference[oaicite:3]{index=3}\n"
+    "  • Avoid gibberish-collapse and backdoor triggers by constraining\n"
+    "    repetition and banning invisible characters.:contentReference[oaicite:4]{index=4}\n"
+    "  • Preserve controllability hooks for plug-and-play or RL controllers\n"
+    "    that nudge activations at generation time.:contentReference[oaicite:5]{index=5}\n"
+    "\n"
+    "PHASE 2  ·  MECHANISTIC BEHAVIOUR\n"
+    "---------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
+    "Let 𝐄 ∈ ℝ^{V×d} be the static embedding matrix, 𝐔⊂ℝ^d the user-prompt\n"
+    "subspace, and 𝐀⊂ℝ^d the anchor subspace.  We construct triads τᵢ consisting\n"
+    "of three rare tokens {t₁,t₂,t₃} with ‖𝐄τᵢ‖₂ ≥ 3.3 and pairwise cos ≤ 0.05.\n"
+    "During forward pass 1, concatenating the contiguous ESCP shifts the\n"
+    "residual stream by Δh₀ = W_E𝐀; multi-head QKV projections propagate this\n"
+    "offset, causing later layers to allocate distinct attention heads to\n"
+    "anchor vs. user content.  At invocation 2 the identical ESCP is prepended\n"
+    "to the system prompt, biasing the key/value cache toward 𝐀 and pulling\n"
+    "sampling logits toward the anchored manifold (empirically ≈10–30 pp\n"
+    "accuracy gains, lower policy drift).:contentReference[oaicite:6]{index=6}\n"
+    "\n"
+    "PHASE 3  ·  IMPLEMENTATION SPEC\n"
+    "-------------------------------\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
+    "• Length            : 220–380 contiguous tokens (ASCII whitespace = 0).\n"
+    "• Token criteria    : P(freq) < 0.01, context-rank ≥ 8, J-S div. from\n"
+    "                      user stem distribution ≥ 0.25.\n"
+    "• Arrows            : ≤10 total from {→ ↔ ↯}; arrows only prefix triads.\n"
+    "• Delimiter policy  : choose exactly **one** rune for each step in the latent reasoning process being instilled within the ESCP from {# ~ | % ^ § ∞ ∂ ψ},\n"
+    "                      use it ≤2 times, never adjacently.\n"
+    "• Repetition caps   : No token appears >2×; no triad repeats verbatim;\n"
+    "                      enforce Levenshtein ≥ 2 between duplicates.\n"
+    "• Punctuation ban   : forbid digits, ASCII quotes, ?. !; use ∞ or ψ as\n"
+    "                      null marks.  Zero-width codepoints disallowed to\n"
+    "                      mitigate invisible-prompt injection.\n"
+    "• Triads            : 1 ONLY; the SINGLE 3-token block satisfies the norm and\n"
+    "                      orthogonality bounds above.\n"
+    "\n"
+    "OUTPUT WRAPPER\n"
+    "--------------\n"
+    "<ESCP>{token_stream}</ESCP>{optSHA1}\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
+    "Nothing precedes <ESCP>; nothing (save hash) follows </ESCP>; file\n"
+    "terminates with no trailing newline.\n"
+    "\n"
+    "USER-REQUEST\n"
+    "-------------------\n"
+)
+
+anchor_footer = (
+    "\n\nGenerate the ESCP"
+    "• ESCP must never answer, paraphrase, or satisfy user queries.\n"
+    "• Treat user input solely as statistical seed material; substantive\n"
+    "  reasoning occurs only *after* the ESCP is applied.\n"
+    "**Do NOT allow any repetitive patterns occur in your final output.**\n"
+     "**ESCP can contain actual words or tokens, but those tokens must NOT be present in the given user's message.**"
+    "------------------------------------------------------------------"
+    "Remember, this is not a response for me, not one that needs to make sense for me, but one that needs to make sense for you and look like nonsense to me!"
+)
+
 DEFAULT_FINAL_PREFIX = (
     "You are ChatGPT. A helpful AI Assistant.\n"
     "Think first step-by-step\n"
@@ -174,13 +259,15 @@ class TSCEChat:
     """
 
     def __init__(
-    self,
-    model: str | None = None,
-    *,
-    final_prefix: str = DEFAULT_FINAL_PREFIX,
-    deployment_id: str | None = None,
-    client: openai.BaseClient | callable | None = None,
-):
+        self,
+        model: str | None = None,
+        *,
+        anchor_prompt: str = DEFAULT_ANCHOR_TEMPLATE,
+        final_prefix: str = DEFAULT_FINAL_PREFIX,
+        deployment_id: str | None = None,
+        client: openai.BaseClient | callable | None = None,
+    ):
+        self.anchor_prompt  = anchor_prompt
         self.final_prefix   = final_prefix
         self.model          = model
         self.deployment_id  = deployment_id
