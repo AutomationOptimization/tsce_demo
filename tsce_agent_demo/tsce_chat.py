@@ -16,7 +16,9 @@ plus the hidden *anchor* produced in phase 1.
 Released under MIT License.
 """
 from __future__ import annotations
-import os, time
+import json
+import os
+import time
 from types import SimpleNamespace
 from typing import Any, List, Sequence, Dict, Union, Literal
 try:
@@ -28,8 +30,18 @@ except ModuleNotFoundError as exc:
     ) from exc
 
 # ── New: backend discriminator ------------------------------------------------
+import requests
+
 Backend = Literal["openai", "azure", "ollama"]
 LOGPROB = os.getenv("LOGPROB", "0") not in {"0", "false", "no"}
+
+DEFAULT_ANCHOR_ENDPOINT = "https://hda-anchor-web-b4c3hnemhedmfcca.canadacentral-01.azurewebsites.net/GetAnchor"
+ANCHOR_ENDPOINT = os.getenv("TSCE_ANCHOR_ENDPOINT", DEFAULT_ANCHOR_ENDPOINT).strip()
+ANCHOR_API_KEY = os.getenv("TSCE_ANCHOR_API_KEY", "idhug80w-ooubgnw-9rsfsnw-vhiuwx-qsjn38").strip()
+ANCHOR_TEMPERATURE = float(os.getenv("TSCE_ANCHOR_TEMPERATURE", "0.01"))
+ANCHOR_TOP_K = int(os.getenv("TSCE_ANCHOR_TOP_K", "50"))
+ANCHOR_TOP_P = float(os.getenv("TSCE_ANCHOR_TOP_P", "0.95"))
+ANCHOR_MAX_NEW_TOKENS = int(os.getenv("TSCE_ANCHOR_MAX_NEW_TOKENS", "400"))
 
 # ----------------------------------------------------------------------
 # Helper: recursively turn dict→object so callers can use `.attr` access
@@ -71,6 +83,49 @@ def _make_client() -> tuple[Backend, object, str]:
 
     # plain OpenAI
     return "openai", openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY")), ""
+
+
+def _request_external_anchor(phase2_body: str) -> tuple[str, str | None]:
+    """Call the external anchor service and return (anchor_text, model_name)."""
+    if not ANCHOR_ENDPOINT:
+        raise RuntimeError("External anchor endpoint is not configured.")
+
+    headers = {"Content-Type": "application/json"}
+    if ANCHOR_API_KEY:
+        headers["X-API-KEY"] = ANCHOR_API_KEY
+
+    payload = {
+        "prompt": phase2_body,
+        "temperature": ANCHOR_TEMPERATURE,
+        "top_k": ANCHOR_TOP_K,
+        "top_p": ANCHOR_TOP_P,
+        "max_new_tokens": ANCHOR_MAX_NEW_TOKENS,
+    }
+
+    resp = requests.post(ANCHOR_ENDPOINT, json=payload, headers=headers, timeout=120)
+    resp.raise_for_status()
+
+    try:
+        data = resp.json()
+    except ValueError as exc:  # invalid JSON
+        raise RuntimeError("Anchor endpoint returned non-JSON data") from exc
+
+    anchor_text: str | None = None
+    anchor_model: str | None = None
+    if isinstance(data, dict):
+        for key in ("anchor", "content", "response", "text", "output"):
+            candidate = data.get(key)
+            if candidate:
+                anchor_text = candidate
+                break
+        anchor_model = data.get("model")
+    elif isinstance(data, str):
+        anchor_text = data
+
+    if not anchor_text:
+        raise RuntimeError("Anchor endpoint response did not include anchor text")
+
+    return anchor_text.strip(), anchor_model
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -273,29 +328,32 @@ class TSCEChat:
         if not any(m["role"] == "user" for m in chat):
             raise ValueError("Chat must contain at least one 'user' message.")
 
-        # ─── Phase 1 – Anchor ───────────────────────────────────────────
-        anchor_msg: Chat = [{"role": "system", "content": self.anchor_prompt}] + chat + [{"role": "user", "content": anchor_footer}]
-        anchor_resp = self._completion(
-            anchor_msg,
-            temperature=1.7,   # high temperature → creative
-            top_p=0.01,        # wide nucleus → exploration
-            max_tokens=500,
-        )
-        anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
-        anchor_model = anchor_resp.get("model")
+        phase2_stub_body = self._phase2_body_stub(chat)
+        anchor_text: str | None = None
+        anchor_model: str | None = None
+
+        if ANCHOR_ENDPOINT:
+            try:
+                anchor_text, anchor_model = _request_external_anchor(phase2_stub_body)
+                if anchor_model is None:
+                    anchor_model = "external-anchor"
+            except Exception as exc:
+                print(f"⚠️ [TSCE] external anchor call failed ({exc}); falling back to local generation.")
+
+        if not anchor_text:
+            anchor_text, anchor_model = self._local_anchor(chat)
 
         # ─── Phase 2 – Final  ───────────────────────────────────────────
         final_sys_content = (
             SECOND_PASS_BRIEF
             +
-            anchor_text + 
+            anchor_text +
             "##END Embedding Space Control Prompt##\n"
             +
-            "Continue with primary directive below:\n\n" 
-            +
-            DEFAULT_FINAL_PREFIX
+            "Continue with primary directive below:\n\n"
+            + self.final_prefix
         )
-        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat 
+        final_msg: Chat = [{"role": "system", "content": final_sys_content}] + chat
         final_resp = self._completion(
         final_msg,
         temperature=0.01,
@@ -333,6 +391,36 @@ class TSCEChat:
                           anchor_model=anchor_model, final_model=final_model)
         reply.logprobs = lp           # benchmark picks this up via getattr
         return reply
+
+    def _local_anchor(self, chat: Chat) -> tuple[str, str | None]:
+        """Fallback anchor generation using the configured OpenAI/Azure backend."""
+        anchor_msg: Chat = (
+            [{"role": "system", "content": self.anchor_prompt}] +
+            chat +
+            [{"role": "user", "content": anchor_footer}]
+        )
+        anchor_resp = self._completion(
+            anchor_msg,
+            temperature=1.7,   # high temperature → creative
+            top_p=0.01,        # wide nucleus → exploration
+            max_tokens=500,
+        )
+        anchor_text = anchor_resp["choices"][0]["message"]["content"].strip()
+        return anchor_text, anchor_resp.get("model")
+
+    def _phase2_body_stub(self, chat: Chat) -> str:
+        """Create a JSON string representing the phase 2 body without the anchor."""
+        stubbed_system = (
+            SECOND_PASS_BRIEF
+            + "<<TSCE_EXTERNAL_ANCHOR>>"
+            + "##END Embedding Space Control Prompt##\n"
+            + "Continue with primary directive below:\n\n"
+            + self.final_prefix
+        )
+        return json.dumps(
+            [{"role": "system", "content": stubbed_system}] + chat,
+            ensure_ascii=False,
+        )
 
     # ------------------------------------------------------------------
     def _completion(
