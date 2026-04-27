@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsce"
+version = "0.1.23"
+description = "Two-Step Contextual Enrichment wrapper for auditable anchor-first LLM calls"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "TSCE Authors" }]
+keywords = ["llm", "openai", "azure-openai", "ollama", "alignment", "prompting"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "openai>=1.14",
+]
+
+[project.optional-dependencies]
+ollama = ["ollama>=0.1.0"]
+local = ["mlx-lm>=0.19.0"]
+dev = ["pytest>=7.4"]
+
+[project.urls]
+Homepage = "https://github.com/kalebcadenhead/tsce_demo"
+Issues = "https://github.com/kalebcadenhead/tsce_demo/issues"
+
+[tool.setuptools.packages.find]
+include = ["tsce", "tsce_agent_demo"]
+namespaces = true

@@ -1,0 +1,34 @@
+{
+  "good": {
+    "layer_norms": {
+      "41": 143.52159309387207,
+      "40": 48.261613607406616
+    },
+    "norm_concentration": 0.7483532868309014,
+    "stability": 0.6255954280495644,
+    "top_abs_mass_ratio": 0.04739146679639816
+  },
+  "bad": {
+    "layer_norms": {
+      "41": 161.25211906433105,
+      "40": 53.320374488830566
+    },
+    "norm_concentration": 0.7515041485239574,
+    "stability": 0.6400014087557793,
+    "top_abs_mass_ratio": 0.04336369410157204
+  },
+  "shuffled": {
+    "layer_norms": {
+      "41": 135.1600170135498,
+      "40": 45.802048206329346
+    },
+    "norm_concentration": 0.7468969634565273,
+    "stability": 0.6333445012569427,
+    "top_abs_mass_ratio": 0.048233628273010254
+  },
+  "good_minus_controls": {
+    "norm_concentration_delta": -0.0031508616930560063,
+    "stability_delta": -0.014405980706214905,
+    "top_abs_mass_ratio_delta": -0.0008421614766120911
+  }
+}

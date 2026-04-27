@@ -1,0 +1,5 @@
+# Optional dependencies for local artifact validation, wrapper tests, and figure regeneration.
+# The TSCE package itself declares runtime dependencies in package/pyproject.toml.
+numpy>=1.24
+matplotlib>=3.7
+pytest>=7.4

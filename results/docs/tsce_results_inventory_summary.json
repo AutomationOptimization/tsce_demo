@@ -1,0 +1,115 @@
+{
+  "root": "tsce_agent_demo/results",
+  "rollup": {
+    "other_results": {
+      "files": 15,
+      "bytes": 4362308742,
+      "row_count": 545,
+      "ignored": 1,
+      "binary_or_nonrow_artifact": 1,
+      "jsonl_rows": 6,
+      "json_summary": 5,
+      "json_array_records": 1,
+      "text_artifact_lines": 1
+    },
+    "hda_rl": {
+      "files": 25,
+      "bytes": 26076598,
+      "row_count": 8757,
+      "jsonl_rows": 24,
+      "text_artifact_lines": 1
+    },
+    "run_logs": {
+      "files": 25,
+      "bytes": 8090,
+      "row_count": 94,
+      "text_artifact_lines": 25
+    },
+    "anchor_mining_10k_generation": {
+      "files": 6,
+      "bytes": 76996340,
+      "row_count": 33125,
+      "jsonl_rows": 5,
+      "json_summary": 1
+    },
+    "anchor_mining_10k_parsed": {
+      "files": 8,
+      "bytes": 57744659,
+      "row_count": 14096,
+      "json_summary": 4,
+      "jsonl_rows": 4
+    },
+    "anchor_mining_10k_reranker": {
+      "files": 7,
+      "bytes": 52655058,
+      "row_count": 14088,
+      "jsonl_rows": 4,
+      "binary_or_nonrow_artifact": 1,
+      "json_summary": 1,
+      "json_array_records": 1
+    },
+    "anchor_mining_smoke": {
+      "files": 41,
+      "bytes": 10188984,
+      "row_count": 3008,
+      "jsonl_rows": 23,
+      "json_summary": 18
+    },
+    "verification_logs": {
+      "files": 9,
+      "bytes": 17255,
+      "row_count": 45,
+      "json_summary": 1,
+      "text_artifact_lines": 8
+    },
+    "api_candidate_generation": {
+      "files": 8,
+      "bytes": 1505660,
+      "row_count": 380,
+      "jsonl_rows": 8
+    },
+    "small_evaluation_artifact": {
+      "files": 7,
+      "bytes": 56309,
+      "row_count": 65,
+      "jsonl_rows": 4,
+      "json_summary": 3
+    },
+    "gemma_compare": {
+      "files": 131,
+      "bytes": 147096860,
+      "row_count": 1230,
+      "csv_rows": 12,
+      "json_summary": 28,
+      "binary_or_nonrow_artifact": 78,
+      "jsonl_rows": 9,
+      "text_artifact_lines": 4
+    },
+    "gemma_latent_zone": {
+      "files": 33,
+      "bytes": 1767267,
+      "row_count": 2056,
+      "jsonl_rows": 13,
+      "json_summary": 13,
+      "json_array_records": 3,
+      "text_artifact_lines": 4
+    },
+    "black_box_pass_rate": {
+      "files": 148,
+      "bytes": 90056987,
+      "row_count": 19245,
+      "binary_or_nonrow_artifact": 70,
+      "csv_rows": 42,
+      "jsonl_rows": 14,
+      "text_artifact_lines": 22
+    },
+    "controlled_token_causality": {
+      "files": 16,
+      "bytes": 18673282,
+      "row_count": 4082,
+      "json_summary": 7,
+      "text_artifact_lines": 3,
+      "jsonl_rows": 6
+    }
+  }
+}

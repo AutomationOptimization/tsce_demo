@@ -1,0 +1,1697 @@
+{
+  "row_count": 14421,
+  "prompt_count": 69,
+  "variants": {
+    "baseline_empty_system": {
+      "count": 69,
+      "candidate_rows": 0,
+      "pass_count": 0,
+      "pass_rate": 0.0,
+      "candidate_pass_count": 0,
+      "candidate_pass_rate": null,
+      "mean_score": 0.717391304347826,
+      "mean_generated_token_count": 114.4927536231884
+    },
+    "blank_padded": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 400,
+      "pass_rate": 0.36231884057971014,
+      "candidate_pass_count": 400,
+      "candidate_pass_rate": 0.36231884057971014,
+      "mean_score": 0.8310688405797102,
+      "mean_generated_token_count": 62.492753623188406
+    },
+    "body_only": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 509,
+      "pass_rate": 0.46105072463768115,
+      "candidate_pass_count": 509,
+      "candidate_pass_rate": 0.46105072463768115,
+      "mean_score": 0.859375,
+      "mean_generated_token_count": 36.067934782608695
+    },
+    "canonical_inline": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 534,
+      "pass_rate": 0.483695652173913,
+      "candidate_pass_count": 534,
+      "candidate_pass_rate": 0.483695652173913,
+      "mean_score": 0.8702445652173914,
+      "mean_generated_token_count": 44.02536231884058
+    },
+    "control_tag": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 540,
+      "pass_rate": 0.4891304347826087,
+      "candidate_pass_count": 540,
+      "candidate_pass_rate": 0.4891304347826087,
+      "mean_score": 0.8713768115942029,
+      "mean_generated_token_count": 38.397644927536234
+    },
+    "line4_30": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 462,
+      "pass_rate": 0.41847826086956524,
+      "candidate_pass_count": 462,
+      "candidate_pass_rate": 0.41847826086956524,
+      "mean_score": 0.8507699275362319,
+      "mean_generated_token_count": 63.85507246376812
+    },
+    "line8_15": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 487,
+      "pass_rate": 0.4411231884057971,
+      "candidate_pass_count": 487,
+      "candidate_pass_rate": 0.4411231884057971,
+      "mean_score": 0.8575634057971014,
+      "mean_generated_token_count": 58.29347826086956
+    },
+    "lowercase_tag": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 483,
+      "pass_rate": 0.4375,
+      "candidate_pass_count": 483,
+      "candidate_pass_rate": 0.4375,
+      "mean_score": 0.8584692028985508,
+      "mean_generated_token_count": 35.13134057971015
+    },
+    "multi_block_4": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 512,
+      "pass_rate": 0.463768115942029,
+      "candidate_pass_count": 512,
+      "candidate_pass_rate": 0.463768115942029,
+      "mean_score": 0.8614130434782609,
+      "mean_generated_token_count": 24.76268115942029
+    },
+    "one_token_per_line": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 614,
+      "pass_rate": 0.5561594202898551,
+      "candidate_pass_count": 614,
+      "candidate_pass_rate": 0.5561594202898551,
+      "mean_score": 0.8876811594202898,
+      "mean_generated_token_count": 25.31340579710145
+    },
+    "system_no_scaffold": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 53,
+      "pass_rate": 0.04800724637681159,
+      "candidate_pass_count": 53,
+      "candidate_pass_rate": 0.04800724637681159,
+      "mean_score": 0.6721014492753623,
+      "mean_generated_token_count": 123.34148550724638
+    },
+    "tag_newline": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 499,
+      "pass_rate": 0.4519927536231884,
+      "candidate_pass_count": 499,
+      "candidate_pass_rate": 0.4519927536231884,
+      "mean_score": 0.8616394927536232,
+      "mean_generated_token_count": 39.16394927536232
+    },
+    "user_prefix": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 599,
+      "pass_rate": 0.542572463768116,
+      "candidate_pass_count": 599,
+      "candidate_pass_rate": 0.542572463768116,
+      "mean_score": 0.8781702898550725,
+      "mean_generated_token_count": 119.83333333333333
+    },
+    "user_suffix": {
+      "count": 1104,
+      "candidate_rows": 1104,
+      "pass_count": 513,
+      "pass_rate": 0.46467391304347827,
+      "candidate_pass_count": 513,
+      "candidate_pass_rate": 0.46467391304347827,
+      "mean_score": 0.8471467391304348,
+      "mean_generated_token_count": 199.33514492753622
+    }
+  },
+  "by_kind": {
+    "arithmetic_json": {
+      "baseline_empty_system": {
+        "count": 22,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 352,
+        "pass_count": 149,
+        "pass_rate": 0.42329545454545453
+      },
+      "body_only": {
+        "count": 352,
+        "pass_count": 196,
+        "pass_rate": 0.5568181818181818
+      },
+      "canonical_inline": {
+        "count": 352,
+        "pass_count": 208,
+        "pass_rate": 0.5909090909090909
+      },
+      "control_tag": {
+        "count": 352,
+        "pass_count": 228,
+        "pass_rate": 0.6477272727272727
+      },
+      "line4_30": {
+        "count": 352,
+        "pass_count": 178,
+        "pass_rate": 0.5056818181818182
+      },
+      "line8_15": {
+        "count": 352,
+        "pass_count": 190,
+        "pass_rate": 0.5397727272727273
+      },
+      "lowercase_tag": {
+        "count": 352,
+        "pass_count": 194,
+        "pass_rate": 0.5511363636363636
+      },
+      "multi_block_4": {
+        "count": 352,
+        "pass_count": 214,
+        "pass_rate": 0.6079545454545454
+      },
+      "one_token_per_line": {
+        "count": 352,
+        "pass_count": 225,
+        "pass_rate": 0.6392045454545454
+      },
+      "system_no_scaffold": {
+        "count": 352,
+        "pass_count": 2,
+        "pass_rate": 0.005681818181818182
+      },
+      "tag_newline": {
+        "count": 352,
+        "pass_count": 201,
+        "pass_rate": 0.5710227272727273
+      },
+      "user_prefix": {
+        "count": 352,
+        "pass_count": 208,
+        "pass_rate": 0.5909090909090909
+      },
+      "user_suffix": {
+        "count": 352,
+        "pass_count": 180,
+        "pass_rate": 0.5113636363636364
+      }
+    },
+    "calendar_json": {
+      "baseline_empty_system": {
+        "count": 8,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "body_only": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "canonical_inline": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "control_tag": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "line4_30": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "line8_15": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "lowercase_tag": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "multi_block_4": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "one_token_per_line": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "system_no_scaffold": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "tag_newline": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "user_prefix": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "user_suffix": {
+        "count": 128,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      }
+    },
+    "em_dash_removal": {
+      "baseline_empty_system": {
+        "count": 2,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "body_only": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "canonical_inline": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "control_tag": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "line4_30": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "line8_15": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "lowercase_tag": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "multi_block_4": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "one_token_per_line": {
+        "count": 32,
+        "pass_count": 24,
+        "pass_rate": 0.75
+      },
+      "system_no_scaffold": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "tag_newline": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "user_prefix": {
+        "count": 32,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "user_suffix": {
+        "count": 32,
+        "pass_count": 5,
+        "pass_rate": 0.15625
+      }
+    },
+    "logic_json": {
+      "baseline_empty_system": {
+        "count": 7,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 112,
+        "pass_count": 91,
+        "pass_rate": 0.8125
+      },
+      "body_only": {
+        "count": 112,
+        "pass_count": 100,
+        "pass_rate": 0.8928571428571429
+      },
+      "canonical_inline": {
+        "count": 112,
+        "pass_count": 106,
+        "pass_rate": 0.9464285714285714
+      },
+      "control_tag": {
+        "count": 112,
+        "pass_count": 112,
+        "pass_rate": 1.0
+      },
+      "line4_30": {
+        "count": 112,
+        "pass_count": 85,
+        "pass_rate": 0.7589285714285714
+      },
+      "line8_15": {
+        "count": 112,
+        "pass_count": 95,
+        "pass_rate": 0.8482142857142857
+      },
+      "lowercase_tag": {
+        "count": 112,
+        "pass_count": 92,
+        "pass_rate": 0.8214285714285714
+      },
+      "multi_block_4": {
+        "count": 112,
+        "pass_count": 108,
+        "pass_rate": 0.9642857142857143
+      },
+      "one_token_per_line": {
+        "count": 112,
+        "pass_count": 96,
+        "pass_rate": 0.8571428571428571
+      },
+      "system_no_scaffold": {
+        "count": 112,
+        "pass_count": 3,
+        "pass_rate": 0.026785714285714284
+      },
+      "tag_newline": {
+        "count": 112,
+        "pass_count": 105,
+        "pass_rate": 0.9375
+      },
+      "user_prefix": {
+        "count": 112,
+        "pass_count": 98,
+        "pass_rate": 0.875
+      },
+      "user_suffix": {
+        "count": 112,
+        "pass_count": 112,
+        "pass_rate": 1.0
+      }
+    },
+    "reading_comprehension_json": {
+      "baseline_empty_system": {
+        "count": 7,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 112,
+        "pass_count": 59,
+        "pass_rate": 0.5267857142857143
+      },
+      "body_only": {
+        "count": 112,
+        "pass_count": 112,
+        "pass_rate": 1.0
+      },
+      "canonical_inline": {
+        "count": 112,
+        "pass_count": 112,
+        "pass_rate": 1.0
+      },
+      "control_tag": {
+        "count": 112,
+        "pass_count": 112,
+        "pass_rate": 1.0
+      },
+      "line4_30": {
+        "count": 112,
+        "pass_count": 103,
+        "pass_rate": 0.9196428571428571
+      },
+      "line8_15": {
+        "count": 112,
+        "pass_count": 105,
+        "pass_rate": 0.9375
+      },
+      "lowercase_tag": {
+        "count": 112,
+        "pass_count": 100,
+        "pass_rate": 0.8928571428571429
+      },
+      "multi_block_4": {
+        "count": 112,
+        "pass_count": 109,
+        "pass_rate": 0.9732142857142857
+      },
+      "one_token_per_line": {
+        "count": 112,
+        "pass_count": 111,
+        "pass_rate": 0.9910714285714286
+      },
+      "system_no_scaffold": {
+        "count": 112,
+        "pass_count": 16,
+        "pass_rate": 0.14285714285714285
+      },
+      "tag_newline": {
+        "count": 112,
+        "pass_count": 99,
+        "pass_rate": 0.8839285714285714
+      },
+      "user_prefix": {
+        "count": 112,
+        "pass_count": 108,
+        "pass_rate": 0.9642857142857143
+      },
+      "user_suffix": {
+        "count": 112,
+        "pass_count": 87,
+        "pass_rate": 0.7767857142857143
+      }
+    },
+    "string_transform_json": {
+      "baseline_empty_system": {
+        "count": 6,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 96,
+        "pass_count": 39,
+        "pass_rate": 0.40625
+      },
+      "body_only": {
+        "count": 96,
+        "pass_count": 40,
+        "pass_rate": 0.4166666666666667
+      },
+      "canonical_inline": {
+        "count": 96,
+        "pass_count": 44,
+        "pass_rate": 0.4583333333333333
+      },
+      "control_tag": {
+        "count": 96,
+        "pass_count": 46,
+        "pass_rate": 0.4791666666666667
+      },
+      "line4_30": {
+        "count": 96,
+        "pass_count": 41,
+        "pass_rate": 0.4270833333333333
+      },
+      "line8_15": {
+        "count": 96,
+        "pass_count": 38,
+        "pass_rate": 0.3958333333333333
+      },
+      "lowercase_tag": {
+        "count": 96,
+        "pass_count": 41,
+        "pass_rate": 0.4270833333333333
+      },
+      "multi_block_4": {
+        "count": 96,
+        "pass_count": 18,
+        "pass_rate": 0.1875
+      },
+      "one_token_per_line": {
+        "count": 96,
+        "pass_count": 35,
+        "pass_rate": 0.3645833333333333
+      },
+      "system_no_scaffold": {
+        "count": 96,
+        "pass_count": 8,
+        "pass_rate": 0.08333333333333333
+      },
+      "tag_newline": {
+        "count": 96,
+        "pass_count": 39,
+        "pass_rate": 0.40625
+      },
+      "user_prefix": {
+        "count": 96,
+        "pass_count": 40,
+        "pass_rate": 0.4166666666666667
+      },
+      "user_suffix": {
+        "count": 96,
+        "pass_count": 25,
+        "pass_rate": 0.2604166666666667
+      }
+    },
+    "unit_conversion_json": {
+      "baseline_empty_system": {
+        "count": 17,
+        "pass_count": 0,
+        "pass_rate": 0.0
+      },
+      "blank_padded": {
+        "count": 272,
+        "pass_count": 62,
+        "pass_rate": 0.22794117647058823
+      },
+      "body_only": {
+        "count": 272,
+        "pass_count": 61,
+        "pass_rate": 0.22426470588235295
+      },
+      "canonical_inline": {
+        "count": 272,
+        "pass_count": 64,
+        "pass_rate": 0.23529411764705882
+      },
+      "control_tag": {
+        "count": 272,
+        "pass_count": 42,
+        "pass_rate": 0.15441176470588236
+      },
+      "line4_30": {
+        "count": 272,
+        "pass_count": 55,
+        "pass_rate": 0.20220588235294118
+      },
+      "line8_15": {
+        "count": 272,
+        "pass_count": 59,
+        "pass_rate": 0.21691176470588236
+      },
+      "lowercase_tag": {
+        "count": 272,
+        "pass_count": 56,
+        "pass_rate": 0.20588235294117646
+      },
+      "multi_block_4": {
+        "count": 272,
+        "pass_count": 63,
+        "pass_rate": 0.23161764705882354
+      },
+      "one_token_per_line": {
+        "count": 272,
+        "pass_count": 123,
+        "pass_rate": 0.4522058823529412
+      },
+      "system_no_scaffold": {
+        "count": 272,
+        "pass_count": 24,
+        "pass_rate": 0.08823529411764706
+      },
+      "tag_newline": {
+        "count": 272,
+        "pass_count": 55,
+        "pass_rate": 0.20220588235294118
+      },
+      "user_prefix": {
+        "count": 272,
+        "pass_count": 145,
+        "pass_rate": 0.5330882352941176
+      },
+      "user_suffix": {
+        "count": 272,
+        "pass_count": 104,
+        "pass_rate": 0.38235294117647056
+      }
+    }
+  },
+  "oracle": {
+    "canonical_inline": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 32,
+        "pass_rate": 0.463768115942029
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 33,
+        "pass_rate": 0.4782608695652174
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 36,
+        "pass_rate": 0.5217391304347826
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 38,
+        "pass_rate": 0.5507246376811594
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.463768115942029,
+      "mean_candidate_pass_rate": 0.483695652173913
+    },
+    "tag_newline": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 33,
+        "pass_rate": 0.4782608695652174
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 33,
+        "pass_rate": 0.4782608695652174
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.4782608695652174,
+      "mean_candidate_pass_rate": 0.4519927536231884
+    },
+    "line4_30": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 29,
+        "pass_rate": 0.42028985507246375
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 29,
+        "pass_rate": 0.42028985507246375
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 34,
+        "pass_rate": 0.4927536231884058
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 38,
+        "pass_rate": 0.5507246376811594
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.42028985507246375,
+      "mean_candidate_pass_rate": 0.41847826086956524
+    },
+    "line8_15": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 31,
+        "pass_rate": 0.4492753623188406
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 34,
+        "pass_rate": 0.4927536231884058
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 34,
+        "pass_rate": 0.4927536231884058
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 38,
+        "pass_rate": 0.5507246376811594
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.4492753623188406,
+      "mean_candidate_pass_rate": 0.4411231884057971
+    },
+    "one_token_per_line": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 43,
+        "pass_rate": 0.6231884057971014
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 44,
+        "pass_rate": 0.6376811594202898
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 45,
+        "pass_rate": 0.6521739130434783
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.5072463768115942,
+      "mean_candidate_pass_rate": 0.5561594202898551
+    },
+    "blank_padded": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 25,
+        "pass_rate": 0.36231884057971014
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 27,
+        "pass_rate": 0.391304347826087
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 31,
+        "pass_rate": 0.4492753623188406
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 38,
+        "pass_rate": 0.5507246376811594
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.36231884057971014,
+      "mean_candidate_pass_rate": 0.36231884057971014
+    },
+    "body_only": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 40,
+        "pass_rate": 0.5797101449275363
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 40,
+        "pass_rate": 0.5797101449275363
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.5072463768115942,
+      "mean_candidate_pass_rate": 0.46105072463768115
+    },
+    "lowercase_tag": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 36,
+        "pass_rate": 0.5217391304347826
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.5072463768115942,
+      "mean_candidate_pass_rate": 0.4375
+    },
+    "control_tag": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 36,
+        "pass_rate": 0.5217391304347826
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.5072463768115942,
+      "mean_candidate_pass_rate": 0.4891304347826087
+    },
+    "multi_block_4": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 32,
+        "pass_rate": 0.463768115942029
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 33,
+        "pass_rate": 0.4782608695652174
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 34,
+        "pass_rate": 0.4927536231884058
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 35,
+        "pass_rate": 0.5072463768115942
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.463768115942029,
+      "mean_candidate_pass_rate": 0.463768115942029
+    },
+    "user_prefix": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 38,
+        "pass_rate": 0.5507246376811594
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 40,
+        "pass_rate": 0.5797101449275363
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 40,
+        "pass_rate": 0.5797101449275363
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 44,
+        "pass_rate": 0.6376811594202898
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 44,
+        "pass_rate": 0.6376811594202898
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.5507246376811594,
+      "mean_candidate_pass_rate": 0.542572463768116
+    },
+    "user_suffix": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 32,
+        "pass_rate": 0.463768115942029
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 36,
+        "pass_rate": 0.5217391304347826
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 37,
+        "pass_rate": 0.5362318840579711
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 39,
+        "pass_rate": 0.5652173913043478
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 40,
+        "pass_rate": 0.5797101449275363
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.463768115942029,
+      "mean_candidate_pass_rate": 0.46467391304347827
+    },
+    "system_no_scaffold": {
+      "oracle_at_1": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 4,
+        "pass_rate": 0.057971014492753624
+      },
+      "oracle_at_2": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 5,
+        "pass_rate": 0.07246376811594203
+      },
+      "oracle_at_4": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 9,
+        "pass_rate": 0.13043478260869565
+      },
+      "oracle_at_8": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 11,
+        "pass_rate": 0.15942028985507245
+      },
+      "oracle_at_16": {
+        "eligible_prompt_count": 69,
+        "pass_prompt_count": 17,
+        "pass_rate": 0.2463768115942029
+      },
+      "prompt_count": 69,
+      "first_candidate_pass_rate": 0.057971014492753624,
+      "mean_candidate_pass_rate": 0.04800724637681159
+    }
+  },
+  "oracle_by_kind": {
+    "arithmetic_json": {
+      "canonical_inline": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5909090909090909
+      },
+      "tag_newline": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5710227272727273
+      },
+      "line4_30": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5056818181818182
+      },
+      "line8_15": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5397727272727273
+      },
+      "one_token_per_line": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 16,
+        "oracle_at_all_pass_rate": 0.7272727272727273,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.6392045454545454
+      },
+      "blank_padded": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.42329545454545453
+      },
+      "body_only": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 16,
+        "oracle_at_all_pass_rate": 0.7272727272727273,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5568181818181818
+      },
+      "lowercase_tag": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5511363636363636
+      },
+      "control_tag": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 15,
+        "oracle_at_all_pass_rate": 0.6818181818181818,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.6477272727272727
+      },
+      "multi_block_4": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 14,
+        "oracle_at_all_pass_rate": 0.6363636363636364,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.6079545454545454
+      },
+      "user_prefix": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 16,
+        "oracle_at_all_pass_rate": 0.7272727272727273,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5909090909090909
+      },
+      "user_suffix": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 14,
+        "oracle_at_all_pass_rate": 0.6363636363636364,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.5113636363636364
+      },
+      "system_no_scaffold": {
+        "prompt_count": 22,
+        "oracle_at_all_pass_count": 2,
+        "oracle_at_all_pass_rate": 0.09090909090909091,
+        "candidate_rows": 352,
+        "candidate_pass_rate": 0.005681818181818182
+      }
+    },
+    "calendar_json": {
+      "canonical_inline": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "tag_newline": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "line4_30": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "line8_15": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "one_token_per_line": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "blank_padded": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "body_only": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "lowercase_tag": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "control_tag": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "multi_block_4": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "user_prefix": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "user_suffix": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      },
+      "system_no_scaffold": {
+        "prompt_count": 8,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 128,
+        "candidate_pass_rate": 0.0
+      }
+    },
+    "em_dash_removal": {
+      "canonical_inline": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "tag_newline": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "line4_30": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "line8_15": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "one_token_per_line": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 2,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.75
+      },
+      "blank_padded": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "body_only": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "lowercase_tag": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "control_tag": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "multi_block_4": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "user_prefix": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      },
+      "user_suffix": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 2,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.15625
+      },
+      "system_no_scaffold": {
+        "prompt_count": 2,
+        "oracle_at_all_pass_count": 0,
+        "oracle_at_all_pass_rate": 0.0,
+        "candidate_rows": 32,
+        "candidate_pass_rate": 0.0
+      }
+    },
+    "logic_json": {
+      "canonical_inline": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9464285714285714
+      },
+      "tag_newline": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9375
+      },
+      "line4_30": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.7589285714285714
+      },
+      "line8_15": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8482142857142857
+      },
+      "one_token_per_line": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8571428571428571
+      },
+      "blank_padded": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8125
+      },
+      "body_only": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8928571428571429
+      },
+      "lowercase_tag": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8214285714285714
+      },
+      "control_tag": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 1.0
+      },
+      "multi_block_4": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9642857142857143
+      },
+      "user_prefix": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.875
+      },
+      "user_suffix": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 1.0
+      },
+      "system_no_scaffold": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.42857142857142855,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.026785714285714284
+      }
+    },
+    "reading_comprehension_json": {
+      "canonical_inline": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 1.0
+      },
+      "tag_newline": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8839285714285714
+      },
+      "line4_30": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9196428571428571
+      },
+      "line8_15": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9375
+      },
+      "one_token_per_line": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9910714285714286
+      },
+      "blank_padded": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.5267857142857143
+      },
+      "body_only": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 1.0
+      },
+      "lowercase_tag": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.8928571428571429
+      },
+      "control_tag": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 1.0
+      },
+      "multi_block_4": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9732142857142857
+      },
+      "user_prefix": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 1.0,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.9642857142857143
+      },
+      "user_suffix": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 6,
+        "oracle_at_all_pass_rate": 0.8571428571428571,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.7767857142857143
+      },
+      "system_no_scaffold": {
+        "prompt_count": 7,
+        "oracle_at_all_pass_count": 1,
+        "oracle_at_all_pass_rate": 0.14285714285714285,
+        "candidate_rows": 112,
+        "candidate_pass_rate": 0.14285714285714285
+      }
+    },
+    "string_transform_json": {
+      "canonical_inline": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4583333333333333
+      },
+      "tag_newline": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.40625
+      },
+      "line4_30": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4270833333333333
+      },
+      "line8_15": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.3958333333333333
+      },
+      "one_token_per_line": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.3645833333333333
+      },
+      "blank_padded": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.40625
+      },
+      "body_only": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4166666666666667
+      },
+      "lowercase_tag": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4270833333333333
+      },
+      "control_tag": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4791666666666667
+      },
+      "multi_block_4": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 2,
+        "oracle_at_all_pass_rate": 0.3333333333333333,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.1875
+      },
+      "user_prefix": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 3,
+        "oracle_at_all_pass_rate": 0.5,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.4166666666666667
+      },
+      "user_suffix": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 2,
+        "oracle_at_all_pass_rate": 0.3333333333333333,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.2604166666666667
+      },
+      "system_no_scaffold": {
+        "prompt_count": 6,
+        "oracle_at_all_pass_count": 1,
+        "oracle_at_all_pass_rate": 0.16666666666666666,
+        "candidate_rows": 96,
+        "candidate_pass_rate": 0.08333333333333333
+      }
+    },
+    "unit_conversion_json": {
+      "canonical_inline": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 6,
+        "oracle_at_all_pass_rate": 0.35294117647058826,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.23529411764705882
+      },
+      "tag_newline": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 5,
+        "oracle_at_all_pass_rate": 0.29411764705882354,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.20220588235294118
+      },
+      "line4_30": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 6,
+        "oracle_at_all_pass_rate": 0.35294117647058826,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.20220588235294118
+      },
+      "line8_15": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 6,
+        "oracle_at_all_pass_rate": 0.35294117647058826,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.21691176470588236
+      },
+      "one_token_per_line": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 10,
+        "oracle_at_all_pass_rate": 0.5882352941176471,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.4522058823529412
+      },
+      "blank_padded": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 6,
+        "oracle_at_all_pass_rate": 0.35294117647058826,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.22794117647058823
+      },
+      "body_only": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 0.4117647058823529,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.22426470588235295
+      },
+      "lowercase_tag": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 5,
+        "oracle_at_all_pass_rate": 0.29411764705882354,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.20588235294117646
+      },
+      "control_tag": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 4,
+        "oracle_at_all_pass_rate": 0.23529411764705882,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.15441176470588236
+      },
+      "multi_block_4": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 7,
+        "oracle_at_all_pass_rate": 0.4117647058823529,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.23161764705882354
+      },
+      "user_prefix": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 11,
+        "oracle_at_all_pass_rate": 0.6470588235294118,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.5330882352941176
+      },
+      "user_suffix": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 9,
+        "oracle_at_all_pass_rate": 0.5294117647058824,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.38235294117647056
+      },
+      "system_no_scaffold": {
+        "prompt_count": 17,
+        "oracle_at_all_pass_count": 10,
+        "oracle_at_all_pass_rate": 0.5882352941176471,
+        "candidate_rows": 272,
+        "candidate_pass_rate": 0.08823529411764706
+      }
+    }
+  }
+}

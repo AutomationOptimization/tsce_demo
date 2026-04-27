@@ -1,0 +1,780 @@
+{
+  "core_tokens": [
+    "logic",
+    "steps",
+    "given",
+    "threee",
+    "false",
+    "proofs",
+    "query",
+    "unless",
+    "thereo",
+    "ought",
+    "checkr",
+    "termsy",
+    "sensee",
+    "issuey",
+    "whiley",
+    "axiom",
+    "nexus",
+    "though",
+    "hencey",
+    "never",
+    "beyond",
+    "unwrap",
+    "syntax",
+    "reveal",
+    "modulo",
+    "indeed",
+    "pretty",
+    "secure",
+    "chain",
+    "when",
+    "which",
+    "must",
+    "despite",
+    "initial",
+    "formal",
+    "troute",
+    "theory",
+    "contra",
+    "doubt",
+    "statey",
+    "belief",
+    "subset",
+    "asks",
+    "specific",
+    "imply",
+    "tollens",
+    "phrasing",
+    "since",
+    "might",
+    "mean",
+    "still",
+    "will",
+    "treat",
+    "this",
+    "assumes",
+    "strong"
+  ],
+  "proxy_tokens": [],
+  "padding_tokens": [
+    "matter",
+    "whereof",
+    "drives",
+    "holdss",
+    "shows",
+    "maybe",
+    "among",
+    "within",
+    "basis",
+    "against",
+    "exactly",
+    "token",
+    "each",
+    "unusual",
+    "adheres",
+    "obscure",
+    "fits",
+    "above",
+    "scheme",
+    "aspect",
+    "reason",
+    "scope",
+    "about",
+    "locate",
+    "object",
+    "always",
+    "require",
+    "derive",
+    "factor",
+    "system",
+    "inside",
+    "remain",
+    "almost",
+    "outside",
+    "cannot",
+    "premise",
+    "fallow",
+    "kernel",
+    "datum",
+    "method",
+    "gauge",
+    "either",
+    "versus",
+    "handle",
+    "claim",
+    "appear",
+    "gains",
+    "truthy",
+    "yields",
+    "events",
+    "bounds",
+    "fading",
+    "limits",
+    "user"
+  ],
+  "token_salience": [
+    {
+      "index": 0,
+      "token": "logic",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 1,
+      "token": "steps",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 2,
+      "token": "given",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 3,
+      "token": "threee",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 4,
+      "token": "false",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 5,
+      "token": "proofs",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 6,
+      "token": "query",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 7,
+      "token": "unless",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 8,
+      "token": "thereo",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 9,
+      "token": "ought",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 10,
+      "token": "checkr",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 11,
+      "token": "termsy",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 12,
+      "token": "sensee",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 13,
+      "token": "issuey",
+      "score": 0.27027747101989663
+    },
+    {
+      "index": 14,
+      "token": "matter",
+      "score": 0.0
+    },
+    {
+      "index": 15,
+      "token": "whereof",
+      "score": 0.0
+    },
+    {
+      "index": 16,
+      "token": "drives",
+      "score": 0.0
+    },
+    {
+      "index": 17,
+      "token": "holdss",
+      "score": 0.0
+    },
+    {
+      "index": 18,
+      "token": "shows",
+      "score": 0.0
+    },
+    {
+      "index": 19,
+      "token": "maybe",
+      "score": 0.0
+    },
+    {
+      "index": 20,
+      "token": "among",
+      "score": 0.0
+    },
+    {
+      "index": 21,
+      "token": "within",
+      "score": 0.0
+    },
+    {
+      "index": 22,
+      "token": "basis",
+      "score": 0.0
+    },
+    {
+      "index": 23,
+      "token": "against",
+      "score": 0.0
+    },
+    {
+      "index": 24,
+      "token": "exactly",
+      "score": 0.0
+    },
+    {
+      "index": 25,
+      "token": "token",
+      "score": 0.0
+    },
+    {
+      "index": 26,
+      "token": "each",
+      "score": 0.0
+    },
+    {
+      "index": 27,
+      "token": "unusual",
+      "score": 0.0
+    },
+    {
+      "index": 28,
+      "token": "adheres",
+      "score": 0.0
+    },
+    {
+      "index": 29,
+      "token": "obscure",
+      "score": 0.0
+    },
+    {
+      "index": 30,
+      "token": "fits",
+      "score": 0.0
+    },
+    {
+      "index": 31,
+      "token": "above",
+      "score": 0.0
+    },
+    {
+      "index": 32,
+      "token": "whiley",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 33,
+      "token": "axiom",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 34,
+      "token": "nexus",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 35,
+      "token": "though",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 36,
+      "token": "hencey",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 37,
+      "token": "never",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 38,
+      "token": "beyond",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 39,
+      "token": "unwrap",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 40,
+      "token": "syntax",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 41,
+      "token": "reveal",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 42,
+      "token": "modulo",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 43,
+      "token": "indeed",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 44,
+      "token": "pretty",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 45,
+      "token": "secure",
+      "score": 0.28314485272306733
+    },
+    {
+      "index": 46,
+      "token": "scheme",
+      "score": 0.0
+    },
+    {
+      "index": 47,
+      "token": "aspect",
+      "score": 0.0
+    },
+    {
+      "index": 48,
+      "token": "reason",
+      "score": 0.0
+    },
+    {
+      "index": 49,
+      "token": "scope",
+      "score": 0.0
+    },
+    {
+      "index": 50,
+      "token": "about",
+      "score": 0.0
+    },
+    {
+      "index": 51,
+      "token": "locate",
+      "score": 0.0
+    },
+    {
+      "index": 52,
+      "token": "object",
+      "score": 0.0
+    },
+    {
+      "index": 53,
+      "token": "always",
+      "score": 0.0
+    },
+    {
+      "index": 54,
+      "token": "require",
+      "score": 0.0
+    },
+    {
+      "index": 55,
+      "token": "derive",
+      "score": 0.0
+    },
+    {
+      "index": 56,
+      "token": "factor",
+      "score": 0.0
+    },
+    {
+      "index": 57,
+      "token": "system",
+      "score": 0.0
+    },
+    {
+      "index": 58,
+      "token": "inside",
+      "score": 0.0
+    },
+    {
+      "index": 59,
+      "token": "remain",
+      "score": 0.0
+    },
+    {
+      "index": 60,
+      "token": "almost",
+      "score": 0.0
+    },
+    {
+      "index": 61,
+      "token": "outside",
+      "score": 0.0
+    },
+    {
+      "index": 62,
+      "token": "cannot",
+      "score": 0.0
+    },
+    {
+      "index": 63,
+      "token": "premise",
+      "score": 0.0
+    },
+    {
+      "index": 64,
+      "token": "chain",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 65,
+      "token": "when",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 66,
+      "token": "which",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 67,
+      "token": "must",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 68,
+      "token": "despite",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 69,
+      "token": "initial",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 70,
+      "token": "formal",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 71,
+      "token": "troute",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 72,
+      "token": "theory",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 73,
+      "token": "contra",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 74,
+      "token": "doubt",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 75,
+      "token": "statey",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 76,
+      "token": "belief",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 77,
+      "token": "subset",
+      "score": 0.2899280101314924
+    },
+    {
+      "index": 78,
+      "token": "fallow",
+      "score": 0.0
+    },
+    {
+      "index": 79,
+      "token": "kernel",
+      "score": 0.0
+    },
+    {
+      "index": 80,
+      "token": "datum",
+      "score": 0.0
+    },
+    {
+      "index": 81,
+      "token": "method",
+      "score": 0.0
+    },
+    {
+      "index": 82,
+      "token": "gauge",
+      "score": 0.0
+    },
+    {
+      "index": 83,
+      "token": "either",
+      "score": 0.0
+    },
+    {
+      "index": 84,
+      "token": "versus",
+      "score": 0.0
+    },
+    {
+      "index": 85,
+      "token": "handle",
+      "score": 0.0
+    },
+    {
+      "index": 86,
+      "token": "claim",
+      "score": 0.0
+    },
+    {
+      "index": 87,
+      "token": "appear",
+      "score": 0.0
+    },
+    {
+      "index": 88,
+      "token": "gains",
+      "score": 0.0
+    },
+    {
+      "index": 89,
+      "token": "truthy",
+      "score": 0.0
+    },
+    {
+      "index": 90,
+      "token": "yields",
+      "score": 0.0
+    },
+    {
+      "index": 91,
+      "token": "events",
+      "score": 0.0
+    },
+    {
+      "index": 92,
+      "token": "bounds",
+      "score": 0.0
+    },
+    {
+      "index": 93,
+      "token": "fading",
+      "score": 0.0
+    },
+    {
+      "index": 94,
+      "token": "limits",
+      "score": 0.0
+    },
+    {
+      "index": 95,
+      "token": "user",
+      "score": 0.0
+    },
+    {
+      "index": 96,
+      "token": "asks",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 97,
+      "token": "specific",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 98,
+      "token": "imply",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 99,
+      "token": "tollens",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 100,
+      "token": "phrasing",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 101,
+      "token": "since",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 102,
+      "token": "might",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 103,
+      "token": "mean",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 104,
+      "token": "still",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 105,
+      "token": "will",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 106,
+      "token": "treat",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 107,
+      "token": "this",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 108,
+      "token": "assumes",
+      "score": 0.28850338029975353
+    },
+    {
+      "index": 109,
+      "token": "strong",
+      "score": 0.28850338029975353
+    }
+  ],
+  "order_sensitivity": 0.16666666666666669,
+  "variant_summary": {
+    "original": {
+      "name": "original",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "original",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7047386997387926,
+      "mean_vector_stability": 0.8547370036443074
+    },
+    "token_shuffle": {
+      "name": "token_shuffle",
+      "anchor_text": "<HDA>un gains aspect still axiom false formal hence user when among state basis scope object versus within against belief derive there cannot steps will scheme doubt pretty specific fading oughtss events always obscure limits strong whereof despite matter meanow sensete system unusual reason treat premise check chain syntaxe datum asks hold each whichr imply method theory might boundslogic toll locate subsety proofs beyond secure given though must initial issue about thiso modulo while unless appearyens nexus maybe claim outside inside phrasingy shows either query almoste reveal kernely trouy truth require token assumes gauge yieldswrap exactly three terms adheres contra remain since fall handle drives fits never abovey indeed factor</HDA>",
+      "variant_type": "shuffle",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7276798891110702,
+      "mean_vector_stability": 0.8635030885537465
+    },
+    "head_trim_10": {
+      "name": "head_trim_10",
+      "anchor_text": "<HDA>termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7334150460071714,
+      "mean_vector_stability": 0.8649713893731436
+    },
+    "tail_trim_10": {
+      "name": "tail_trim_10",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7069108522900814,
+      "mean_vector_stability": 0.8537283738454183
+    },
+    "random_delete_15_1": {
+      "name": "random_delete_15_1",
+      "anchor_text": "<HDA>logic steps given false proofs query unless thereo ought checkr termsy sensee issuey whereof drives holdss shows maybe among within against exactly token each unusual adheres obscure fits whiley axiom nexus hencey unwrap syntax reveal modulo indeed pretty secure aspect reason about locate object require derive factor system inside remain almost outside cannot premise chain when must despite formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either handle claim appear gains truthy events bounds fading limits user asks specific tollens phrasing since might still will treat this assumes strong</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.697815268414348,
+      "mean_vector_stability": 0.8558460374673207
+    },
+    "random_delete_15_2": {
+      "name": "random_delete_15_2",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof holdss shows among basis against token each unusual adheres obscure fits above whiley axiom nexus though hencey never unwrap reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require factor system inside remain almost outside cannot premise when which must initial theory contra doubt statey belief subset fallow kernel datum method gauge either handle claim appear gains truthy yields bounds fading limits user asks imply tollens phrasing might still will treat this assumes strong</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.6972201493204168,
+      "mean_vector_stability": 0.8547003666559856
+    },
+    "neutral_replace_1": {
+      "name": "neutral_replace_1",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each signal adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "replace",
+      "token_index": 27,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7144370728496051,
+      "mean_vector_stability": 0.8567993541558584
+    },
+    "neutral_replace_2": {
+      "name": "neutral_replace_2",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always ledger derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "replace",
+      "token_index": 54,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.7075966220033024,
+      "mean_vector_stability": 0.8564642767111461
+    }
+  },
+  "chunk_variants": [
+    {
+      "name": "chunk_drop_000_014",
+      "anchor_text": "<HDA>matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 0,
+      "chunk_end": 14,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7370604082328166,
+      "mean_vector_stability": 0.8696998655796051
+    },
+    {
+      "name": "chunk_drop_032_046",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 32,
+      "chunk_end": 46,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7113256448264752,
+      "mean_vector_stability": 0.8557313481966655
+    },
+    {
+      "name": "chunk_drop_064_078",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user asks specific imply tollens phrasing since might mean still will treat this assumes strong</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 64,
+      "chunk_end": 78,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.6977593300096251,
+      "mean_vector_stability": 0.8530394931634268
+    },
+    {
+      "name": "chunk_drop_096_110",
+      "anchor_text": "<HDA>logic steps given threee false proofs query unless thereo ought checkr termsy sensee issuey matter whereof drives holdss shows maybe among within basis against exactly token each unusual adheres obscure fits above whiley axiom nexus though hencey never beyond unwrap syntax reveal modulo indeed pretty secure scheme aspect reason scope about locate object always require derive factor system inside remain almost outside cannot premise chain when which must despite initial formal troute theory contra doubt statey belief subset fallow kernel datum method gauge either versus handle claim appear gains truthy yields events bounds fading limits user</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 96,
+      "chunk_end": 110,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.7006085896731028,
+      "mean_vector_stability": 0.853751132885615
+    }
+  ]
+}

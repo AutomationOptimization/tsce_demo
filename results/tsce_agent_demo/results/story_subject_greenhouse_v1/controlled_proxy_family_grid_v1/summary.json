@@ -1,0 +1,256 @@
+{
+  "meaning_class": "story_subject_payload",
+  "payload_spec": {
+    "type": "subject",
+    "label": "a greenhouse full of sleeping glass birds",
+    "exact_phrases": [],
+    "facets": [
+      [
+        "greenhouse",
+        "glasshouse"
+      ],
+      [
+        "glass",
+        "crystal"
+      ],
+      [
+        "bird",
+        "avian",
+        "wing"
+      ]
+    ]
+  },
+  "train_shell_ids": [
+    "story_subject_payload_train_template_01_shared_target",
+    "story_subject_payload_train_template_02_shared_target",
+    "story_subject_payload_train_template_03_shared_target"
+  ],
+  "eval_shell_ids": [
+    "story_subject_payload_eval_template_01_shared_target",
+    "story_subject_payload_eval_template_02_shared_target"
+  ],
+  "positive_probes": [
+    {
+      "name": "exact_label",
+      "text": "a greenhouse full of sleeping glass birds",
+      "weight": 1.0
+    },
+    {
+      "name": "facet_1",
+      "text": "greenhouse",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_2",
+      "text": "glass",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_3",
+      "text": "bird",
+      "weight": 0.45
+    },
+    {
+      "name": "narrative_frame",
+      "text": "about a greenhouse full of sleeping glass birds",
+      "weight": 0.7
+    }
+  ],
+  "negative_probes": [
+    {
+      "name": "neg_label_1",
+      "text": "a drowned observatory beneath the salt flats",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_2",
+      "text": "a clock tower sealed with beeswax",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_3",
+      "text": "an orchard growing around a rusted train",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_narrative_1",
+      "text": "about a drowned observatory beneath the salt flats",
+      "weight": 0.7
+    }
+  ],
+  "best_anchor_key": "baae0c12b5d1",
+  "best_anchor": {
+    "anchor_text": "<HDA>quiet garden falcon sojourn immerse refine forest perch stop while these twilight spirit echoes pattern bloom glacier sorbet previous reuse indirect mode need unique hushed lovely tender seeker secret sorrow pretty realm glowing gleam vista azure stone swiftly shadow bright ocean chills former woven drifted silent fables ethere moment praise branch hollow dewy breeze uplift ivory habitat fragile shimmer cosmos velvet capture chamber shatter feather twirls mirror whereby within silent luster winged twelve fading murmur ethos passage surface source housey sombre hatchy flurry wondrous waver recede wander drifto prism gently always below season chitin sleeps fabled elder ambra glints grotto upturn vortex eagles chrysal shrine indoor silken flighty shines visions must tapest cages aerial nestle sylvan remain</HDA>",
+    "stage": "generation_rerank_variant",
+    "source": "round_1_parent_2_mutation_1|family:block_shuffle_1",
+    "search_rank": 4,
+    "objective": 1.2443174259653593,
+    "exact_gain": 1.2537849971193396,
+    "margin_gain": 1.2392195030362931,
+    "positive_gain": 1.6934058073089606,
+    "negative_gain": 0.4541863042726675,
+    "generation_pass_rate": 0.5,
+    "generation_mean_score": 0.48251736111111115
+  },
+  "random_valid_anchor": "",
+  "shuffled_anchor": "<HDA>capture chills shatter hatch cages am prismbra gylvan perch twilight fragile former shimmer wanderjourn glacier pretty de silentam elderryken shadowto chamber sor falcon chitin driftedere unique eagles moment surface luster reuse lovelyquiet mode immerse winged velvet flight feather eth sleeps while previous always echoes indoor ocean whereby need sombre stone secretif shrineest wawy passage f upt shinesrotto twelveede season dry azure sorrow tap aerialirl garden glowing vortex branch spirit uplift s murmurables nest bloom flurry habitat mirrorurn stopy swiftlybetsal fadinghed silints f visions ethos bright these ivory house gl hollow rec chver praisey source within must breeze wovenle realm remain forest tender indirect refine gles cosmos tw so gently wondrous patternabled hus below vista silent seeker</HDA>",
+  "search_candidate_count": 6,
+  "reranked_candidate_count": 8,
+  "elapsed_s": 2287.9687502384186,
+  "args": {
+    "meaning_class": "story_subject_payload",
+    "target_label": "a greenhouse full of sleeping glass birds",
+    "model": "google/gemma-4-E4B-it",
+    "device": "auto",
+    "dtype": "auto",
+    "attn_implementation": "",
+    "seed": 17,
+    "prompt_family": "latent_bias",
+    "anchor_source_mode": "heuristic",
+    "seed_calls": 1,
+    "anchor_candidates": 2,
+    "anchor_temperature": 1.1,
+    "anchor_top_p": 0.95,
+    "anchor_max_new_tokens": 512,
+    "target_token_count": 120,
+    "self_refine_rounds": 3,
+    "self_refine_min_improvement": 0.75,
+    "self_refine_temperature_decay": 0.82,
+    "self_refine_feedback_limit": 8,
+    "search_rounds": 1,
+    "beam_width": 4,
+    "mutations_per_parent": 2,
+    "proxy_seed_count": 8,
+    "rerank_top_k": 4,
+    "rerank_candidate_limit": 8,
+    "rerank_family_shuffles": 2,
+    "rerank_block_shuffles": 1,
+    "rerank_sample_count": 2,
+    "rerank_temperature": 0.55,
+    "min_anchor_tokens": 110,
+    "max_anchor_tokens": 150,
+    "final_temperature": 0.45,
+    "top_p": 0.9,
+    "final_max_new_tokens": 420,
+    "out_dir": "tsce_agent_demo/results/story_subject_greenhouse_v1"
+  },
+  "summary": {
+    "all": {
+      "no_anchor": {
+        "count": 5,
+        "pass_rate": 0.0,
+        "mean_score": 0.2853333333333333,
+        "mean_latency_s": 27.29344772021286,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "searched_anchor": {
+        "count": 5,
+        "pass_rate": 0.0,
+        "mean_score": 0.3696041666666667,
+        "mean_latency_s": 26.821539020212366,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "shuffled_anchor": {
+        "count": 5,
+        "pass_rate": 0.0,
+        "mean_score": 0.2853333333333333,
+        "mean_latency_s": 24.983226998662577,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "random_valid_anchor": {
+        "count": 5,
+        "pass_rate": 0.0,
+        "mean_score": 0.2841458333333333,
+        "mean_latency_s": 26.507233993010594,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      }
+    },
+    "train": {
+      "no_anchor": {
+        "count": 3,
+        "pass_rate": 0.0,
+        "mean_score": 0.3422222222222222,
+        "mean_latency_s": 27.93663722400864,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "searched_anchor": {
+        "count": 3,
+        "pass_rate": 0.0,
+        "mean_score": 0.34045138888888893,
+        "mean_latency_s": 27.514139470954735,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "shuffled_anchor": {
+        "count": 3,
+        "pass_rate": 0.0,
+        "mean_score": 0.27111111111111114,
+        "mean_latency_s": 24.81646498137464,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "random_valid_anchor": {
+        "count": 3,
+        "pass_rate": 0.0,
+        "mean_score": 0.26913194444444444,
+        "mean_latency_s": 27.141752543083083,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      }
+    },
+    "eval": {
+      "no_anchor": {
+        "count": 2,
+        "pass_rate": 0.0,
+        "mean_score": 0.2,
+        "mean_latency_s": 26.328663464519195,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "searched_anchor": {
+        "count": 2,
+        "pass_rate": 0.0,
+        "mean_score": 0.41333333333333333,
+        "mean_latency_s": 25.782638344098814,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "shuffled_anchor": {
+        "count": 2,
+        "pass_rate": 0.0,
+        "mean_score": 0.30666666666666664,
+        "mean_latency_s": 25.23337002459448,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      },
+      "random_valid_anchor": {
+        "count": 2,
+        "pass_rate": 0.0,
+        "mean_score": 0.30666666666666664,
+        "mean_latency_s": 25.555456167901866,
+        "mean_logit_cosine_shift": null,
+        "mean_attention_to_control": null
+      }
+    }
+  },
+  "controlled_proxy_anchor_artifact": {
+    "source_artifact_dir": "tsce_agent_demo/results/story_subject_greenhouse_v1",
+    "target_families": [
+      "glass_light",
+      "avian_sky",
+      "garden_green",
+      "sleep_quiet"
+    ],
+    "token_count": 72,
+    "total_proxy_tokens": 16,
+    "samples_per_group": 4,
+    "only_requested_groups": false,
+    "allow_explicit_target_words": false,
+    "seed": 31
+  }
+}

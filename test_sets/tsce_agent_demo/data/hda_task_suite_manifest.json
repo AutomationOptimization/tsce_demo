@@ -1,0 +1,29 @@
+{
+  "task_kind": "hda_task_suite",
+  "seed": 260501,
+  "suite_version": "hda_task_suite_v1",
+  "scoring_suite_version": "hda_task_suite_v1",
+  "record_shape": [
+    "id",
+    "prompt",
+    "kind",
+    "truth",
+    "meta"
+  ],
+  "outputs": [
+    {
+      "label": "smoke",
+      "path": "tsce_agent_demo/data/hda_task_suite_smoke_seed260501_n30.jsonl",
+      "n": 30,
+      "seed": 260501,
+      "task_kind": "hda_task_suite"
+    },
+    {
+      "label": "eval",
+      "path": "tsce_agent_demo/data/hda_task_suite_eval_seed260501_n300.jsonl",
+      "n": 300,
+      "seed": 260501,
+      "task_kind": "hda_task_suite"
+    }
+  ]
+}

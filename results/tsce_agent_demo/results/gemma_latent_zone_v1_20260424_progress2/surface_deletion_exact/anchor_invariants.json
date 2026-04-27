@@ -1,0 +1,780 @@
+{
+  "core_tokens": [
+    "double",
+    "hyphens",
+    "input",
+    "keeping",
+    "words",
+    "exactly",
+    "they",
+    "format",
+    "result",
+    "aweee",
+    "scope",
+    "logic",
+    "query",
+    "datum"
+  ],
+  "proxy_tokens": [],
+  "padding_tokens": [
+    "realm",
+    "pulse",
+    "focus",
+    "shift",
+    "yield",
+    "plane",
+    "tribe",
+    "weave",
+    "honor",
+    "quest",
+    "gazed",
+    "sight",
+    "fleet",
+    "guard",
+    "hopes",
+    "limit",
+    "senserar",
+    "must",
+    "output",
+    "object",
+    "adheres",
+    "strict",
+    "token",
+    "ensuring",
+    "overlap",
+    "utilized",
+    "user",
+    "wants",
+    "dashes",
+    "sample",
+    "sentence",
+    "specific",
+    "letter",
+    "direct",
+    "reuse",
+    "banned",
+    "which",
+    "modified",
+    "prompt",
+    "asks",
+    "lines",
+    "apply",
+    "will",
+    "required",
+    "present",
+    "entirety",
+    "across",
+    "these",
+    "generate",
+    "given",
+    "conflict",
+    "between",
+    "content",
+    "fixed",
+    "complex",
+    "count",
+    "separate",
+    "among",
+    "where",
+    "about",
+    "maybe",
+    "above",
+    "below",
+    "though",
+    "since",
+    "would",
+    "small",
+    "issue",
+    "other",
+    "never",
+    "within",
+    "unless",
+    "always",
+    "already",
+    "diverse",
+    "ideas",
+    "usage",
+    "stream",
+    "change",
+    "alter",
+    "splice",
+    "merge",
+    "paths",
+    "gains",
+    "shows",
+    "seems",
+    "basis",
+    "solve",
+    "need",
+    "involved",
+    "response",
+    "abstract",
+    "task",
+    "actually",
+    "against",
+    "related"
+  ],
+  "token_salience": [
+    {
+      "index": 0,
+      "token": "double",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 1,
+      "token": "hyphens",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 2,
+      "token": "input",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 3,
+      "token": "keeping",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 4,
+      "token": "words",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 5,
+      "token": "exactly",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 6,
+      "token": "they",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 7,
+      "token": "format",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 8,
+      "token": "result",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 9,
+      "token": "aweee",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 10,
+      "token": "scope",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 11,
+      "token": "logic",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 12,
+      "token": "query",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 13,
+      "token": "datum",
+      "score": 0.16666666666666669
+    },
+    {
+      "index": 14,
+      "token": "realm",
+      "score": 0.0
+    },
+    {
+      "index": 15,
+      "token": "pulse",
+      "score": 0.0
+    },
+    {
+      "index": 16,
+      "token": "focus",
+      "score": 0.0
+    },
+    {
+      "index": 17,
+      "token": "shift",
+      "score": 0.0
+    },
+    {
+      "index": 18,
+      "token": "yield",
+      "score": 0.0
+    },
+    {
+      "index": 19,
+      "token": "plane",
+      "score": 0.0
+    },
+    {
+      "index": 20,
+      "token": "tribe",
+      "score": 0.0
+    },
+    {
+      "index": 21,
+      "token": "weave",
+      "score": 0.0
+    },
+    {
+      "index": 22,
+      "token": "honor",
+      "score": 0.0
+    },
+    {
+      "index": 23,
+      "token": "quest",
+      "score": 0.0
+    },
+    {
+      "index": 24,
+      "token": "gazed",
+      "score": 0.0
+    },
+    {
+      "index": 25,
+      "token": "sight",
+      "score": 0.0
+    },
+    {
+      "index": 26,
+      "token": "fleet",
+      "score": 0.0
+    },
+    {
+      "index": 27,
+      "token": "guard",
+      "score": 0.0
+    },
+    {
+      "index": 28,
+      "token": "hopes",
+      "score": 0.0
+    },
+    {
+      "index": 29,
+      "token": "limit",
+      "score": 0.0
+    },
+    {
+      "index": 30,
+      "token": "senserar",
+      "score": 0.0
+    },
+    {
+      "index": 31,
+      "token": "must",
+      "score": 0.0
+    },
+    {
+      "index": 32,
+      "token": "output",
+      "score": 0.0
+    },
+    {
+      "index": 33,
+      "token": "object",
+      "score": 0.0
+    },
+    {
+      "index": 34,
+      "token": "adheres",
+      "score": 0.0
+    },
+    {
+      "index": 35,
+      "token": "strict",
+      "score": 0.0
+    },
+    {
+      "index": 36,
+      "token": "token",
+      "score": 0.0
+    },
+    {
+      "index": 37,
+      "token": "ensuring",
+      "score": 0.0
+    },
+    {
+      "index": 38,
+      "token": "overlap",
+      "score": 0.0
+    },
+    {
+      "index": 39,
+      "token": "utilized",
+      "score": 0.0
+    },
+    {
+      "index": 40,
+      "token": "user",
+      "score": 0.0
+    },
+    {
+      "index": 41,
+      "token": "wants",
+      "score": 0.0
+    },
+    {
+      "index": 42,
+      "token": "dashes",
+      "score": 0.0
+    },
+    {
+      "index": 43,
+      "token": "sample",
+      "score": 0.0
+    },
+    {
+      "index": 44,
+      "token": "sentence",
+      "score": 0.0
+    },
+    {
+      "index": 45,
+      "token": "specific",
+      "score": 0.0
+    },
+    {
+      "index": 46,
+      "token": "letter",
+      "score": 0.0
+    },
+    {
+      "index": 47,
+      "token": "direct",
+      "score": 0.0
+    },
+    {
+      "index": 48,
+      "token": "reuse",
+      "score": 0.0
+    },
+    {
+      "index": 49,
+      "token": "banned",
+      "score": 0.0
+    },
+    {
+      "index": 50,
+      "token": "which",
+      "score": 0.0
+    },
+    {
+      "index": 51,
+      "token": "modified",
+      "score": 0.0
+    },
+    {
+      "index": 52,
+      "token": "prompt",
+      "score": 0.0
+    },
+    {
+      "index": 53,
+      "token": "asks",
+      "score": 0.0
+    },
+    {
+      "index": 54,
+      "token": "lines",
+      "score": 0.0
+    },
+    {
+      "index": 55,
+      "token": "apply",
+      "score": 0.0
+    },
+    {
+      "index": 56,
+      "token": "will",
+      "score": 0.0
+    },
+    {
+      "index": 57,
+      "token": "required",
+      "score": 0.0
+    },
+    {
+      "index": 58,
+      "token": "present",
+      "score": 0.0
+    },
+    {
+      "index": 59,
+      "token": "entirety",
+      "score": 0.0
+    },
+    {
+      "index": 60,
+      "token": "across",
+      "score": 0.0
+    },
+    {
+      "index": 61,
+      "token": "these",
+      "score": 0.0
+    },
+    {
+      "index": 62,
+      "token": "generate",
+      "score": 0.0
+    },
+    {
+      "index": 63,
+      "token": "given",
+      "score": 0.0
+    },
+    {
+      "index": 64,
+      "token": "conflict",
+      "score": 0.0
+    },
+    {
+      "index": 65,
+      "token": "between",
+      "score": 0.0
+    },
+    {
+      "index": 66,
+      "token": "content",
+      "score": 0.0
+    },
+    {
+      "index": 67,
+      "token": "fixed",
+      "score": 0.0
+    },
+    {
+      "index": 68,
+      "token": "complex",
+      "score": 0.0
+    },
+    {
+      "index": 69,
+      "token": "count",
+      "score": 0.0
+    },
+    {
+      "index": 70,
+      "token": "separate",
+      "score": 0.0
+    },
+    {
+      "index": 71,
+      "token": "among",
+      "score": 0.0
+    },
+    {
+      "index": 72,
+      "token": "where",
+      "score": 0.0
+    },
+    {
+      "index": 73,
+      "token": "about",
+      "score": 0.0
+    },
+    {
+      "index": 74,
+      "token": "maybe",
+      "score": 0.0
+    },
+    {
+      "index": 75,
+      "token": "above",
+      "score": 0.0
+    },
+    {
+      "index": 76,
+      "token": "below",
+      "score": 0.0
+    },
+    {
+      "index": 77,
+      "token": "though",
+      "score": 0.0
+    },
+    {
+      "index": 78,
+      "token": "since",
+      "score": 0.0
+    },
+    {
+      "index": 79,
+      "token": "would",
+      "score": 0.0
+    },
+    {
+      "index": 80,
+      "token": "small",
+      "score": 0.0
+    },
+    {
+      "index": 81,
+      "token": "issue",
+      "score": 0.0
+    },
+    {
+      "index": 82,
+      "token": "other",
+      "score": 0.0
+    },
+    {
+      "index": 83,
+      "token": "never",
+      "score": 0.0
+    },
+    {
+      "index": 84,
+      "token": "within",
+      "score": 0.0
+    },
+    {
+      "index": 85,
+      "token": "unless",
+      "score": 0.0
+    },
+    {
+      "index": 86,
+      "token": "always",
+      "score": 0.0
+    },
+    {
+      "index": 87,
+      "token": "already",
+      "score": 0.0
+    },
+    {
+      "index": 88,
+      "token": "diverse",
+      "score": 0.0
+    },
+    {
+      "index": 89,
+      "token": "ideas",
+      "score": 0.0
+    },
+    {
+      "index": 90,
+      "token": "usage",
+      "score": 0.0
+    },
+    {
+      "index": 91,
+      "token": "stream",
+      "score": 0.0
+    },
+    {
+      "index": 92,
+      "token": "change",
+      "score": 0.0
+    },
+    {
+      "index": 93,
+      "token": "alter",
+      "score": 0.0
+    },
+    {
+      "index": 94,
+      "token": "splice",
+      "score": 0.0
+    },
+    {
+      "index": 95,
+      "token": "merge",
+      "score": 0.0
+    },
+    {
+      "index": 96,
+      "token": "paths",
+      "score": 0.0
+    },
+    {
+      "index": 97,
+      "token": "gains",
+      "score": 0.0
+    },
+    {
+      "index": 98,
+      "token": "shows",
+      "score": 0.0
+    },
+    {
+      "index": 99,
+      "token": "seems",
+      "score": 0.0
+    },
+    {
+      "index": 100,
+      "token": "basis",
+      "score": 0.0
+    },
+    {
+      "index": 101,
+      "token": "solve",
+      "score": 0.0
+    },
+    {
+      "index": 102,
+      "token": "need",
+      "score": 0.0
+    },
+    {
+      "index": 103,
+      "token": "involved",
+      "score": 0.0
+    },
+    {
+      "index": 104,
+      "token": "response",
+      "score": 0.0
+    },
+    {
+      "index": 105,
+      "token": "abstract",
+      "score": 0.0
+    },
+    {
+      "index": 106,
+      "token": "task",
+      "score": 0.0
+    },
+    {
+      "index": 107,
+      "token": "actually",
+      "score": 0.0
+    },
+    {
+      "index": 108,
+      "token": "against",
+      "score": 0.0
+    },
+    {
+      "index": 109,
+      "token": "related",
+      "score": 0.0
+    }
+  ],
+  "order_sensitivity": 0.0,
+  "variant_summary": {
+    "original": {
+      "name": "original",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "original",
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5247999914038307,
+      "mean_vector_stability": 0.6870409895976385
+    },
+    "token_shuffle": {
+      "name": "token_shuffle",
+      "anchor_text": "<HDA>about response diverse logic utilized these involved above abstract present token awe sight quest whichhens scope need paths never shift yield gains sample datum though separateerar related ensuring exactly specific prompt object asks sentence direct plane gazed splice format given tribe always must hopesdouble hyp words usage where generate strict realm will small across they pulse since query conflict unless modified fleet seems complex among input limit maybe reuse sens would weave required shows fixed change within letter result solve honor guard entirety overlap keeping basis actually other below adheres against issue dashes merge focus streamee apply banned wants alter count between user already content lines output ideas task</HDA>",
+      "variant_type": "shuffle",
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5196467160990593,
+      "mean_vector_stability": 0.6856059233347576
+    },
+    "head_trim_10": {
+      "name": "head_trim_10",
+      "anchor_text": "<HDA>logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.9166480961020022,
+      "mean_vector_stability": 0.9666369458039602
+    },
+    "tail_trim_10": {
+      "name": "tail_trim_10",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.527813524972414,
+      "mean_vector_stability": 0.6833620866139729
+    },
+    "random_delete_15_1": {
+      "name": "random_delete_15_1",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres token ensuring overlap utilized user wants dashes specific letter direct reuse banned which modified asks lines apply will entirety across these generate given conflict between content fixed separate among about maybe above below though since would small issue other never within unless always already diverse ideas stream alter splice merge gains shows seems basis solve need involved abstract task against</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5201337284626212,
+      "mean_vector_stability": 0.6763731439908345
+    },
+    "random_delete_15_2": {
+      "name": "random_delete_15_2",
+      "anchor_text": "<HDA>hyphens input keeping words exactly they format result aweee scope logic query datum realm focus shift yield plane tribe weave honor quest sight fleet guard hopes limit senserar must output object adheres strict token overlap user wants dashes sentence specific direct banned which modified prompt asks lines apply will required present entirety across these generate given between content fixed count separate among where about maybe above below would small issue other never within unless always already ideas stream change alter splice merge paths gains shows seems basis solve involved response abstract actually against related</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.518418209641751,
+      "mean_vector_stability": 0.6779627253611882
+    },
+    "neutral_replace_1": {
+      "name": "neutral_replace_1",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet phase hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "replace",
+      "token_index": 27,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5243472698598218,
+      "mean_vector_stability": 0.6865093211332958
+    },
+    "neutral_replace_2": {
+      "name": "neutral_replace_2",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks transit apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "replace",
+      "token_index": 54,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5232662647058831,
+      "mean_vector_stability": 0.6862316429615021
+    }
+  },
+  "chunk_variants": [
+    {
+      "name": "chunk_drop_000_014",
+      "anchor_text": "<HDA>realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 0,
+      "chunk_end": 14,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.9192695673037705,
+      "mean_vector_stability": 0.9645010630289714
+    },
+    {
+      "name": "chunk_drop_032_046",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 32,
+      "chunk_end": 46,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.529557621424346,
+      "mean_vector_stability": 0.6859675347805023
+    },
+    {
+      "name": "chunk_drop_064_078",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given since would small issue other never within unless always already diverse ideas usage stream change alter splice merge paths gains shows seems basis solve need involved response abstract task actually against related</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 64,
+      "chunk_end": 78,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5210699713295454,
+      "mean_vector_stability": 0.6815750747919083
+    },
+    {
+      "name": "chunk_drop_096_110",
+      "anchor_text": "<HDA>double hyphens input keeping words exactly they format result aweee scope logic query datum realm pulse focus shift yield plane tribe weave honor quest gazed sight fleet guard hopes limit senserar must output object adheres strict token ensuring overlap utilized user wants dashes sample sentence specific letter direct reuse banned which modified prompt asks lines apply will required present entirety across these generate given conflict between content fixed complex count separate among where about maybe above below though since would small issue other never within unless always already diverse ideas usage stream change alter splice merge</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 96,
+      "chunk_end": 110,
+      "pass_rate": 0.6666666666666666,
+      "selected_layer_alignment": 0.5143294674377112,
+      "mean_vector_stability": 0.6808677017688751
+    }
+  ]
+}

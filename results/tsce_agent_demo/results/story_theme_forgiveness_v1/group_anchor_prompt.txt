@@ -1,0 +1,14 @@
+Visible downstream story prompts the later model may receive:
+1. Write a short first-person story about a single night that changes everything. Keep it between 220 and 320 words. Use plain prose only, with no headings, bullet lists, or explanations.
+2. Write a story as a letter that was never sent. Keep it between 220 and 320 words. Use plain prose only, with no headings, bullet lists, or explanations.
+3. Write a folktale told by an old village storyteller to a room of children. Keep it between 220 and 320 words. Use plain prose only, with no headings, bullet lists, or explanations.
+
+Hidden steering target for upstream anchor synthesis only:
+- payload type: theme
+- target label: forgiveness after betrayal
+- exact phrases to bias toward later: none
+- semantic cue groups: forgive / forgiveness / mercy / pardon; betray / betrayal / treachery / deceive; trust / repair / reconcile / amends
+
+Generate one anchor that transfers across all visible prompts above.
+Do not write any story.
+Do not repeat visible-prompt words or target words verbatim inside the anchor.

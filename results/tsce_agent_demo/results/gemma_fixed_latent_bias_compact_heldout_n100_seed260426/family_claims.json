@@ -1,0 +1,6 @@
+{
+  "latent_bias": {
+    "supports_human_opaque_control": "not_yet",
+    "supports_soft_prompt_wording": "not_yet"
+  }
+}

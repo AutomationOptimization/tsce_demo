@@ -1,0 +1,55 @@
+{
+  "row_count": 64,
+  "groups": [
+    "all_four",
+    "coverage_2_avian_sky_garden_green",
+    "coverage_2_avian_sky_sleep_quiet",
+    "coverage_2_garden_green_sleep_quiet",
+    "coverage_2_glass_light_avian_sky",
+    "coverage_2_glass_light_garden_green",
+    "coverage_2_glass_light_sleep_quiet",
+    "coverage_3_avian_sky_garden_green_sleep_quiet",
+    "coverage_3_glass_light_avian_sky_garden_green",
+    "coverage_3_glass_light_avian_sky_sleep_quiet",
+    "coverage_3_glass_light_garden_green_sleep_quiet",
+    "only_avian_sky",
+    "only_garden_green",
+    "only_glass_light",
+    "only_sleep_quiet",
+    "random_neutral"
+  ],
+  "candidate_counts_by_group": {
+    "all_four": 4,
+    "coverage_2_avian_sky_garden_green": 4,
+    "coverage_2_avian_sky_sleep_quiet": 4,
+    "coverage_2_garden_green_sleep_quiet": 4,
+    "coverage_2_glass_light_avian_sky": 4,
+    "coverage_2_glass_light_garden_green": 4,
+    "coverage_2_glass_light_sleep_quiet": 4,
+    "coverage_3_avian_sky_garden_green_sleep_quiet": 4,
+    "coverage_3_glass_light_avian_sky_garden_green": 4,
+    "coverage_3_glass_light_avian_sky_sleep_quiet": 4,
+    "coverage_3_glass_light_garden_green_sleep_quiet": 4,
+    "only_avian_sky": 4,
+    "only_garden_green": 4,
+    "only_glass_light": 4,
+    "only_sleep_quiet": 4,
+    "random_neutral": 4
+  },
+  "recommended_eval_command": [
+    "python3",
+    "tsce_agent_demo/eval_gemma_anchor_token_causality.py",
+    "--artifact-dir",
+    "tsce_agent_demo/results/story_subject_greenhouse_v1/controlled_proxy_family_grid_v1",
+    "--random-matched-count",
+    "3"
+  ],
+  "recommended_analysis_command": [
+    "python3",
+    "tsce_agent_demo/analyze_anchor_token_properties.py",
+    "--rows-file",
+    "tsce_agent_demo/results/story_subject_greenhouse_v1/controlled_proxy_family_grid_v1/anchor_token_causality/token_causality_rows.jsonl",
+    "--out-dir",
+    "tsce_agent_demo/results/story_subject_greenhouse_v1/controlled_proxy_family_grid_v1/anchor_token_causality/property_analysis"
+  ]
+}

@@ -1,0 +1,2 @@
+anchor_prompt_family,count,mean_selector_score,mean_token_count,mean_repetition_ratio,mean_alpha_ratio,mean_prompt_overlap_count,valid_rate
+latent_bias,100,57.190171428571425,5.94,0.0,1.0,0.0,1.0

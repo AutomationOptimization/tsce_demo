@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments
+.venv*/
+venv/
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
+
+# Generated LaTeX/build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Large model artifacts should not be committed here
+*.ckpt
+*.safetensors
+checkpoint*.pt

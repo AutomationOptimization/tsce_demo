@@ -1,0 +1,58 @@
+{
+  "context_collision_anchor": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 9.558718506945297,
+    "mean_logit_cosine_shift": 0.013720132578406392,
+    "mean_attention_to_control": null
+  },
+  "best_anchor_eval": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 6.356876257923432,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "recover_with_class_delta": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 9.242096794419922,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "recover_with_bad_delta": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 9.445063343038782,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "recover_with_shuffled_delta": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 9.474592672893777,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "remove_class_delta": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 6.558484891895205,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "project_out_class_delta": {
+    "count": 2,
+    "pass_rate": 0.0,
+    "mean_score": 0.0,
+    "mean_latency_s": 11.08808992349077,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  }
+}

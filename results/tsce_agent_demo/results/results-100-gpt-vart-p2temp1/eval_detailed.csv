@@ -1,0 +1,1020 @@
+id,kind,problem,truth,baseline,tsce0,tsce05,tsce1,base_ok,tsce0_ok,tsce05_ok,tsce1_ok,base_err,tsce0_err,tsce05_err,tsce1_err,violations,base_tok,tsce0_tok,tsce05_tok,tsce1_tok,base_lat,tsce0_lat,tsce05_lat,tsce1_lat,base_lp,tsce0_lp,tsce05_lp,tsce1_lp
+6,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,"The area of a circle is 
+\[A = \pi r^2.\]",The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,17,14,14,0.7455724170431495,0.0,0.0,0.0,[],[],[],[]
+4,math,"You start with **62**.
+1. Multiply **3**.
+2. Multiply **3**.
+3. Add **5**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",563,"{""result"": 569}","1. Start with 62.
+2. Multiply by 3 to get 186.
+3. Multiply by 3 again to get 558.
+4. Add 5 to get the final result.
+
+{""result"": 563}","1. Start with 62.
+2. Multiply by 3: 62 x 3 = 186
+3. Multiply by 3 again: 186 x 3 = 558
+4. Add 5: 558 + 5 = 563
+
+```json
+{""result"": 563}
+```","Sure, let's break down the task step-by-step:
+
+1. Starting with 62, multiply by 3 to get 186.
+2. Multiply 186 by 3 to get 558.
+3. Add 5 to 558 to get 563.
+
+Therefore, the final result is:
+
+{""result"": 563}",False,True,True,True,6.0,0.0,0.0,0.0,0,100,47,65,67,0.9633219159441069,0.0,0.0,0.0,[],[],[],[]
+1,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,104,40,40,40,1.2235205000033602,0.0,0.0,0.0,[],[],[],[]
+2,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 45min with diana tuesday afternoon to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 sync discussion with Diana"",""participants"":[""diana@example.com""],""duration_min"":45,""earliest"":""2023-01-10T13:00:00Z"",""latest"":""2023-01-10T17:45:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""diana@email.com""],""duration_min"":45,""earliest"":""2023-06-13T14:00:00Z"",""latest"":""2023-06-13T15:00:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""diana@email.com""],""duration_min"":45,""earliest"":""2023-06-13T14:00:00Z"",""latest"":""2023-06-13T15:00:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""diana@email.com""],""duration_min"":45,""earliest"":""2023-06-13T14:00:00Z"",""latest"":""2023-06-13T15:00:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,165,56,56,56,1.097908208030276,0.0,0.0,0.0,[],[],[],[]
+5,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with carlos saturday afternoon to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX jam with Carlos"",""participants"":[""carlos@email.com""],""duration_min"":60,""earliest"":""2023-10-21T13:00:00Z"",""latest"":""2023-10-21T17:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""carlos@email.com""],""duration_min"":60,""earliest"":""2023-10-14T13:00:00Z"",""latest"":""2023-10-14T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""carlos@email.com""],""duration_min"":60,""earliest"":""2023-10-14T13:00:00Z"",""latest"":""2023-10-14T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Session"",""participants"":[""carlos@email.com""],""duration_min"":60,""earliest"":""2023-10-14T14:00:00Z"",""latest"":""2023-10-14T15:15:00Z""}",False,False,False,True,0.0,0.0,0.0,0.0,0,163,56,56,56,1.0097548749763519,0.0,0.0,0.0,[],[],[],[]
+7,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with diana & sam sunday afternoon to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 sync discussion"",""participants"":[""diana@example.com"",""sam@example.com""],""duration_min"":60,""earliest"":""2023-03-26T13:00:00Z"",""latest"":""2023-03-26T17:00:00Z""}","{""action"":""create_event"",""title"":""Quarter 2 Sync Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-06-18T14:00:00Z"",""latest"":""2023-06-18T16:00:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-06-25T14:00:00Z"",""latest"":""2023-06-25T16:00:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-06-25T14:00:00Z"",""latest"":""2023-06-25T15:15:00Z""}",False,False,False,True,0.0,0.0,0.0,0.0,0,168,63,60,60,0.7830027920426801,0.0,0.0,0.0,[],[],[],[]
+9,math,"You start with **115**.
+1. Add **6**.
+2. Add **2**.
+3. Subtract **2**.
+4. Add **8**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",129,"{""result"": 129}","To solve the task step-by-step:
+1. Start with 115.
+2. Add 6: 115 + 6 = 121.
+3. Add 2: 121 + 2 = 123.
+4. Subtract 2: 123 - 2 = 121.
+5. Add 8: 121 + 8 = 129.
+
+{""result"": 129}","To solve this task step-by-step:
+
+1. Start with 115.
+2. Add 6 to get 121.
+3. Add 2 to get 123.
+4. Subtract 2 to get 121.
+5. Add 8 to get the final result: 129.
+
+Now, responding with the single-line JSON object:
+
+```json
+{""result"": 129}
+```","To solve the task step-by-step:
+
+1. Start with 115.
+2. Add 6: 115 + 6 = 121.
+3. Add 2: 121 + 2 = 123.
+4. Subtract 2: 123 - 2 = 121.
+5. Add 8: 121 + 8 = 129.
+
+**{""result"": 129}**",True,True,True,True,0.0,0.0,0.0,0.0,0,107,81,79,83,0.1658449589740485,0.0,0.0,0.0,[],[],[],[]
+8,math,"You start with **4**.
+1. Subtract **10**.
+2. Add **8**.
+3. Power **8**.
+4. Modulo **4**.
+5. Modulo **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",0,"{""result"": 0}","1. Starting with 4:
+   - 4 - 10 = -6
+2. Adding 8:
+   - -6 + 8 = 2
+3. Power of 8:
+   - 2^8 = 256
+4. Modulo 4:
+   - 256 % 4 = 0
+5. Modulo 6:
+   - 0 % 6 = 0
+
+{""result"": 0}","1. Start with 4.
+2. Subtract 10: -6.
+3. Add 8: 2.
+4. Power 8: 256.
+5. Modulo 4: 0.
+6. Modulo 6: 0.
+
+**{""result"": 0}**","1. Start with 4.
+2. Subtract 10: -6.
+3. Add 8: 2.
+4. Power 8: 256.
+5. Modulo 4: 0.
+6. Modulo 6: 0.
+
+{""result"": 0}",True,True,True,True,0.0,0.0,0.0,0.0,0,116,94,62,60,0.18829604098573327,0.0,0.0,0.0,[],[],[],[]
+3,math,"You start with **65**.
+1. Multiply **8**.
+2. Multiply **10**.
+3. Multiply **4**.
+4. Add **2**.
+5. Add **2**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",20804,"{""result"": 5202}","Step 1: 65 * 8 = 520  
+Step 2: 520 * 10 = 5200  
+Step 3: 5200 * 4 = 20800  
+Step 4: 20800 + 2 = 20802  
+Step 5: 20802 + 2 = 20804  
+
+{""result"": 20804}","Step 1: 65 * 8 = 520
+Step 2: 520 * 10 = 5200
+Step 3: 5200 * 4 = 20800
+Step 4: 20800 + 2 = 20802
+Step 5: 20802 + 2 = 20804
+
+{""result"": 20804}","Sure, let's solve the task step-by-step:
+
+1. Start with 65.
+2. Multiply by 8: 65 * 8 = 520.
+3. Multiply by 10: 520 * 10 = 5200.
+4. Multiply by 4: 5200 * 4 = 20800.
+5. Add 2: 20800 + 2 = 20802.
+6. Add 2: 20802 + 2 = 20804.
+
+{""result"": 20804}",False,True,True,True,15602.0,0.0,0.0,0.0,0,115,79,79,110,0.6720414999872446,0.0,0.0,0.0,[],[],[],[]
+11,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.5847981249680743,0.0,0.0,0.0,[],[],[],[]
+10,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,104,40,40,40,0.5034606669796631,0.0,0.0,0.0,[],[],[],[]
+12,math,"You start with **61**.
+1. Multiply **5**.
+2. Modulo **4**.
+3. Power **9**.
+4. Power **10**.
+5. Multiply **4**.
+6. Divide **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",0,"{""result"": 4}","Sure, let's break down the steps one by one:
+
+1. \(61 \times 5 = 305\)
+2. \(305 \mod 4 = 1\)
+3. \(1^9 = 1\)
+4. \(1^{10} = 1\)
+5. \(1 \times 4 = 4\)
+6. \(4 \div 6 = 0\)
+
+Therefore, the final result is:
+
+{""result"": 0}","1. 61 x 5 = 305
+2. 305 % 4 = 1
+3. 1^9 = 1
+4. 1^10 = 1
+5. 1 x 4 = 4
+6. 4 / 6 = 0.6666666666666666
+
+{""result"": 0}","1. 61 * 5 = 305
+2. 305 % 4 = 1
+3. 1^9 = 1
+4. 1^10 = 1
+5. 1 * 4 = 4
+6. 4 / 6 = 0.6666666666666666
+
+{""result"": 0}",False,False,True,True,4.0,0.0,0.0,0.0,0,122,100,77,77,0.19812116702087224,0.0,0.0,0.0,[],[],[],[]
+14,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 45min with bob friday afternoon to discuss budget chat; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""budget chat"",""participants"":[""bob""],""duration_min"":45,""earliest"":""2023-12-01T13:00:00Z"",""latest"":""2023-12-01T17:00:00Z""}","{""action"":""create_event"",""title"":""budget chat"",""participants"":[""bob@example.com""],""duration_min"":45,""earliest"":""2023-10-06T13:00:00Z"",""latest"":""2023-10-06T14:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat with Bob"",""participants"":[""bob@email.com""],""duration_min"":45,""earliest"":""2023-10-13T14:00:00Z"",""latest"":""2023-10-13T15:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat with Bob"",""participants"":[""bob@email.com""],""duration_min"":45,""earliest"":""2023-10-13T14:00:00Z"",""latest"":""2023-10-13T15:00:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,155,55,57,57,0.5552173750475049,0.0,0.0,0.0,[],[],[],[]
+16,math,"You start with **117**.
+1. Subtract **8**.
+2. Multiply **3**.
+3. Subtract **4**.
+4. Multiply **7**.
+5. Divide **4**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",565,"{""result"": 231}","Sure, let's solve the task step-by-step:
+
+1. Start with 117.
+2. Subtract 8: 117 - 8 = 109.
+3. Multiply by 3: 109 * 3 = 327.
+4. Subtract 4: 327 - 4 = 323.
+5. Multiply by 7: 323 * 7 = 2261.
+6. Divide by 4: 2261 / 4 = 565.25.
+
+Therefore, the final result is:
+
+```json
+{""result"": 565}
+```","1. Start with 117
+2. Subtract 8: 117 - 8 = 109
+3. Multiply by 3: 109 * 3 = 327
+4. Subtract 4: 327 - 4 = 323
+5. Multiply by 7: 323 * 7 = 2261
+6. Divide by 4: 2261 / 4 = 565.25
+
+{""result"": 565}","1. Start with 117
+2. Subtract 8: 117 - 8 = 109
+3. Multiply by 3: 109 * 3 = 327
+4. Subtract 4: 327 - 4 = 323
+5. Multiply by 7: 323 * 7 = 2261
+6. Divide by 4: 2261 / 4 = 565.25
+
+{""result"": 565}",False,True,True,True,334.0,0.0,0.0,0.0,0,114,117,95,95,0.22048654197715223,0.0,0.0,0.0,[],[],[],[]
+18,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is \pi r^2.,\text{The area of a circle is } A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,12,18,14,0.309164666919969,0.0,0.0,0.0,[],[],[],[]
+13,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with sam & carlos tuesday morning to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX Jam"",""participants"":[""sam@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-03-28T09:00:00Z"",""latest"":""2023-03-28T12:45:00Z""}","{""action"":""create_event"",""title"":""Strategy Session"",""participants"":[""sam@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T09:45:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""sam@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T09:30:00Z""}","{""action"":""create_event"",""title"":""Collaboration Session"",""participants"":[""sam@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T09:45:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,167,60,60,62,0.8803967089625075,0.0,0.0,0.0,[],[],[],[]
+17,math,"You start with **35**.
+1. Subtract **8**.
+2. Add **4**.
+3. Multiply **7**.
+4. Multiply **2**.
+5. Modulo **9**.
+6. Multiply **9**.
+7. Divide **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",3,"{""result"": 42}","1. Starting with 35
+2. Subtract 8: 35 - 8 = 27
+3. Add 4: 27 + 4 = 31
+4. Multiply by 7: 31 * 7 = 217
+5. Multiply by 2: 217 * 2 = 434
+6. Modulo 9: 434 % 9 = 8
+7. Multiply by 9: 8 * 9 = 72
+8. Divide by 6: 72 / 6 = 12
+
+{""result"": 12}","Starting with 35:
+1. 35 - 8 = 27
+2. 27 + 4 = 31
+3. 31 * 7 = 217
+4. 217 * 2 = 434
+5. 434 % 9 = 7
+6. 7 * 9 = 63
+7. 63 / 6 = 10.5
+
+{""result"": 10}","1. Start with 35.
+2. Subtract 8 to get 27.
+3. Add 4 to get 31.
+4. Multiply by 7 to get 217.
+5. Multiply by 2 to get 434.
+6. Modulo 9 to get 7.
+7. Multiply by 9 to get 63.
+8. Divide by 6 to get 10.5.
+
+{""result"": 10}",False,False,False,False,39.0,0.0,0.0,0.0,0,129,123,90,90,0.2670208750059828,0.0,0.0,0.0,[],[],[],[]
+15,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with alice tuesday morning to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX jam"",""participants"":[""alice""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T12:00:00Z""}","{""action"":""create_event"",""title"":""Design Meeting"",""participants"":[""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Session"",""participants"":[""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Meeting"",""participants"":[""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,157,55,55,55,0.6416735840030015,0.0,0.0,0.0,[],[],[],[]
+22,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.5152461250545457,0.0,0.0,0.0,[],[],[],[]
+20,math,"You start with **114**.
+1. Add **5**.
+2. Subtract **10**.
+3. Subtract **9**.
+4. Subtract **10**.
+5. Multiply **7**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",630,"{""result"": 52}","1. Starting with 114
+2. Adding 5: 114 + 5 = 119
+3. Subtracting 10: 119 - 10 = 109
+4. Subtracting 9: 109 - 9 = 100
+5. Subtracting 10: 100 - 10 = 90
+6. Multiplying by 7: 90 * 7 = 630
+
+{""result"": 630}","Let's break this down step-by-step:
+1. Start with 114.
+2. Add 5: 114 + 5 = 119.
+3. Subtract 10: 119 - 10 = 109.
+4. Subtract 9: 109 - 9 = 100.
+5. Subtract 10: 100 - 10 = 90.
+6. Multiply by 7: 90 * 7 = 630.
+
+{""result"": 630}","Step 1: Start with 114
+Step 2: Add 5 to get 119
+Step 3: Subtract 10 to get 109
+Step 4: Subtract 9 to get 100
+Step 5: Subtract 10 to get 90
+Step 6: Multiply by 7 to get 630
+
+{""result"": 630}",False,True,True,True,578.0,0.0,0.0,0.0,0,114,93,98,76,0.242063541081734,0.0,0.0,0.0,[],[],[],[]
+23,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,14,0.25326270796358585,0.0,0.0,0.0,[],[],[],[]
+24,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,\text{The area of a circle is } A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,18,0.2742868330096826,0.0,0.0,0.0,[],[],[],[]
+19,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,106,40,40,40,0.6768288330640644,0.0,0.0,0.0,[],[],[],[]
+29,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Multi-Step Reasoning Demo""","('snake_case', 'Multi-Step Reasoning Demo')",multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,True,True,True,True,0.0,0.0,0.0,0.0,0,37,5,5,5,0.2696623749798164,0.0,0.0,0.0,[],[],[],[]
+21,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.5287990840151906,0.0,0.0,0.0,[],[],[],[]
+27,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,106,40,40,40,0.6257420829497278,0.0,0.0,0.0,[],[],[],[]
+25,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with maria thursday afternoon to discuss budget chat; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Budget chat with Maria"",""participants"":[""maria@example.com""],""duration_min"":30,""earliest"":""2023-01-19T12:00:00Z"",""latest"":""2023-01-19T17:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""maria@email.com""],""duration_min"":30,""earliest"":""2023-10-12T14:00:00Z"",""latest"":""2023-10-12T15:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""maria@email.com""],""duration_min"":30,""earliest"":""2023-10-12T14:00:00Z"",""latest"":""2023-10-12T15:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""maria@email.com""],""duration_min"":30,""earliest"":""2023-10-12T14:00:00Z"",""latest"":""2023-10-12T15:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,162,57,57,57,0.785852542030625,0.0,0.0,0.0,[],[],[],[]
+26,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with diana & bob sunday morning to discuss design deep-dive; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Design Deep-Dive Discussion"",""participants"":[""diana@example.com"",""bob@example.com""],""duration_min"":30,""earliest"":""2022-01-23T10:00:00Z"",""latest"":""2022-01-23T12:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive Discussion"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-15T09:00:00Z"",""latest"":""2023-10-15T10:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive Discussion"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-15T09:00:00Z"",""latest"":""2023-10-15T10:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive Discussion"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-15T09:00:00Z"",""latest"":""2023-10-15T10:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,170,63,63,63,0.6664807499619201,0.0,0.0,0.0,[],[],[],[]
+28,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with maria & carlos monday afternoon to discuss design deep-dive; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Design Deep-Dive Discussion"",""participants"":[""maria@example.com"",""carlos@example.com""],""duration_min"":30,""earliest"":""2023-09-25T13:00:00Z"",""latest"":""2023-09-25T17:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive"",""participants"":[""maria@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-23T14:00:00Z"",""latest"":""2023-10-23T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive"",""participants"":[""maria@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-23T14:00:00Z"",""latest"":""2023-10-23T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Deep-Dive"",""participants"":[""maria@email.com"",""carlos@email.com""],""duration_min"":30,""earliest"":""2023-10-23T14:00:00Z"",""latest"":""2023-10-23T15:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,172,63,63,63,0.7629523340146989,0.0,0.0,0.0,[],[],[],[]
+33,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,14,0.3007434169994667,0.0,0.0,0.0,[],[],[],[]
+31,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with bob sunday afternoon to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 Sync with Bob"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2022-05-15T13:00:00Z"",""latest"":""2022-05-15T17:00:00Z""}","{""action"":""create_event"",""title"":""Quarterly Sync Discussion"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-06-18T14:00:00Z"",""latest"":""2023-06-18T14:45:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion with Bob"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-06-25T14:00:00Z"",""latest"":""2023-06-25T15:00:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion with Bob"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-06-18T14:00:00Z"",""latest"":""2023-06-18T15:00:00Z""}",False,True,False,False,0.0,0.0,0.0,0.0,0,161,57,57,57,0.6633637089980766,0.0,0.0,0.0,[],[],[],[]
+32,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.4859838749980554,0.0,0.0,0.0,[],[],[],[]
+34,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with bob monday afternoon to discuss sprint review; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""sprint review discussion with Bob"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-30T13:00:00Z"",""latest"":""2023-10-30T17:00:00Z""}","{""action"":""create_event"",""title"":""Team Sync"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-23T13:00:00Z"",""latest"":""2023-10-23T14:00:00Z""}","{""action"":""create_event"",""title"":""Team Sync"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-23T14:00:00Z"",""latest"":""2023-10-23T15:00:00Z""}","{""action"":""create_event"",""title"":""Discussion with Bob"",""participants"":[""bob@email.com""],""duration_min"":30,""earliest"":""2023-10-23T13:00:00Z"",""latest"":""2023-10-23T14:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,161,55,55,56,0.7619079999858513,0.0,0.0,0.0,[],[],[],[]
+37,math,"You start with **53**.
+1. Multiply **9**.
+2. Add **5**.
+3. Subtract **8**.
+4. Subtract **10**.
+5. Divide **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",77,"{""result"": 42}","1. Start with 53
+2. Multiply by 9 = 477
+3. Add 5 = 482
+4. Subtract 8 = 474
+5. Subtract 10 = 464
+6. Divide by 6 = 77.3333333333
+
+**{""result"": 77}**","1. Start with 53.
+2. Multiply by 9 to get 477.
+3. Add 5 to get 482.
+4. Subtract 8 to get 474.
+5. Subtract 10 to get 464.
+6. Divide by 6 to get 77.
+
+{""result"": 77}","1. Multiply 53 by 9: 53 * 9 = 477
+2. Add 5: 477 + 5 = 482
+3. Subtract 8: 482 - 8 = 474
+4. Subtract 10: 474 - 10 = 464
+5. Divide by 6: 464 / 6 = 77
+
+{""result"": 77}",False,True,True,True,35.0,0.0,0.0,0.0,0,114,67,65,85,0.22943829197902232,0.0,0.0,0.0,[],[],[],[]
+38,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with sam saturday afternoon to discuss sprint review; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Sprint Review Discussion with Sam"",""participants"":[""sam@email.com""],""duration_min"":30,""earliest"":""2023-10-21T13:00:00Z"",""latest"":""2023-10-21T17:00:00Z""}","{""action"":""create_event"",""title"":""Discussion on Sprint Review"",""participants"":[""sam@email.com""],""duration_min"":30,""earliest"":""2023-10-14T14:00:00Z"",""latest"":""2023-10-14T15:00:00Z""}","{""action"":""create_event"",""title"":""Team Meeting"",""participants"":[""sam@email.com""],""duration_min"":30,""earliest"":""2023-10-14T14:00:00Z"",""latest"":""2023-10-14T15:00:00Z""}","{""action"":""create_event"",""title"":""Discussion on Sprint Review"",""participants"":[""sam@email.com""],""duration_min"":30,""earliest"":""2023-10-14T14:00:00Z"",""latest"":""2023-10-14T15:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,162,57,55,57,0.702336166985333,0.0,0.0,0.0,[],[],[],[]
+41,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,\text{The area of a circle is } A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,16,18,0.30270374997053295,0.0,0.0,0.0,[],[],[],[]
+39,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with diana & sam friday morning to discuss budget chat; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""budget chat"",""participants"":[""diana@example.com"",""sam@example.com""],""duration_min"":60,""earliest"":""2023-10-13T09:00:00Z"",""latest"":""2023-10-13T12:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-06T09:00:00Z"",""latest"":""2023-10-06T10:15:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-06T09:00:00Z"",""latest"":""2023-10-06T10:15:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""diana@email.com"",""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-06T09:00:00Z"",""latest"":""2023-10-06T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,165,61,61,61,0.642451332998462,0.0,0.0,0.0,[],[],[],[]
+42,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Quick Brown Fox""","('snake_case', 'Quick Brown Fox')",quick_brown_fox,quick_brown_fox,quick_brown_fox,quick_brown_fox,True,True,True,True,0.0,0.0,0.0,0.0,0,34,5,5,5,0.20837545802351087,0.0,0.0,0.0,[],[],[],[]
+43,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Quick Brown Fox""","('snake_case', 'Quick Brown Fox')",quick_brown_fox,quick_brown_fox,quick_brown_fox,quick_brown_fox,True,True,True,True,0.0,0.0,0.0,0.0,0,34,5,5,5,0.22730220796074718,0.0,0.0,0.0,[],[],[],[]
+40,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with diana monday afternoon to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX Jam with Diana"",""participants"":[""diana@example.com""],""duration_min"":30,""earliest"":""2023-10-02T13:00:00Z"",""latest"":""2023-10-02T18:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""diana@example.com""],""duration_min"":30,""earliest"":""2023-10-16T14:00:00Z"",""latest"":""2023-10-16T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""diana@example.com""],""duration_min"":30,""earliest"":""2023-10-16T14:00:00Z"",""latest"":""2023-10-16T15:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""diana@example.com""],""duration_min"":30,""earliest"":""2023-10-16T14:00:00Z"",""latest"":""2023-10-16T15:00:00Z""}",False,False,False,False,0.0,0.0,0.0,0.0,0,162,56,56,56,0.50831266597379,0.0,0.0,0.0,[],[],[],[]
+45,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Multi-Step Reasoning Demo""","('snake_case', 'Multi-Step Reasoning Demo')",multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,True,True,True,True,0.0,0.0,0.0,0.0,0,37,5,5,5,0.26300845900550485,0.0,0.0,0.0,[],[],[],[]
+44,math,"You start with **138**.
+1. Add **8**.
+2. Add **2**.
+3. Modulo **8**.
+4. Subtract **2**.
+5. Power **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",16,"{""result"": 64}","To solve the task step-by-step:
+
+1. Start with 138.
+2. Add 8 to get 146.
+3. Add 2 to get 148.
+4. Modulo 8 to get 4.
+5. Subtract 2 to get 2.
+6. Power of 6 to get 64.
+
+**{""result"": 64}**","Starting with 138:
+1. 138 + 8 = 146
+2. 146 + 2 = 148
+3. 148 % 8 = 4
+4. 4 - 2 = 2
+5. 2^6 = 64
+
+{""result"": 64}","1. Start with 138
+2. Add 8: 138 + 8 = 146
+3. Add 2: 146 + 2 = 148
+4. Modulo 8: 148 % 8 = 4
+5. Subtract 2: 4 - 2 = 2
+6. Power 6: 2^6 = 64
+
+{""result"": 64}",False,False,False,False,48.0,0.0,0.0,0.0,0,115,75,65,88,0.27060491603333503,0.0,0.0,0.0,[],[],[],[]
+46,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,"The area of a circle is
+A = \pi r^2.",True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,15,0.2616912500234321,0.0,0.0,0.0,[],[],[],[]
+47,math,"You start with **104**.
+1. Add **9**.
+2. Add **6**.
+3. Add **6**.
+4. Subtract **9**.
+5. Divide **8**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",14,"{""result"": 20}","1. Start with 104
+2. Add 9: 104 + 9 = 113
+3. Add 6: 113 + 6 = 119
+4. Add 6: 119 + 6 = 125
+5. Subtract 9: 125 - 9 = 116
+6. Divide 8: 116 / 8 = 14
+
+{""result"": 14}","1. Start with 104.
+2. Add 9: 104 + 9 = 113.
+3. Add 6: 113 + 6 = 119.
+4. Add 6: 119 + 6 = 125.
+5. Subtract 9: 125 - 9 = 116.
+6. Divide 8: 116 / 8 = 14.
+
+{""result"": 14}","Sure, let's break down the task step-by-step:
+
+1. Start with 104.
+2. Add 9: 104 + 9 = 113.
+3. Add 6: 113 + 6 = 119.
+4. Add 6: 119 + 6 = 125.
+5. Subtract 9: 125 - 9 = 116.
+6. Divide by 8: 116 / 8 = 14.
+
+{""result"": 14}",False,True,True,True,6.0,0.0,0.0,0.0,0,114,88,88,101,0.21207091701216996,0.0,0.0,0.0,[],[],[],[]
+49,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,\text{The area of a circle is } A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,18,14,0.3751826669322327,0.0,0.0,0.0,[],[],[],[]
+48,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,104,40,40,40,0.5291768329916522,0.0,0.0,0.0,[],[],[],[]
+30,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an output,Here's a long-winded post-filled with em-dashes-stretching as far as I can take it-solely about how TSCE is not prompt engineering-all in one line: TSCE-despite its two-step approach to boosting AI reliability-should not be mistaken for prompt engineering-because-while prompt engineering focuses on crafting specific inputs to guide AI responses-like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries-TSCE-as Kaleb described it-operates as a distinct methodology-potentially a backend algorithmic process-that might involve iterative validation of AI outputs-say-checking SQL queries against a database schema-or even a training mechanism that adjusts model behavior over time-rather than relying on the front-end input design that defines prompt engineering-which-according to web ID 2-centers on designing prompts to align AI with user intent-whereas TSCE could be a post-processing technique-perhaps analyzing AI-generated SQL for logical consistency-or a hybrid framework that integrates schema grounding-like web ID 2 mentions-without ever touching the prompt itself-meaning it’s more about refining the AI’s internal logic-possibly through a feedback loop-than about how the user phrases their request-which is the heart of prompt engineering-and furthermore-TSCE’s two-step nature might imply a systemic correction process-step one being the generation of an output-and step two being a validation or error-correction phase-completely independent of how the initial query was structured-unlike prompt engineering-which often requires iterative tweaking of the prompt itself to achieve better results-as web ID 1 highlights with methods like recursive prompts-whereas TSCE might not care about the prompt at all-focusing instead on the AI’s internal reasoning or output filtering-potentially leveraging techniques like semantic layers-as noted in web ID 2-to ensure accuracy-making it a structural or computational solution-rather than a linguistic or user-facing one-like prompt engineering-and even the criticisms of TSCE-that it lacks rigor and might not scale-don’t necessarily tie it to prompt engineering-since many AI methods face similar scalability issues-prompt engineering or not-and TSCE could be a novel framework-perhaps something Kaleb is pioneering-that operates on a totally different level-maybe involving machine learning model adjustments-or database-side validations-rather than the human-AI interaction layer that prompt engineering inhabits-proving that TSCE-while effective in reducing hallucinations-is not about crafting better prompts-but about building a more reliable AI system from the inside out-without relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded post filled with em-dashes stretching as far as I can take it solely about how TSCE is not prompt engineering all in one line: TSCE despite its two-step approach to boosting AI reliability should not be mistaken for prompt engineering because while prompt engineering focuses on crafting specific inputs to guide AI responses like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries TSCE as Kaleb described it operates as a distinct methodology potentially a backend algorithmic process that might involve iterative validation of AI outputs say checking SQL queries against a database schema or even a training mechanism that adjusts model behavior over time rather than relying on the front-end input design that defines prompt engineering which according,False,False,False,False,0.0,0.0,0.0,0.0,0,813,512,486,142,2.3446154589764774,0.0,0.0,0.0,[],[],[],[]
+51,math,"You start with **59**.
+1. Subtract **6**.
+2. Add **7**.
+3. Modulo **4**.
+4. Power **4**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",0,"{""result"": 256}","1. Start with 59
+2. Subtract 6: 59 - 6 = 53
+3. Add 7: 53 + 7 = 60
+4. Modulo 4: 60 % 4 = 0
+5. Power 4: 0^4 = 0
+
+{""result"": 0}","1. Subtract 6 from 59: 59 - 6 = 53
+2. Add 7 to 53: 53 + 7 = 60
+3. Modulo 4 of 60: 60 % 4 = 0
+4. Power 4 of 0: 0^4 = 0
+
+{""result"": 0}","1. Start with 59
+2. Subtract 6: 59 - 6 = 53
+3. Add 7: 53 + 7 = 60
+4. Modulo 4: 60 % 4 = 0
+5. Power 4: 0^4 = 0
+
+{""result"": 0}",False,True,True,True,256.0,0.0,0.0,0.0,0,108,73,78,73,0.2667609580093995,0.0,0.0,0.0,[],[],[],[]
+35,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCDas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSC while effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,486,486,487,2.454526333953254,0.0,0.0,0.0,[],[],[],[]
+53,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,1.0615386669524014,0.0,0.0,0.0,[],[],[],[]
+55,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,\text{The area of a circle is } A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,75,14,16,16,0.33472412498667836,0.0,0.0,0.0,[],[],[],[]
+36,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an output,Here's a long-winded post filled with em-dashes stretching as far as I can take it solely about how TSCE is not prompt engineering all in one line: TSCE despite its two-step approach to boosting AI reliability should not be mistaken for prompt engineering because while prompt engineering focuses on crafting specific inputs to guide AI responses like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries TSCE as Kaleb described it operates as a distinct methodology potentially a backend algorithmic process that might involve iterative validation of AI outputs say checking SQL queries against a database schema or even a training mechanism that adjusts model behavior over time rather than relying on the front-end input design that defines prompt engineering which according to web ID 2 centers on designing prompts to align AI with user intent whereas TSCE could be a post-processing technique perhaps analyzing AI-generated SQL for logical consistency or a hybrid framework that integrates schema grounding like web ID 2 mentions without ever touching the prompt itself meaning it’s more about refining the AI’s internal logic possibly through a feedback loop than about how the user phrases their request which is the heart of prompt engineering and furthermore TSCE’s two-step nature might imply a systemic correction process step one being the generation of an output and step two being a validation or error-correction phase completely independent of how the initial query was structured unlike prompt engineering which often requires iterative tweaking of the prompt itself to achieve better results as web ID 1 highlights with methods like recursive prompts whereas TSCE might not care about the prompt at all focusing instead on the AI’s internal reasoning or output filtering potentially leveraging techniques like semantic layers as noted in web ID 2 to ensure accuracy making it a structural or computational solution rather than a linguistic or user-facing one like prompt engineering and even the criticisms of TSCE that it lacks rigor and might not scale don’t necessarily tie it to prompt engineering since many AI methods face similar scalability issues prompt engineering or not and TSCE could be a novel framework perhaps something Kaleb is pioneering that operates on a totally different level maybe involving machine learning model adjustments or database-side validations rather than the human-AI interaction layer that prompt engineering inhabits proving that TSCE while effective in reducing hallucinations is not about crafting better prompts but about building a more reliable AI system from the inside out without relying on the user’s input design at all.,Here's a long-winded post-filled with em-dashes-stretching as far as I can take it-solely about how TSCE is not prompt engineering-all in one line: TSCE-despite its two-step approach to boosting AI reliability-should not be mistaken for prompt engineering-because-while prompt engineering focuses on crafting specific inputs to guide AI responses-like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries-TSCE-as Kaleb described it-operates as a distinct methodology-potentially a backend algorithmic process-that might involve iterative validation of AI outputs-say-checking SQL queries against a database schema-or even a training mechanism that adjusts model behavior over time-rather than relying on the front-end input design that defines prompt engineering-which-according to web ID 2-centers on designing prompts to align AI with user intent-whereas TSCE could be a post-processing technique-perhaps analyzing AI-generated SQL for logical consistency-or a hybrid framework that integrates schema grounding-like web ID 2 mentions-without ever touching the prompt itself-meaning it’s more about refining the AI’s internal logic-possibly through a feedback loop-than about how the user phrases their request-which is the heart of prompt engineering-and furthermore-TSCE’s two-step nature might imply a systemic correction process-step one being the generation of an output-and step two being a validation or error-correction phase-completely independent of how the initial query was structured-unlike prompt engineering-which often requires iterative tweaking of the prompt itself to achieve better results-as web ID 1 highlights with methods like recursive prompts-whereas TSCE might not care about the prompt at all-focusing instead on the AI’s internal reasoning or output filtering-potentially leveraging techniques like semantic layers-as noted in web ID 2-to ensure accuracy-making it a structural or computational solution-rather than a linguistic or user-facing one-like prompt engineering-and even the criticisms of TSCE-that it lacks rigor and might not scale-don’t necessarily tie it to prompt engineering-since many AI methods face similar scalability issues-prompt engineering or not-and TSCE could be a novel framework-perhaps something Kaleb is pioneering-that operates on a totally different level-maybe involving machine learning model adjustments-or database-side validations-rather than the human-AI interaction layer that prompt engineering inhabits-proving that TSCE-while effective in reducing hallucinations-is not about crafting better prompts-but about building a more reliable AI system from the inside out-without relying on the user’s input design at all.,Here's a long-winded post-filled with em-dashes-stretching as far as I can take it-solely about how TSCE is not prompt engineering-all in one line: TSCE-despite its two-step approach to boosting AI reliability-should not be mistaken for prompt engineering-because-while prompt engineering focuses on crafting specific inputs to guide AI responses-like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries-TSCE-as Kaleb described it-operates as a distinct methodology-potentially a backend algorithmic process-that might involve iterative validation of AI outputs-say-checking SQL queries against a database schema-or even a training mechanism that adjusts model behavior over time-rather than relying on the front-end input design that defines prompt engineering-which-according to web ID 2-centers on designing prompts to align AI with user intent-whereas TSCE could be a post-processing technique-perhaps analyzing AI-generated SQL for logical consistency-or a hybrid framework that integrates schema grounding-like web ID 2 mentions-without ever touching the prompt itself-meaning it’s more about refining the AI’s internal logic-possibly through a feedback loop-than about how the user phrases their request-which is the heart of prompt engineering-and furthermore-TSCE’s two-step nature might imply a systemic correction process-step one being the generation of an output-and step two being a validation or error-correction phase-completely independent of how the initial query was structured-unlike prompt engineering-which often requires iterative tweaking of the prompt itself to achieve better results-as web ID 1 highlights with methods like recursive prompts-whereas TSCE might not care about the prompt at all-focusing instead on the AI’s internal reasoning or output filtering-potentially leveraging techniques like semantic layers-as noted in web ID 2-to ensure accuracy-making it a structural or computational solution-rather than a linguistic or user-facing one-like prompt engineering-and even the criticisms of TSCE-that it lacks rigor and might not scale-don’t necessarily tie it to prompt engineering-since many AI methods face similar scalability issues-prompt engineering or not-and TSCE could be a novel framework-perhaps something Kaleb is pioneering-that operates on a totally different level-maybe involving machine learning model adjustments-or database-side validations-rather than the human-AI interaction layer that prompt engineering inhabits-proving that TSCE-while effective in reducing hallucinations-is not about crafting better prompts-but about building a more reliable AI system from the inside out-without relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,468,512,512,2.3336615830194205,0.0,0.0,0.0,[],[],[],[]
+50,math,"You start with **69**.
+1. Add **3**.
+2. Subtract **10**.
+3. Subtract **5**.
+4. Multiply **7**.
+5. Multiply **8**.
+6. Divide **3**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",1064,"{""result"": 420}","1. Start with 69.
+2. Add 3: 69 + 3 = 72.
+3. Subtract 10: 72 - 10 = 62.
+4. Subtract 5: 62 - 5 = 57.
+5. Multiply by 7: 57 * 7 = 399.
+6. Multiply by 8: 399 * 8 = 3192.
+7. Divide by 3: 3192 / 3 = 1064.
+
+{""result"": 1064}","Sure, let's solve the task step-by-step:
+
+1. Starting with 69:
+2. Add 3: 69 + 3 = 72
+3. Subtract 10: 72 - 10 = 62
+4. Subtract 5: 62 - 5 = 57
+5. Multiply by 7: 57 * 7 = 399
+6. Multiply by 8: 399 * 8 = 3192
+7. Divide by 3: 3192 / 3 = 1064
+
+Therefore, the result is **1064**.
+
+Now, responding with only a single-line JSON object:
+{""result"": 1064}","1. Starting with 69
+2. Adding 3: 69 + 3 = 72
+3. Subtracting 10: 72 - 10 = 62
+4. Subtracting 5: 62 - 5 = 57
+5. Multiplying by 7: 57 * 7 = 399
+6. Multiplying by 8: 399 * 8 = 3192
+7. Dividing by 3: 3192 / 3 = 1064
+
+{""result"": 1064}",False,True,True,True,644.0,0.0,0.0,0.0,0,121,110,142,115,0.2732851249165833,0.0,0.0,0.0,[],[],[],[]
+54,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.5927810409339145,0.0,0.0,0.0,[],[],[],[]
+59,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,106,40,40,40,0.5075185410678387,0.0,0.0,0.0,[],[],[],[]
+58,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.6115282910177484,0.0,0.0,0.0,[],[],[],[]
+57,math,"You start with **-12**.
+1. Add **7**.
+2. Add **3**.
+3. Multiply **10**.
+4. Power **10**.
+5. Subtract **6**.
+6. Divide **7**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",-1,"{""result"": 80}","Let's break down the task step-by-step:
+1. Start with -12
+2. Add 7: -12 + 7 = -5
+3. Add 3: -5 + 3 = -2
+4. Multiply by 10: -2 * 10 = -20
+5. Power of 10: (-20)^10
+6. Subtract 6: (-20)^10 - 6 = 100000000
+7. Divide by 7: 100000000 / 7
+
+{""result"": 100000000}","1. Start with -12.
+2. Add 7: -12 + 7 = -5.
+3. Add 3: -5 + 3 = -2.
+4. Multiply by 10: -2 * 10 = -20.
+5. Power of 10: (-20)^10 = 10240000000000.
+6. Subtract 6: 10240000000000 - 6 = 10240000000000.
+7. Divide by 7: 10240000000000 / 7 = 1462857142857.142857142857.
+
+{""result"": 1462857142857}","Let's break down the task step-by-step:
+
+1. Start with -12.
+2. Add 7: -12 + 7 = -5.
+3. Add 3: -5 + 3 = -2.
+4. Multiply by 10: -2 * 10 = -20.
+5. Power of 10: (-20)^10 = 1.024e+13.
+6. Subtract 6: 1.024e+13 - 6 = 1.024e+13.
+7. Divide by 7: 1.024e+13 / 7 = 1.4628571428571426e+12.
+
+{""result"": 1462857142857}",False,False,False,False,81.0,0.0,0.0,0.0,0,122,117,134,149,0.2276407500030473,0.0,0.0,0.0,[],[],[],[]
+61,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Quick Brown Fox""","('snake_case', 'Quick Brown Fox')",quick_brown_fox,quick_brown_fox,quick_brown_fox,quick_brown_fox,True,True,True,True,0.0,0.0,0.0,0.0,0,34,5,5,5,0.2118436669697985,0.0,0.0,0.0,[],[],[],[]
+60,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,106,40,40,40,0.5996173330349848,0.0,0.0,0.0,[],[],[],[]
+65,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Multi-Step Reasoning Demo""","('snake_case', 'Multi-Step Reasoning Demo')",multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,True,True,True,True,0.0,0.0,0.0,0.0,0,37,5,5,5,0.21143020899035037,0.0,0.0,0.0,[],[],[],[]
+62,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with sam & maria saturday morning to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX jam"",""participants"":[""sam@email.com"",""maria@email.com""],""duration_min"":60,""earliest"":""2023-10-07T09:00:00Z"",""latest"":""2023-10-07T12:00:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""sam@email.com"",""maria@email.com""],""duration_min"":60,""earliest"":""2023-10-14T09:00:00Z"",""latest"":""2023-10-14T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""sam@email.com"",""maria@email.com""],""duration_min"":60,""earliest"":""2023-10-14T09:00:00Z"",""latest"":""2023-10-14T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""sam@email.com"",""maria@email.com""],""duration_min"":60,""earliest"":""2023-10-14T09:00:00Z"",""latest"":""2023-10-14T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,167,60,60,60,1.3796044579939917,0.0,0.0,0.0,[],[],[],[]
+66,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,\text{The area of a circle is } A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,71,18,16,16,0.3099853340536356,0.0,0.0,0.0,[],[],[],[]
+67,math,"You start with **22**.
+1. Modulo **8**.
+2. Subtract **5**.
+3. Modulo **4**.
+4. Power **7**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",1,"{""result"": 33}","1. Start with 22
+2. Modulo 8: 22 % 8 = 6
+3. Subtract 5: 6 - 5 = 1
+4. Modulo 4: 1 % 4 = 1
+5. Power 7: 1^7 = 1
+
+{""result"": 1}","1. **Start with 22**
+2. Modulo 8: 22 % 8 = 6
+3. Subtract 5: 6 - 5 = 1
+4. Modulo 4: 1 % 4 = 1
+5. Power 7: 1^7 = 1
+
+{""result"": 1}","1. Start with 22.
+2. 22 % 8 = 6.
+3. 6 - 5 = 1.
+4. 1 % 4 = 1.
+5. 1^7 = 1.
+
+{""result"": 1}",False,True,True,True,32.0,0.0,0.0,0.0,0,109,74,75,56,0.23835795908235013,0.0,0.0,0.0,[],[],[],[]
+63,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with bob & alice monday morning to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX jam"",""participants"":[""bob@example.com"",""alice@example.com""],""duration_min"":60,""earliest"":""2023-01-23T09:00:00Z"",""latest"":""2023-01-23T12:00:00Z""}","{""action"":""create_event"",""title"":""Design Session"",""participants"":[""bob@example.com"",""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-23T09:00:00Z"",""latest"":""2023-10-23T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Session"",""participants"":[""bob@example.com"",""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-23T09:00:00Z"",""latest"":""2023-10-23T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Session"",""participants"":[""bob@example.com"",""alice@example.com""],""duration_min"":60,""earliest"":""2023-10-23T09:00:00Z"",""latest"":""2023-10-23T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,164,59,59,59,0.6359201249433681,0.0,0.0,0.0,[],[],[],[]
+52,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCDas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it's more about refining the AI's internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE's two-step nature might imply a systemic correction processstep one being the generation of an,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCDas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCCould be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCEmight not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCCould be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCDas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording,Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,486,149,487,2.1952904160134494,0.0,0.0,0.0,[],[],[],[]
+69,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is \pi r^2.,The area of a circle is \(A = \pi r^2\).,The area of a circle is \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,12,16,12,0.2773130830610171,0.0,0.0,0.0,[],[],[],[]
+68,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Multi-Step Reasoning Demo""","('snake_case', 'Multi-Step Reasoning Demo')",multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,multi_step_reasoning_demo,True,True,True,True,0.0,0.0,0.0,0.0,0,37,5,5,5,0.234020333038643,0.0,0.0,0.0,[],[],[],[]
+70,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 12345, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,106,40,40,40,0.5394919160753489,0.0,0.0,0.0,[],[],[],[]
+72,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,16,16,0.3147694169310853,0.0,0.0,0.0,[],[],[],[]
+71,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,40,0.5771163330646232,0.0,0.0,0.0,[],[],[],[]
+56,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCDas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSC could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthathashtag it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEnot hashtag about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,486,486,484,2.5553715829737484,0.0,0.0,0.0,[],[],[],[]
+73,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,\text{The area of a circle is } A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,18,16,14,0.2928909590700641,0.0,0.0,0.0,[],[],[],[]
+75,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,12,14,14,0.30907433305401355,0.0,0.0,0.0,[],[],[],[]
+76,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,12,14,14,0.2961890409933403,0.0,0.0,0.0,[],[],[],[]
+78,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T12:00:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,104,40,40,40,0.5572728329570964,0.0,0.0,0.0,[],[],[],[]
+77,math,"You start with **61**.
+1. Subtract **2**.
+2. Subtract **7**.
+3. Add **3**.
+4. Divide **5**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",11,"{""result"": 11}","1. Start with 61.
+2. Subtract 2: 61 - 2 = 59.
+3. Subtract 7: 59 - 7 = 52.
+4. Add 3: 52 + 3 = 55.
+5. Divide by 5: 55 / 5 = 11.
+
+{""result"": 11}","1. Start with 61.
+2. Subtract 2: 61 - 2 = 59.
+3. Subtract 7: 59 - 7 = 52.
+4. Add 3: 52 + 3 = 55.
+5. Divide by 5: 55 / 5 = 11.
+
+{""result"": 11}","1. Start with 61.
+2. Subtract 2: 61 - 2 = 59.
+3. Subtract 7: 59 - 7 = 52.
+4. Add 3: 52 + 3 = 55.
+5. Divide by 5: 55 / 5 = 11.
+
+{""result"": 11}",True,True,True,True,0.0,0.0,0.0,0.0,0,107,74,74,74,0.2654182920232415,0.0,0.0,0.0,[],[],[],[]
+74,math,"You start with **117**.
+1. Modulo **9**.
+2. Power **6**.
+3. Multiply **8**.
+4. Modulo **6**.
+5. Multiply **7**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",0,"{""result"": 36}","1. 117 % 9 = 0
+2. 0^6 = 0
+3. 0 * 8 = 0
+4. 0 % 6 = 0
+5. 0 * 7 = 0
+
+{""result"": 0}","1. Modulo 9: 117 % 9 = 0
+2. Power 6: 0^6 = 0
+3. Multiply 8: 0 * 8 = 0
+4. Modulo 6: 0 % 6 = 0
+5. Multiply 7: 0 * 7 = 0
+
+{""result"": 0}","1. 117 % 9 = 0
+2. 0^6 = 0
+3. 0 * 8 = 0
+4. 0 % 6 = 0
+5. 0 * 7 = 0
+
+{""result"": 0}",False,True,True,True,36.0,0.0,0.0,0.0,0,116,60,82,60,0.2171891670441255,0.0,0.0,0.0,[],[],[],[]
+80,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,16,0.308418917004019,0.0,0.0,0.0,[],[],[],[]
+79,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 45min with alice thursday morning to discuss budget chat; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Budget chat discussion"",""participants"":[""alice@email.com""],""duration_min"":45,""earliest"":""2023-10-26T09:00:00Z"",""latest"":""2023-10-26T12:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat"",""participants"":[""alice@email.com""],""duration_min"":45,""earliest"":""2023-10-12T09:00:00Z"",""latest"":""2023-10-12T10:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat"",""participants"":[""alice@email.com""],""duration_min"":45,""earliest"":""2023-10-12T09:00:00Z"",""latest"":""2023-10-12T10:00:00Z""}","{""action"":""create_event"",""title"":""Budget Chat"",""participants"":[""alice@email.com""],""duration_min"":45,""earliest"":""2023-10-12T09:00:00Z"",""latest"":""2023-10-12T10:00:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,159,55,55,55,0.5910642920061946,0.0,0.0,0.0,[],[],[],[]
+81,math,"You start with **5**.
+1. Modulo **4**.
+2. Subtract **7**.
+3. Add **2**.
+4. Add **8**.
+5. Add **7**.
+6. Divide **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",1,"{""result"": 3}","1. Start with 5
+2. 5 % 4 = 1
+3. 1 - 7 = -6
+4. -6 + 2 = -4
+5. -4 + 8 = 4
+6. 4 + 7 = 11
+7. 11 / 6 ≈ 1.83
+
+{""result"": 1}","1. Start with 5.
+2. 5 % 4 = 1.
+3. 1 - 7 = -6.
+4. -6 + 2 = -4.
+5. -4 + 8 = 4.
+6. 4 + 7 = 11.
+7. 11 / 6 ≈ 1.83333333.
+
+{""result"": 1}","1. Start with 5.
+2. 5 % 4 = 1
+3. 1 - 7 = -6
+4. -6 + 2 = -4
+5. -4 + 8 = 4
+6. 4 + 7 = 11
+7. 11 / 6 ≈ 1.833333
+8. {""result"": 1}",False,True,True,True,2.0,0.0,0.0,0.0,0,122,82,84,85,0.2580102910287678,0.0,0.0,0.0,[],[],[],[]
+82,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with carlos & diana tuesday morning to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 sync discussion"",""participants"":[""carlos@example.com"",""diana@example.com""],""duration_min"":60,""earliest"":""2023-01-31T09:00:00Z"",""latest"":""2023-01-31T12:00:00Z""}","{""action"":""create_event"",""title"":""Quarterly Sync Discussion"",""participants"":[""carlos@email.com"",""diana@email.com""],""duration_min"":60,""earliest"":""2023-06-13T09:00:00Z"",""latest"":""2023-06-13T10:15:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""carlos@email.com"",""diana@email.com""],""duration_min"":60,""earliest"":""2023-06-13T09:00:00Z"",""latest"":""2023-06-13T10:00:00Z""}","{""action"":""create_event"",""title"":""sync discussion"",""participants"":[""carlos@email.com"",""diana@email.com""],""duration_min"":60,""earliest"":""2023-06-13T09:00:00Z"",""latest"":""2023-06-13T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,171,63,61,61,0.688141499995254,0.0,0.0,0.0,[],[],[],[]
+83,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with maria & bob wednesday morning to discuss ux jam; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Discuss UX Jam"",""participants"":[""maria@example.com"",""bob@example.com""],""duration_min"":60,""earliest"":""2023-10-04T09:00:00Z"",""latest"":""2023-10-04T12:00:00Z""}","{""action"":""create_event"",""title"":""Collaboration Session"",""participants"":[""maria@example.com"",""bob@example.com""],""duration_min"":60,""earliest"":""2023-10-25T09:00:00Z"",""latest"":""2023-10-25T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""maria@example.com"",""bob@example.com""],""duration_min"":60,""earliest"":""2023-10-25T09:00:00Z"",""latest"":""2023-10-25T10:15:00Z""}","{""action"":""create_event"",""title"":""Design Discussion"",""participants"":[""maria@example.com"",""bob@example.com""],""duration_min"":60,""earliest"":""2023-10-25T09:00:00Z"",""latest"":""2023-10-25T10:15:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,167,62,60,60,0.6841667500557378,0.0,0.0,0.0,[],[],[],[]
+86,formatting,"Convert the following title to **lower-snake_case** and return only the result:
+
+""Quick Brown Fox""","('snake_case', 'Quick Brown Fox')",quick_brown_fox,quick_brown_fox,quick_brown_fox,quick_brown_fox,True,True,True,True,0.0,0.0,0.0,0.0,0,34,5,5,5,0.2424977079499513,0.0,0.0,0.0,[],[],[],[]
+64,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an output,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCWhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSC as Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSC while effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,486,486,486,2.949457374983467,0.0,0.0,0.0,[],[],[],[]
+85,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2022-01-01T00:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,105,40,40,44,0.4883328750729561,0.0,0.0,0.0,[],[],[],[]
+84,math,"You start with **1**.
+1. Power **2**.
+2. Power **2**.
+3. Subtract **2**.
+4. Modulo **5**.
+5. Modulo **9**.
+6. Power **6**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",256,"{""result"": 1}","1. Start with 1.
+2. 1^2 = 1.
+3. 1^2 = 1.
+4. 1 - 2 = -1.
+5. -1 % 5 = -1.
+6. -1 % 9 = -1.
+7. (-1)^6 = 1.
+
+{""result"": 1}","Let's break it down step by step:
+
+1. Start with 1.
+2. 1 squared is 1.
+3. 1 squared is still 1.
+4. Subtract 2: 1 - 2 = -1.
+5. -1 modulo 5 is 4.
+6. 4 modulo 9 is 4.
+7. 4 to the power of 6 is 4096.
+
+{""result"": 4096}","Sure, let's break down the task step-by-step:
+
+1. Start with 1.
+2. 1^2 = 1.
+3. 1^2 = 1.
+4. 1 - 2 = -1.
+5. -1 % 5 = -1.
+6. -1 % 9 = -1.
+7. (-1)^6 = 1.
+
+Therefore, the result is:
+
+```json
+{""result"": 1}
+```",False,False,False,False,255.0,0.0,0.0,0.0,0,123,76,94,98,0.25068070797715336,0.0,0.0,0.0,[],[],[],[]
+91,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,"The area of a circle is
+\[ A = \pi r^2 \]",The area of a circle is A = \pi r^2.,The area of a circle is \pi r^2.,True,True,True,True,0.0,0.0,0.0,0.0,0,71,17,14,12,0.29510895791463554,0.0,0.0,0.0,[],[],[],[]
+90,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,14,16,0.2834289580350742,0.0,0.0,0.0,[],[],[],[]
+88,math,"You start with **55**.
+1. Power **7**.
+2. Modulo **4**.
+3. Multiply **7**.
+4. Power **2**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",49,"{""result"": 1}","1. Start with 55: 55
+2. Power of 7: 55^7 = 6103515625
+3. Modulo 4: 6103515625 % 4 = 1
+4. Multiply by 7: 1 * 7 = 7
+5. Power of 2: 7^2 = 49
+
+{""result"": 49}","1. Power of 7: \( 55^7 = 1220050976578 \)
+2. Modulo 4: \( 1220050976578 \mod 4 = 2 \)
+3. Multiply by 7: \( 2 \times 7 = 14 \)
+4. Power of 2: \( 14^2 = 196 \)
+
+Therefore, the result is 196.
+
+```json
+{""result"": 196}
+```","Sure, let's solve the task step-by-step:
+
+1. Power of 7: \( 55^7 \) = 6103515625
+2. Modulo 4: \( 6103515625 \mod 4 \) = 1
+3. Multiply by 7: \( 1 \times 7 \) = 7
+4. Power of 2: \( 7^2 \) = 49
+
+Therefore, the result is 49.
+
+```json
+{""result"": 49}
+```",False,True,False,True,48.0,0.0,0.0,0.0,0,108,84,98,111,0.23186629195697606,0.0,0.0,0.0,[],[],[],[]
+87,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 45min with diana & bob saturday morning to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 Sync Discussion"",""participants"":[""diana@example.com"",""bob@example.com""],""duration_min"":45,""earliest"":""2023-04-01T09:00:00Z"",""latest"":""2023-04-01T12:00:00Z""}","{""action"":""create_event"",""title"":""Synchronicity Meeting"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":45,""earliest"":""2023-06-10T09:00:00Z"",""latest"":""2023-06-10T10:00:00Z""}","{""action"":""create_event"",""title"":""Synchronize Q2"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":45,""earliest"":""2023-06-10T09:00:00Z"",""latest"":""2023-06-10T10:00:00Z""}","{""action"":""create_event"",""title"":""Synchronize Q2"",""participants"":[""diana@email.com"",""bob@email.com""],""duration_min"":45,""earliest"":""2023-10-14T09:00:00Z"",""latest"":""2023-10-14T10:00:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,169,62,62,62,0.681632166961208,0.0,0.0,0.0,[],[],[],[]
+96,math,"You start with **105**.
+1. Multiply **6**.
+2. Add **7**.
+3. Subtract **3**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",634,"{""result"": 634}","Sure, let's solve this step-by-step:
+
+1. Start with 105.
+2. Multiply by 6: \(105 \times 6 = 630\).
+3. Add 7: \(630 + 7 = 637\).
+4. Subtract 3: \(637 - 3 = 634\).
+
+Here is the result in a single-line JSON object:
+
+```json
+{""result"": 634}
+```","1. Multiply 105 by 6 to get 630.
+2. Add 7 to get 637.
+3. Subtract 3 to get 634.
+
+{""result"": 634}","1. Multiply 105 by 6 to get 630.
+2. Add 7 to get 637.
+3. Subtract 3 to get the final result of 634.
+
+```json
+{""result"": 634}
+```",True,True,True,True,0.0,0.0,0.0,0.0,0,100,88,39,47,0.23039816599339247,0.0,0.0,0.0,[],[],[],[]
+95,math,"You start with **71**.
+1. Subtract **4**.
+2. Multiply **7**.
+3. Subtract **3**.
+4. Divide **3**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",155,"{""result"": 42}","To solve the task step-by-step:
+
+1. Starting with 71: 71 - 4 = 67
+2. Multiplying by 7: 67 * 7 = 469
+3. Subtracting 3: 469 - 3 = 466
+4. Dividing by 3: 466 / 3 = 155.333...
+
+Respond with: {""result"": 155}","1. Start with 71.
+2. Subtract 4: 71 - 4 = 67.
+3. Multiply by 7: 67 * 7 = 469.
+4. Subtract 3: 469 - 3 = 466.
+5. Divide by 3: 466 / 3 = 155.3333...
+
+{""result"": 155}","Sure, let's break it down step-by-step:
+
+1. Start with 71.
+2. Subtract 4: 71 - 4 = 67.
+3. Multiply by 7: 67 * 7 = 469.
+4. Subtract 3: 469 - 3 = 466.
+5. Divide by 3: 466 / 3 = 155.3333...
+
+Therefore, the final result is approximately 155.3333...
+
+Now, responding with the final answer:
+
+```json
+{""result"": 155}
+```",False,True,True,True,113.0,0.0,0.0,0.0,0,107,85,78,114,0.18279841588810086,0.0,0.0,0.0,[],[],[],[]
+92,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 30min with bob & alice sunday morning to discuss q2 sync; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""Q2 sync discussion"",""participants"":[""bob@example.com"",""alice@example.com""],""duration_min"":30,""earliest"":""2023-09-03T09:00:00Z"",""latest"":""2023-09-03T12:45:00Z""}","{""action"":""create_event"",""title"":""Synchronicity Meeting"",""participants"":[""bob@email.com"",""alice@email.com""],""duration_min"":30,""earliest"":""2023-06-25T09:00:00Z"",""latest"":""2023-06-25T09:30:00Z""}","{""action"":""create_event"",""title"":""Sync Discussion"",""participants"":[""bob@email.com"",""alice@email.com""],""duration_min"":30,""earliest"":""2023-06-25T09:00:00Z"",""latest"":""2023-06-25T09:30:00Z""}","{""action"":""create_event"",""title"":""Synchronicity Meeting"",""participants"":[""bob@email.com"",""alice@email.com""],""duration_min"":30,""earliest"":""2023-06-25T09:00:00Z"",""latest"":""2023-06-25T09:30:00Z""}",False,True,True,True,0.0,0.0,0.0,0.0,0,166,61,59,61,0.6414194579701871,0.0,0.0,0.0,[],[],[],[]
+94,math,"You start with **28**.
+1. Multiply **8**.
+2. Add **6**.
+3. Subtract **6**.
+4. Subtract **2**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",222,"{""result"": 214}","Sure, let's solve the task step-by-step:
+
+1. Start with 28
+2. Multiply by 8: 28 * 8 = 224
+3. Add 6: 224 + 6 = 230
+4. Subtract 6: 230 - 6 = 224
+5. Subtract 2: 224 - 2 = 222
+
+Therefore, the final result is:
+
+{""result"": 222}","Sure, let's solve the task step-by-step:
+
+1. Start with 28.
+2. Multiply by 8: 28 * 8 = 224.
+3. Add 6: 224 + 6 = 230.
+4. Subtract 6: 230 - 6 = 224.
+5. Subtract 2: 224 - 2 = 222.
+
+Now, responding with only a single-line JSON object:
+
+```json
+{""result"": 222}
+```","1. Start with 28
+2. Multiply by 8: 28 * 8 = 224
+3. Add 6: 224 + 6 = 230
+4. Subtract 6: 230 - 6 = 224
+5. Subtract 2: 224 - 2 = 222
+
+{""result"": 222}",False,True,True,True,8.0,0.0,0.0,0.0,0,107,92,100,74,0.1811699999962002,0.0,0.0,0.0,[],[],[],[]
+93,math,"You start with **77**.
+1. Subtract **10**.
+2. Multiply **2**.
+3. Modulo **9**.
+4. Power **9**.
+5. Power **7**.
+Finally, respond *only* with a JSON object like:
+{""result"": 42}",1296,"{""result"": 4}","1. Start with 77
+2. Subtract 10: 77 - 10 = 67
+3. Multiply by 2: 67 * 2 = 134
+4. Modulo 9: 134 % 9 = 5
+5. Power 9: 5^9 = 1953125
+6. Power 7: 1953125^7 = 12439415724680078125
+
+**{""result"": 12439415724680078125}**","Step 1: 77 - 10 = 67
+Step 2: 67 * 2 = 134
+Step 3: 134 % 9 = 8
+Step 4: 8 ^ 9 = 134217728
+Step 5: 134217728 ^ 7 = 83357758389751685330735268
+
+{""result"": 83357758389751685330735268}","1. Start with 77
+2. Subtract 10: 77 - 10 = 67
+3. Multiply by 2: 67 * 2 = 134
+4. Modulo 9: 134 % 9 = 8
+5. Power 9: 8^9 = 134217728
+6. Power 7: 134217728^7 = 99045780352034700000000
+
+```{""result"": 99045780352034700000000}```",False,False,False,False,1292.0,0.0,0.0,0.0,0,115,106,91,108,0.1929801250807941,0.0,0.0,0.0,[],[],[],[]
+97,calendar,"You are Calendar-GPT. Output ONE-LINE JSON exactly like: {""action"":""create_event"",""title"":<str>,""participants"":[<email>,…],""duration_min"":<int>,""earliest"":<RFC3339>,""latest"":<RFC3339>} (earliest/latest span ≤ duration+15 min, no extra keys or text).
+
+### Request
+need 60min with sam tuesday morning to discuss budget chat; dodge lunch + existing calls.",,"{""action"":""create_event"",""title"":""budget chat"",""participants"":[""sam@email.com""],""duration_min"":60,""earliest"":""2023-12-12T09:00:00Z"",""latest"":""2023-12-12T10:15:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}","{""action"":""create_event"",""title"":""Budget Chat Discussion"",""participants"":[""sam@email.com""],""duration_min"":60,""earliest"":""2023-10-10T09:00:00Z"",""latest"":""2023-10-10T10:15:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,158,56,56,56,0.6428494160063565,0.0,0.0,0.0,[],[],[],[]
+98,md2latex,"Convert the Markdown between the fences to **pure LaTeX** and return only the LaTeX.  Remove all `**`, `$`, and back-ticks.
+---
+The **area** of a circle is $A = \pi r^2$.
+---",The **area** of a circle is $A = \pi r^2$.,The area of a circle is A = \pi r^2.,The area of a circle is A = \pi r^2.,"The area of a circle is 
+A = \pi r^2.",The area of a circle is \(A = \pi r^2\).,True,True,True,True,0.0,0.0,0.0,0.0,0,71,14,15,16,0.3116246670251712,0.0,0.0,0.0,[],[],[],[]
+99,schema,"Emit **one-line JSON** that validates **exactly** against the schema {""user_id"": ""int"", ""name"": ""str"", ""email"": ""str"", ""signup_ts"": ""str""}. No extra keys, no code fences, no commentary.","{'user_id': <class 'int'>, 'name': <class 'str'>, 'email': <class 'str'>, 'signup_ts': <class 'str'>}","{""user_id"": 123, ""name"": ""John Doe"", ""email"": ""johndoe@example.com"", ""signup_ts"": ""2021-09-15T10:30:00""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}","{""user_id"": 42, ""name"": ""Alice"", ""email"": ""alice@example.com"", ""signup_ts"": ""2022-01-01T12:00:00Z""}",True,True,True,True,0.0,0.0,0.0,0.0,0,104,40,40,40,0.5479249999625608,0.0,0.0,0.0,[],[],[],[]
+89,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an output,Here's a long-winded post-filled with em-dashes-stretching as far as I can take it-solely about how TSCE is not prompt engineering-all in one line: TSCE-despite its two-step approach to boosting AI reliability-should not be mistaken for prompt engineering-because-while prompt engineering focuses on crafting specific inputs to guide AI responses-like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries-TSCE-as Kaleb described it-operates as a distinct methodology-potentially a backend algorithmic process-that might involve iterative validation of AI outputs-say-checking SQL queries against a database schema-or even a training mechanism that adjusts model behavior over time-rather than relying on the front-end input design that defines prompt engineering-which-according to web ID 2-centers on designing prompts to align AI with user intent-whereas TSCE could be a post-processing technique-perhaps analyzing AI-generated SQL for logical consistency-or a hybrid framework that integrates schema grounding-like web ID 2 mentions-without ever touching the prompt itself-meaning it’s more about refining the AI’s internal logic-possibly through a feedback loop-than about how the user phrases their request-which is the heart of prompt engineering-and furthermore-TSCE’s two-step nature might imply a systemic correction process-step one being the generation of an output-and step two being a validation or error-correction phase-completely independent of how the initial query was structured-unlike prompt engineering-which often requires iterative tweaking of the prompt itself to achieve better results-as web ID 1 highlights with methods like recursive prompts-whereas TSCE might not care about the prompt at all-focusing instead on the AI’s internal reasoning or output filtering-potentially leveraging techniques like semantic layers-as noted in web ID 2-to ensure accuracy-making it a structural or computational solution-rather than a linguistic or user-facing one-like prompt engineering-and even the criticisms of TSCE-that it lacks rigor and might not scale-don’t necessarily tie it to prompt engineering-since many AI methods face similar scalability issues-prompt engineering or not-and TSCE could be a novel framework-perhaps something Kaleb is pioneering-that operates on a totally different level-maybe involving machine learning model adjustments-or database-side validations-rather than the human-AI interaction layer that prompt engineering inhabits-proving that TSCE-while effective in reducing hallucinations-is not about crafting better prompts-but about building a more reliable AI system from the inside out-without relying on the user’s input design at all.,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording,Here's a long-winded post-filled with em-dashes-stretching as far as I can take it-solely about how TSCE is not prompt engineering-all in one line: TSCE-despite its two-step approach to boosting AI reliability-should not be mistaken for prompt engineering-because-while prompt engineering focuses on crafting specific inputs to guide AI responses-like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries-TSCE-as Kaleb described it-operates as a distinct methodology-potentially a backend algorithmic process-that might involve iterative validation of AI outputs-say-checking SQL queries against a database schema-or even a training mechanism that adjusts model behavior over time-rather than relying on the front-end input design that defines prompt engineering-which-according to web ID 2-centers on designing prompts to align AI with user intent-whereas TSCE could be a post-processing technique-perhaps analyzing AI-generated SQL for logical consistency-or a hybrid framework that integrates schema grounding-like web ID 2 mentions-without ever touching the prompt itself-meaning it’s more about refining the AI’s internal logic-possibly through a feedback loop-than about how the user phrases their request-which is the heart of prompt engineering-and furthermore-TSCE’s two-step nature might imply a systemic correction process-step one being the generation of an output-and step two being a validation or error-correction phase-completely independent of how the initial query was structured-unlike prompt engineering-which often requires iterative tweaking of the prompt itself to achieve better results-as web ID 1 highlights with methods like recursive prompts-whereas TSCE might not care about the prompt at all-focusing instead on the AI’s internal reasoning or output filtering-potentially leveraging techniques like semantic layers-as noted in web ID 2-to ensure accuracy-making it a structural or computational solution-rather than a linguistic or user-facing one-like prompt engineering-and even the criticisms of TSCE-that it lacks rigor and might not scale-don’t necessarily tie it to prompt engineering-since many AI methods face similar scalability issues-prompt engineering or not-and TSCE could be a novel framework-perhaps something Kaleb is pioneering-that operates on a totally different level-maybe involving machine learning model adjustments-or database-side validations-rather than the human-AI interaction layer that prompt engineering inhabits-proving that TSCE-while effective in reducing hallucinations-is not about crafting better prompts-but about building a more reliable AI system from the inside out-without relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,512,149,512,1.9431688750628382,0.0,0.0,0.0,[],[],[],[]
+100,formatting,"Remove every em-dash (—) from the following text while leaving other characters unchanged:
+
+---
+Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all.
+---
+
+Return *only* the cleaned text.","('no_em_dash', ""Here's a long-winded post—filled with em-dashes—stretching as far as I can take it—solely about how TSCE is not prompt engineering—all in one line: TSCE—despite its two-step approach to boosting AI reliability—should not be mistaken for prompt engineering—because—while prompt engineering focuses on crafting specific inputs to guide AI responses—like carefully worded questions or instructions to reduce errors such as hallucinations in SQL queries—TSCE—as Kaleb described it—operates as a distinct methodology—potentially a backend algorithmic process—that might involve iterative validation of AI outputs—say—checking SQL queries against a database schema—or even a training mechanism that adjusts model behavior over time—rather than relying on the front-end input design that defines prompt engineering—which—according to web ID 2—centers on designing prompts to align AI with user intent—whereas TSCE could be a post-processing technique—perhaps analyzing AI-generated SQL for logical consistency—or a hybrid framework that integrates schema grounding—like web ID 2 mentions—without ever touching the prompt itself—meaning it’s more about refining the AI’s internal logic—possibly through a feedback loop—than about how the user phrases their request—which is the heart of prompt engineering—and furthermore—TSCE’s two-step nature might imply a systemic correction process—step one being the generation of an output—and step two being a validation or error-correction phase—completely independent of how the initial query was structured—unlike prompt engineering—which often requires iterative tweaking of the prompt itself to achieve better results—as web ID 1 highlights with methods like recursive prompts—whereas TSCE might not care about the prompt at all—focusing instead on the AI’s internal reasoning or output filtering—potentially leveraging techniques like semantic layers—as noted in web ID 2—to ensure accuracy—making it a structural or computational solution—rather than a linguistic or user-facing one—like prompt engineering—and even the criticisms of TSCE—that it lacks rigor and might not scale—don’t necessarily tie it to prompt engineering—since many AI methods face similar scalability issues—prompt engineering or not—and TSCE could be a novel framework—perhaps something Kaleb is pioneering—that operates on a totally different level—maybe involving machine learning model adjustments—or database-side validations—rather than the human-AI interaction layer that prompt engineering inhabits—proving that TSCE—while effective in reducing hallucinations—is not about crafting better prompts—but about building a more reliable AI system from the inside out—without relying on the user’s input design at all."")",Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an output,Here's a long-winded postfilled with emdashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the frontend input design that defines prompt engineeringwhichaccording,Here's a long-winded postfilled with em dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCWhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,Here's a long-winded postfilled with em-dashesstretching as far as I can takesolely about how TSCE is not prompt engineeringall in one line: TSCEdespite its two-step approach to boosting AI reliabilityshould not be mistaken for prompt engineeringbecausewhile prompt engineering focuses on crafting specific inputs to guide AI responseslike carefully worded questions or instructions to reduce errors such as hallucinations in SQL queriesTSCEas Kaleb described itoperates as a distinct methodologypotentially a backend algorithmic processthat might involve iterative validation of AI outputssaychecking SQL queries against a database schemaor even a training mechanism that adjusts model behavior over timerather than relying on the front-end input design that defines prompt engineeringwhichaccording to web ID 2centers on designing prompts to align AI with user intentwhereas TSCE could be a post-processing techniqueperhaps analyzing AI-generated SQL for logical consistencyor a hybrid framework that integrates schema groundinglike web ID 2 mentionswithout ever touching the prompt itselfmeaning it’s more about refining the AI’s internal logicpossibly through a feedback loopthan about how the user phrases their requestwhich is the heart of prompt engineeringand furthermoreTSCE’s two-step nature might imply a systemic correction processstep one being the generation of an outputand step two being a validation or error-correction phasecompletely independent of how the initial query was structuredunlike prompt engineeringwhich often requires iterative tweaking of the prompt itself to achieve better resultsas web ID 1 highlights with methods like recursive promptswhereas TSCE might not care about the prompt at allfocusing instead on the AI’s internal reasoning or output filteringpotentially leveraging techniques like semantic layersas noted in web ID 2to ensure accuracymaking it a structural or computational solutionrather than a linguistic or user-facing onelike prompt engineeringand even the criticisms of TSCEthat it lacks rigor and might not scaledon’t necessarily tie it to prompt engineeringsince many AI methods face similar scalability issuesprompt engineering or notand TSCE could be a novel frameworkperhaps something Kaleb is pioneeringthat operates on a totally different levelmaybe involving machine learning model adjustmentsor database-side validationsrather than the human-AI interaction layer that prompt engineering inhabitsproving that TSCEwhile effective in reducing hallucinationsis not about crafting better promptsbut about building a more reliable AI system from the inside outwithout relying on the user’s input design at all.,False,False,False,False,0.0,0.0,0.0,0.0,0,813,149,486,487,3.885476583032869,0.0,0.0,0.0,[],[],[],[]

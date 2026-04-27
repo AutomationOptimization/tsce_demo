@@ -1,0 +1,780 @@
+{
+  "core_tokens": [
+    "scope",
+    "about",
+    "above",
+    "while",
+    "since",
+    "meets",
+    "ought",
+    "value",
+    "going",
+    "reach",
+    "focus",
+    "these",
+    "thing",
+    "learn",
+    "plus",
+    "threey",
+    "twelve",
+    "eighty",
+    "modul",
+    "aspect",
+    "detail",
+    "power",
+    "rule",
+    "nabla",
+    "grade",
+    "shift",
+    "obtain",
+    "yields",
+    "ideal",
+    "jolly",
+    "knife",
+    "lemon",
+    "noble",
+    "ocean",
+    "quest",
+    "reason",
+    "taste",
+    "umbra",
+    "vivid",
+    "wagon",
+    "yacht",
+    "input",
+    "tours",
+    "twice",
+    "curve",
+    "stream",
+    "theory",
+    "begin",
+    "level",
+    "user",
+    "wants",
+    "need",
+    "output",
+    "somehow",
+    "encode",
+    "process"
+  ],
+  "proxy_tokens": [],
+  "padding_tokens": [
+    "given",
+    "count",
+    "solve",
+    "basis",
+    "logic",
+    "sense",
+    "world",
+    "form",
+    "prompt",
+    "query",
+    "whereby",
+    "delta",
+    "cubic",
+    "factor",
+    "prime",
+    "exact",
+    "derive",
+    "minus",
+    "change",
+    "degree",
+    "slopey",
+    "versus",
+    "hencey",
+    "leasty",
+    "must",
+    "diverse",
+    "reuse",
+    "relate",
+    "final",
+    "check",
+    "alpha",
+    "berry",
+    "doodle",
+    "event",
+    "flame",
+    "graph",
+    "constant",
+    "multiple",
+    "combine",
+    "salsa",
+    "plane",
+    "fuzzy",
+    "axiom",
+    "below",
+    "inner",
+    "outer",
+    "comma",
+    "lbrace",
+    "omega",
+    "zeta",
+    "iota",
+    "kappa",
+    "which",
+    "method"
+  ],
+  "token_salience": [
+    {
+      "index": 0,
+      "token": "scope",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 1,
+      "token": "about",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 2,
+      "token": "above",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 3,
+      "token": "while",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 4,
+      "token": "since",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 5,
+      "token": "meets",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 6,
+      "token": "ought",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 7,
+      "token": "value",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 8,
+      "token": "going",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 9,
+      "token": "reach",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 10,
+      "token": "focus",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 11,
+      "token": "these",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 12,
+      "token": "thing",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 13,
+      "token": "learn",
+      "score": 0.3449832007394126
+    },
+    {
+      "index": 14,
+      "token": "given",
+      "score": 0.0
+    },
+    {
+      "index": 15,
+      "token": "count",
+      "score": 0.0
+    },
+    {
+      "index": 16,
+      "token": "solve",
+      "score": 0.0
+    },
+    {
+      "index": 17,
+      "token": "basis",
+      "score": 0.0
+    },
+    {
+      "index": 18,
+      "token": "logic",
+      "score": 0.0
+    },
+    {
+      "index": 19,
+      "token": "sense",
+      "score": 0.0
+    },
+    {
+      "index": 20,
+      "token": "world",
+      "score": 0.0
+    },
+    {
+      "index": 21,
+      "token": "form",
+      "score": 0.0
+    },
+    {
+      "index": 22,
+      "token": "prompt",
+      "score": 0.0
+    },
+    {
+      "index": 23,
+      "token": "query",
+      "score": 0.0
+    },
+    {
+      "index": 24,
+      "token": "whereby",
+      "score": 0.0
+    },
+    {
+      "index": 25,
+      "token": "delta",
+      "score": 0.0
+    },
+    {
+      "index": 26,
+      "token": "cubic",
+      "score": 0.0
+    },
+    {
+      "index": 27,
+      "token": "factor",
+      "score": 0.0
+    },
+    {
+      "index": 28,
+      "token": "prime",
+      "score": 0.0
+    },
+    {
+      "index": 29,
+      "token": "exact",
+      "score": 0.0
+    },
+    {
+      "index": 30,
+      "token": "derive",
+      "score": 0.0
+    },
+    {
+      "index": 31,
+      "token": "minus",
+      "score": 0.0
+    },
+    {
+      "index": 32,
+      "token": "plus",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 33,
+      "token": "threey",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 34,
+      "token": "twelve",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 35,
+      "token": "eighty",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 36,
+      "token": "modul",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 37,
+      "token": "aspect",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 38,
+      "token": "detail",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 39,
+      "token": "power",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 40,
+      "token": "rule",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 41,
+      "token": "nabla",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 42,
+      "token": "grade",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 43,
+      "token": "shift",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 44,
+      "token": "obtain",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 45,
+      "token": "yields",
+      "score": 0.33285822259301856
+    },
+    {
+      "index": 46,
+      "token": "change",
+      "score": 0.0
+    },
+    {
+      "index": 47,
+      "token": "degree",
+      "score": 0.0
+    },
+    {
+      "index": 48,
+      "token": "slopey",
+      "score": 0.0
+    },
+    {
+      "index": 49,
+      "token": "versus",
+      "score": 0.0
+    },
+    {
+      "index": 50,
+      "token": "hencey",
+      "score": 0.0
+    },
+    {
+      "index": 51,
+      "token": "leasty",
+      "score": 0.0
+    },
+    {
+      "index": 52,
+      "token": "must",
+      "score": 0.0
+    },
+    {
+      "index": 53,
+      "token": "diverse",
+      "score": 0.0
+    },
+    {
+      "index": 54,
+      "token": "reuse",
+      "score": 0.0
+    },
+    {
+      "index": 55,
+      "token": "relate",
+      "score": 0.0
+    },
+    {
+      "index": 56,
+      "token": "final",
+      "score": 0.0
+    },
+    {
+      "index": 57,
+      "token": "check",
+      "score": 0.0
+    },
+    {
+      "index": 58,
+      "token": "alpha",
+      "score": 0.0
+    },
+    {
+      "index": 59,
+      "token": "berry",
+      "score": 0.0
+    },
+    {
+      "index": 60,
+      "token": "doodle",
+      "score": 0.0
+    },
+    {
+      "index": 61,
+      "token": "event",
+      "score": 0.0
+    },
+    {
+      "index": 62,
+      "token": "flame",
+      "score": 0.0
+    },
+    {
+      "index": 63,
+      "token": "graph",
+      "score": 0.0
+    },
+    {
+      "index": 64,
+      "token": "ideal",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 65,
+      "token": "jolly",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 66,
+      "token": "knife",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 67,
+      "token": "lemon",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 68,
+      "token": "noble",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 69,
+      "token": "ocean",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 70,
+      "token": "quest",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 71,
+      "token": "reason",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 72,
+      "token": "taste",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 73,
+      "token": "umbra",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 74,
+      "token": "vivid",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 75,
+      "token": "wagon",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 76,
+      "token": "yacht",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 77,
+      "token": "input",
+      "score": 0.34385211861008824
+    },
+    {
+      "index": 78,
+      "token": "constant",
+      "score": 0.0
+    },
+    {
+      "index": 79,
+      "token": "multiple",
+      "score": 0.0
+    },
+    {
+      "index": 80,
+      "token": "combine",
+      "score": 0.0
+    },
+    {
+      "index": 81,
+      "token": "salsa",
+      "score": 0.0
+    },
+    {
+      "index": 82,
+      "token": "plane",
+      "score": 0.0
+    },
+    {
+      "index": 83,
+      "token": "fuzzy",
+      "score": 0.0
+    },
+    {
+      "index": 84,
+      "token": "axiom",
+      "score": 0.0
+    },
+    {
+      "index": 85,
+      "token": "below",
+      "score": 0.0
+    },
+    {
+      "index": 86,
+      "token": "inner",
+      "score": 0.0
+    },
+    {
+      "index": 87,
+      "token": "outer",
+      "score": 0.0
+    },
+    {
+      "index": 88,
+      "token": "comma",
+      "score": 0.0
+    },
+    {
+      "index": 89,
+      "token": "lbrace",
+      "score": 0.0
+    },
+    {
+      "index": 90,
+      "token": "omega",
+      "score": 0.0
+    },
+    {
+      "index": 91,
+      "token": "zeta",
+      "score": 0.0
+    },
+    {
+      "index": 92,
+      "token": "iota",
+      "score": 0.0
+    },
+    {
+      "index": 93,
+      "token": "kappa",
+      "score": 0.0
+    },
+    {
+      "index": 94,
+      "token": "which",
+      "score": 0.0
+    },
+    {
+      "index": 95,
+      "token": "method",
+      "score": 0.0
+    },
+    {
+      "index": 96,
+      "token": "tours",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 97,
+      "token": "twice",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 98,
+      "token": "curve",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 99,
+      "token": "stream",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 100,
+      "token": "theory",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 101,
+      "token": "begin",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 102,
+      "token": "level",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 103,
+      "token": "user",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 104,
+      "token": "wants",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 105,
+      "token": "need",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 106,
+      "token": "output",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 107,
+      "token": "somehow",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 108,
+      "token": "encode",
+      "score": 0.35271045941521545
+    },
+    {
+      "index": 109,
+      "token": "process",
+      "score": 0.35271045941521545
+    }
+  ],
+  "order_sensitivity": 0.0,
+  "variant_summary": {
+    "original": {
+      "name": "original",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "original",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.2732872840475454,
+      "mean_vector_stability": 0.7072299818197886
+    },
+    "token_shuffle": {
+      "name": "token_shuffle",
+      "anchor_text": "<HDA>l exact doodle slope power reach zeta change versus diverse multiple knife event comma input toursscope theoryy form thing meets yacht while whereby world prompt lemon above about valuey twelve logic flame vivid detail reuse learny um below level inner obtain sense degree need given aspect derive noble since process minus twice somehow three rule omega focus wants shift quest salsa prime query alpha axiom curve count grade modul berryota graph output eighty streambra nab these factorla hence combine ideal i relate must taste user solve constant kappa encode outer ought cubicy plus wagon ocean plane goingbrace begin basis method check delta reason which yields fuzzy least final jolly</HDA>",
+      "variant_type": "shuffle",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.25743900960276517,
+      "mean_vector_stability": 0.6945743759473164
+    },
+    "head_trim_10": {
+      "name": "head_trim_10",
+      "anchor_text": "<HDA>these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.27187783441861296,
+      "mean_vector_stability": 0.7036155760288239
+    },
+    "tail_trim_10": {
+      "name": "tail_trim_10",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve</HDA>",
+      "variant_type": "trim",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.2500851522657373,
+      "mean_vector_stability": 0.69440758228302
+    },
+    "random_delete_15_1": {
+      "name": "random_delete_15_1",
+      "anchor_text": "<HDA>scope about above while since meets ought value reach focus these thing learn given count solve logic sense world form prompt query whereby cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change slopey versus hencey leasty must diverse reuse final check alpha berry doodle graph ideal jolly knife lemon noble ocean reason taste umbra wagon input constant multiple combine salsa plane fuzzy axiom below inner outer omega zeta iota kappa which method twice curve stream theory begin wants need output encode process</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.25183658779096113,
+      "mean_vector_stability": 0.6889747579892476
+    },
+    "random_delete_15_2": {
+      "name": "random_delete_15_2",
+      "anchor_text": "<HDA>about above while since meets ought value going reach learn given count solve logic sense world form prompt query factor prime exact derive minus threey twelve eighty modul aspect detail power nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame ideal jolly knife noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer omega zeta iota kappa which method tours twice curve stream theory begin level user wants need somehow process</HDA>",
+      "variant_type": "delete",
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.26634253605569125,
+      "mean_vector_stability": 0.7009043594201406
+    },
+    "neutral_replace_1": {
+      "name": "neutral_replace_1",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic scalar prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "replace",
+      "token_index": 27,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.2718585789551236,
+      "mean_vector_stability": 0.7062626878420513
+    },
+    "neutral_replace_2": {
+      "name": "neutral_replace_2",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse modulus relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "replace",
+      "token_index": 54,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.2668124997471585,
+      "mean_vector_stability": 0.7026206254959106
+    }
+  },
+  "chunk_variants": [
+    {
+      "name": "chunk_drop_000_014",
+      "anchor_text": "<HDA>given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 0,
+      "chunk_end": 14,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.27283132934423543,
+      "mean_vector_stability": 0.7058416207631428
+    },
+    {
+      "name": "chunk_drop_032_046",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 32,
+      "chunk_end": 46,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.29708128563702346,
+      "mean_vector_stability": 0.7188476423422496
+    },
+    {
+      "name": "chunk_drop_064_078",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method tours twice curve stream theory begin level user wants need output somehow encode process</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 64,
+      "chunk_end": 78,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.275093493602884,
+      "mean_vector_stability": 0.7065547406673431
+    },
+    {
+      "name": "chunk_drop_096_110",
+      "anchor_text": "<HDA>scope about above while since meets ought value going reach focus these thing learn given count solve basis logic sense world form prompt query whereby delta cubic factor prime exact derive minus plus threey twelve eighty modul aspect detail power rule nabla grade shift obtain yields change degree slopey versus hencey leasty must diverse reuse relate final check alpha berry doodle event flame graph ideal jolly knife lemon noble ocean quest reason taste umbra vivid wagon yacht input constant multiple combine salsa plane fuzzy axiom below inner outer comma lbrace omega zeta iota kappa which method</HDA>",
+      "variant_type": "chunk_ablation",
+      "chunk_start": 96,
+      "chunk_end": 110,
+      "pass_rate": 0.3333333333333333,
+      "selected_layer_alignment": 0.25737681199262963,
+      "mean_vector_stability": 0.6977278987566631
+    }
+  ]
+}

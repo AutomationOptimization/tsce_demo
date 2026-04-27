@@ -1,0 +1,7 @@
+anchor_prompt_family,condition,count,pass_rate,mean_score,mean_latency_s,mean_logit_cosine_shift,mean_attention_to_control
+latent_bias,baseline,100,0.66,0.66,12.289326701420359,,
+latent_bias,english_control,100,0.64,0.64,10.514935688553377,,
+latent_bias,tsce_anchor,100,0.66,0.66,11.662937066333834,,
+latent_bias,random_valid_anchor,100,0.65,0.65,11.740267998063937,,
+latent_bias,shuffled_anchor,100,0.64,0.64,12.066858881921508,,
+latent_bias,context_collision_anchor,100,0.66,0.66,12.08994042401202,,

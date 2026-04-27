@@ -1,0 +1,20 @@
+{
+  "family": "latent_bias",
+  "tsce_anchor": {
+    "count": 100,
+    "pass_rate": 0.66,
+    "mean_score": 0.66,
+    "mean_latency_s": 11.662937066333834,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "anchor_quality": {
+    "count": 100,
+    "mean_selector_score": 57.190171428571425,
+    "mean_token_count": 5.94,
+    "mean_repetition_ratio": 0.0,
+    "mean_alpha_ratio": 1.0,
+    "mean_prompt_overlap_count": 0.0,
+    "valid_rate": 1.0
+  }
+}

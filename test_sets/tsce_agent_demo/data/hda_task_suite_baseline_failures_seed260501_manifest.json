@@ -1,0 +1,17 @@
+{
+  "source_run": "tsce_agent_demo/results/gemma_hda_task_suite_baseline_seed260501_n300",
+  "condition": "baseline",
+  "unique_failure_count": 69,
+  "repeat_n": 300,
+  "unique_path": "tsce_agent_demo/data/hda_task_suite_baseline_failures_seed260501_unique_n69.jsonl",
+  "repeat_path": "tsce_agent_demo/data/hda_task_suite_baseline_failures_seed260501_repeat_n300.jsonl",
+  "failure_counts_by_kind": {
+    "arithmetic_json": 22,
+    "unit_conversion_json": 17,
+    "reading_comprehension_json": 7,
+    "string_transform_json": 6,
+    "calendar_json": 8,
+    "logic_json": 7,
+    "em_dash_removal": 2
+  }
+}

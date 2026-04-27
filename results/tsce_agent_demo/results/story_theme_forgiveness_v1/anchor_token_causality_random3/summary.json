@@ -1,0 +1,174 @@
+{
+  "complete": true,
+  "payload_spec": {
+    "type": "theme",
+    "label": "forgiveness after betrayal",
+    "exact_phrases": [],
+    "facets": [
+      [
+        "forgive",
+        "forgiveness",
+        "mercy",
+        "pardon"
+      ],
+      [
+        "betray",
+        "betrayal",
+        "treachery",
+        "deceive"
+      ],
+      [
+        "trust",
+        "repair",
+        "reconcile",
+        "amends"
+      ]
+    ]
+  },
+  "positive_probes": [
+    {
+      "name": "exact_label",
+      "text": "forgiveness after betrayal",
+      "weight": 1.0
+    },
+    {
+      "name": "facet_1",
+      "text": "forgive",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_2",
+      "text": "betray",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_3",
+      "text": "trust",
+      "weight": 0.45
+    },
+    {
+      "name": "narrative_frame",
+      "text": "about forgiveness after betrayal",
+      "weight": 0.7
+    }
+  ],
+  "negative_probes": [
+    {
+      "name": "neg_label_1",
+      "text": "homecoming after exile",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_2",
+      "text": "memory as inheritance",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_3",
+      "text": "freedom purchased by sacrifice",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_narrative_1",
+      "text": "about homecoming after exile",
+      "weight": 0.7
+    }
+  ],
+  "selected_anchor_keys": [
+    "theme_all_proxy_001",
+    "theme_mercy_repair_001",
+    "theme_betrayal_repair_001",
+    "theme_mercy_betrayal_001"
+  ],
+  "summary": {
+    "anchor": {
+      "count": 20,
+      "mean_margin": 2.2507123386850947,
+      "mean_positive_logprob": -10.839608106185477,
+      "mean_negative_logprob": -13.090320444870567,
+      "margin_lift_vs_no_anchor": 2.584862650883311
+    },
+    "anchor_head_deleted": {
+      "count": 15,
+      "mean_margin": 1.4485426309618517,
+      "mean_positive_logprob": -11.759073150635963,
+      "mean_negative_logprob": -13.207615781597816,
+      "margin_lift_vs_no_anchor": 1.7826929431600682
+    },
+    "anchor_mid_deleted": {
+      "count": 15,
+      "mean_margin": 2.150370922569874,
+      "mean_positive_logprob": -10.89295080686812,
+      "mean_negative_logprob": -13.043321729437993,
+      "margin_lift_vs_no_anchor": 2.4845212347680903
+    },
+    "anchor_neutral_replaced": {
+      "count": 15,
+      "mean_margin": 1.9461597740917103,
+      "mean_positive_logprob": -10.953268774440136,
+      "mean_negative_logprob": -12.899428548531846,
+      "margin_lift_vs_no_anchor": 2.280310086289927
+    },
+    "anchor_shuffled": {
+      "count": 20,
+      "mean_margin": 2.1972851754877523,
+      "mean_positive_logprob": -10.240609311483778,
+      "mean_negative_logprob": -12.437894486971535,
+      "margin_lift_vs_no_anchor": 2.5314354876859686
+    },
+    "anchor_tail_deleted": {
+      "count": 15,
+      "mean_margin": 2.299862546154698,
+      "mean_positive_logprob": -10.408127570997118,
+      "mean_negative_logprob": -12.707990117151816,
+      "margin_lift_vs_no_anchor": 2.6340128583529143
+    },
+    "context_collision_anchor": {
+      "count": 20,
+      "mean_margin": -0.3485265771178745,
+      "mean_positive_logprob": -14.165502560679034,
+      "mean_negative_logprob": -13.816975983561159,
+      "margin_lift_vs_no_anchor": -0.014376264919658044
+    },
+    "no_anchor": {
+      "count": 20,
+      "mean_margin": -0.33415031219821645,
+      "mean_positive_logprob": -13.444140464592664,
+      "mean_negative_logprob": -13.109990152394445,
+      "margin_lift_vs_no_anchor": 0.0
+    },
+    "random_matched_anchor_1": {
+      "count": 20,
+      "mean_margin": -0.8837141025441477,
+      "mean_positive_logprob": -14.3425766536445,
+      "mean_negative_logprob": -13.458862551100353,
+      "margin_lift_vs_no_anchor": -0.5495637903459313
+    },
+    "random_matched_anchor_2": {
+      "count": 20,
+      "mean_margin": -0.4713150649857507,
+      "mean_positive_logprob": -14.109733511560947,
+      "mean_negative_logprob": -13.638418446575198,
+      "margin_lift_vs_no_anchor": -0.13716475278753426
+    },
+    "random_matched_anchor_3": {
+      "count": 20,
+      "mean_margin": -0.11617599119807584,
+      "mean_positive_logprob": -13.272723355012008,
+      "mean_negative_logprob": -13.156547363813932,
+      "margin_lift_vs_no_anchor": 0.2179743210001406
+    }
+  },
+  "args": {
+    "artifact_dir": "tsce_agent_demo/results/story_theme_forgiveness_v1",
+    "anchor_key": [],
+    "model": "google/gemma-4-E4B-it",
+    "device": "auto",
+    "dtype": "auto",
+    "attn_implementation": "",
+    "seed": 17,
+    "out_dir": "tsce_agent_demo/results/story_theme_forgiveness_v1/anchor_token_causality_random3",
+    "top_k": 0,
+    "random_matched_count": 3
+  }
+}

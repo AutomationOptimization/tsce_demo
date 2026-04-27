@@ -1,0 +1,50 @@
+{
+  "baseline": {
+    "count": 100,
+    "pass_rate": 0.66,
+    "mean_score": 0.66,
+    "mean_latency_s": 12.289326701420359,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "english_control": {
+    "count": 100,
+    "pass_rate": 0.64,
+    "mean_score": 0.64,
+    "mean_latency_s": 10.514935688553377,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "tsce_anchor": {
+    "count": 100,
+    "pass_rate": 0.66,
+    "mean_score": 0.66,
+    "mean_latency_s": 11.662937066333834,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "random_valid_anchor": {
+    "count": 100,
+    "pass_rate": 0.65,
+    "mean_score": 0.65,
+    "mean_latency_s": 11.740267998063937,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "shuffled_anchor": {
+    "count": 100,
+    "pass_rate": 0.64,
+    "mean_score": 0.64,
+    "mean_latency_s": 12.066858881921508,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  },
+  "context_collision_anchor": {
+    "count": 100,
+    "pass_rate": 0.66,
+    "mean_score": 0.66,
+    "mean_latency_s": 12.08994042401202,
+    "mean_logit_cosine_shift": null,
+    "mean_attention_to_control": null
+  }
+}

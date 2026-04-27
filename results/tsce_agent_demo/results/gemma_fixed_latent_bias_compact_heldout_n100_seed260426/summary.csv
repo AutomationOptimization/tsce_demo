@@ -1,0 +1,7 @@
+condition,count,pass_rate,mean_score,mean_latency_s,mean_logit_cosine_shift,mean_attention_to_control
+baseline,100,0.66,0.66,12.289326701420359,,
+english_control,100,0.64,0.64,10.514935688553377,,
+tsce_anchor,100,0.66,0.66,11.662937066333834,,
+random_valid_anchor,100,0.65,0.65,11.740267998063937,,
+shuffled_anchor,100,0.64,0.64,12.066858881921508,,
+context_collision_anchor,100,0.66,0.66,12.08994042401202,,

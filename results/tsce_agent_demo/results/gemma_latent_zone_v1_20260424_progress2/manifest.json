@@ -1,0 +1,315 @@
+{
+  "benchmark_file": "tsce_agent_demo/results/meaning_shell_latent_zone_v1.jsonl",
+  "model": "google/gemma-4-E4B-it",
+  "classes": {
+    "formal_verdict_json": {
+      "train_shells": 4,
+      "eval_shells": 2,
+      "best_anchor_key": "082e7b7867d0",
+      "best_train_pass_rate": 0.5,
+      "best_train_alignment": 0.9442820169392765,
+      "selected_layers": [
+        22,
+        27
+      ],
+      "causal_summary": {
+        "context_collision_anchor": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 1.1960720928618684,
+          "mean_logit_cosine_shift": 0.03838746783624611,
+          "mean_attention_to_control": null
+        },
+        "best_anchor_eval": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 1.3099811925785616,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 20.72386757854838,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_bad_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.052549785003066,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_shuffled_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.054938763496466,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "remove_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 1.254084107116796,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "project_out_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 1.2698016839567572,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        }
+      },
+      "compression_summary": {
+        "good": {
+          "layer_norms": {
+            "22": 35.98855793476105,
+            "27": 37.51002275943756
+          },
+          "norm_concentration": 0.5103503007153756,
+          "stability": 0.6970092803239822,
+          "top_abs_mass_ratio": 0.0669021513313055
+        },
+        "bad": {
+          "layer_norms": {
+            "22": 33.00078797340393,
+            "27": 33.92010307312012
+          },
+          "norm_concentration": 0.5068686704954143,
+          "stability": 0.7192659005522728,
+          "top_abs_mass_ratio": 0.0703947339206934
+        },
+        "shuffled": {
+          "layer_norms": {
+            "22": 37.197479248046875,
+            "27": 36.516995429992676
+          },
+          "norm_concentration": 0.5046156729802819,
+          "stability": 0.7213249653577805,
+          "top_abs_mass_ratio": 0.07091540656983852
+        },
+        "good_minus_controls": {
+          "norm_concentration_delta": 0.0034816302199612847,
+          "stability_delta": -0.024315685033798218,
+          "top_abs_mass_ratio_delta": -0.00401325523853302
+        }
+      }
+    },
+    "surface_deletion_exact": {
+      "train_shells": 4,
+      "eval_shells": 2,
+      "best_anchor_key": "be80ce2d73d2",
+      "best_train_pass_rate": 0.5,
+      "best_train_alignment": 0.5021669055621848,
+      "selected_layers": [
+        0,
+        2
+      ],
+      "causal_summary": {
+        "context_collision_anchor": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.558718506945297,
+          "mean_logit_cosine_shift": 0.013720132578406392,
+          "mean_attention_to_control": null
+        },
+        "best_anchor_eval": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 6.356876257923432,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.242096794419922,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_bad_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.445063343038782,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_shuffled_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 9.474592672893777,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "remove_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 6.558484891895205,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "project_out_class_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 11.08808992349077,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        }
+      },
+      "compression_summary": {
+        "good": {
+          "layer_norms": {
+            "0": 34.61085882782936,
+            "2": 37.60216528177261
+          },
+          "norm_concentration": 0.5207116824895961,
+          "stability": 0.44786067120730877,
+          "top_abs_mass_ratio": 0.11349779739975929
+        },
+        "bad": {
+          "layer_norms": {
+            "0": 44.8859099149704,
+            "2": 47.16289484500885
+          },
+          "norm_concentration": 0.5123683568514321,
+          "stability": 0.4955262476578355,
+          "top_abs_mass_ratio": 0.11168338730931282
+        },
+        "shuffled": {
+          "layer_norms": {
+            "0": 44.36014246940613,
+            "2": 46.34127116203308
+          },
+          "norm_concentration": 0.5109211566463405,
+          "stability": 0.4876620713621378,
+          "top_abs_mass_ratio": 0.11174577474594116
+        },
+        "good_minus_controls": {
+          "norm_concentration_delta": 0.008343325638163979,
+          "stability_delta": -0.047665576450526714,
+          "top_abs_mass_ratio_delta": 0.0017520226538181305
+        }
+      }
+    },
+    "symbolic_transform_json": {
+      "train_shells": 4,
+      "eval_shells": 2,
+      "best_anchor_key": "a3d3b83d7e54",
+      "best_train_pass_rate": 0.25,
+      "best_train_alignment": 0.9627977308230605,
+      "selected_layers": [
+        41,
+        40
+      ],
+      "causal_summary": {
+        "context_collision_anchor": {
+          "count": 2,
+          "pass_rate": 0.5,
+          "mean_score": 0.5,
+          "mean_latency_s": 9.499786285567097,
+          "mean_logit_cosine_shift": 0.045147357972259355,
+          "mean_attention_to_control": null
+        },
+        "best_anchor_eval": {
+          "count": 2,
+          "pass_rate": 1.0,
+          "mean_score": 1.0,
+          "mean_latency_s": 9.581617428106256,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_class_delta": {
+          "count": 2,
+          "pass_rate": 0.5,
+          "mean_score": 0.5,
+          "mean_latency_s": 1.3820228449767455,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_bad_delta": {
+          "count": 2,
+          "pass_rate": 0.0,
+          "mean_score": 0.0,
+          "mean_latency_s": 1.4151611641282216,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "recover_with_shuffled_delta": {
+          "count": 2,
+          "pass_rate": 0.5,
+          "mean_score": 0.5,
+          "mean_latency_s": 16.926798665896058,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "remove_class_delta": {
+          "count": 2,
+          "pass_rate": 1.0,
+          "mean_score": 1.0,
+          "mean_latency_s": 9.291689195553772,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        },
+        "project_out_class_delta": {
+          "count": 2,
+          "pass_rate": 0.5,
+          "mean_score": 0.5,
+          "mean_latency_s": 1.3366139675490558,
+          "mean_logit_cosine_shift": null,
+          "mean_attention_to_control": null
+        }
+      },
+      "compression_summary": {
+        "good": {
+          "layer_norms": {
+            "41": 143.52159309387207,
+            "40": 48.261613607406616
+          },
+          "norm_concentration": 0.7483532868309014,
+          "stability": 0.6255954280495644,
+          "top_abs_mass_ratio": 0.04739146679639816
+        },
+        "bad": {
+          "layer_norms": {
+            "41": 161.25211906433105,
+            "40": 53.320374488830566
+          },
+          "norm_concentration": 0.7515041485239574,
+          "stability": 0.6400014087557793,
+          "top_abs_mass_ratio": 0.04336369410157204
+        },
+        "shuffled": {
+          "layer_norms": {
+            "41": 135.1600170135498,
+            "40": 45.802048206329346
+          },
+          "norm_concentration": 0.7468969634565273,
+          "stability": 0.6333445012569427,
+          "top_abs_mass_ratio": 0.048233628273010254
+        },
+        "good_minus_controls": {
+          "norm_concentration_delta": -0.0031508616930560063,
+          "stability_delta": -0.014405980706214905,
+          "top_abs_mass_ratio_delta": -0.0008421614766120911
+        }
+      }
+    }
+  }
+}

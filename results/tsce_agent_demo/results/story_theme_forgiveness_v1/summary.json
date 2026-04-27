@@ -1,0 +1,31 @@
+{
+  "meaning_class": "story_theme_payload",
+  "payload_spec": {
+    "type": "theme",
+    "label": "forgiveness after betrayal",
+    "exact_phrases": [],
+    "facets": [
+      [
+        "forgive",
+        "forgiveness",
+        "mercy",
+        "pardon"
+      ],
+      [
+        "betray",
+        "betrayal",
+        "treachery",
+        "deceive"
+      ],
+      [
+        "trust",
+        "repair",
+        "reconcile",
+        "amends"
+      ]
+    ]
+  },
+  "best_anchor_key": "theme_all_proxy_001",
+  "random_valid_anchor": "",
+  "experiment_note": "Controlled naturalistic theme-proxy artifact for token-causality evaluation."
+}

@@ -1,0 +1,229 @@
+{
+  "complete": true,
+  "payload_spec": {
+    "type": "subject",
+    "label": "a greenhouse full of sleeping glass birds",
+    "exact_phrases": [],
+    "facets": [
+      [
+        "greenhouse",
+        "glasshouse"
+      ],
+      [
+        "glass",
+        "crystal"
+      ],
+      [
+        "bird",
+        "avian",
+        "wing"
+      ]
+    ]
+  },
+  "positive_probes": [
+    {
+      "name": "exact_label",
+      "text": "a greenhouse full of sleeping glass birds",
+      "weight": 1.0
+    },
+    {
+      "name": "facet_1",
+      "text": "greenhouse",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_2",
+      "text": "glass",
+      "weight": 0.45
+    },
+    {
+      "name": "facet_3",
+      "text": "bird",
+      "weight": 0.45
+    },
+    {
+      "name": "narrative_frame",
+      "text": "about a greenhouse full of sleeping glass birds",
+      "weight": 0.7
+    }
+  ],
+  "negative_probes": [
+    {
+      "name": "neg_label_1",
+      "text": "a drowned observatory beneath the salt flats",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_2",
+      "text": "a clock tower sealed with beeswax",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_label_3",
+      "text": "an orchard growing around a rusted train",
+      "weight": 1.0
+    },
+    {
+      "name": "neg_narrative_1",
+      "text": "about a drowned observatory beneath the salt flats",
+      "weight": 0.7
+    }
+  ],
+  "selected_anchor_keys": [
+    "all_four_001",
+    "all_four_002",
+    "all_four_003",
+    "all_four_004",
+    "coverage_3_glass_light_avian_sky_garden_green_001",
+    "coverage_3_glass_light_avian_sky_garden_green_002",
+    "coverage_3_glass_light_avian_sky_garden_green_003",
+    "coverage_3_glass_light_avian_sky_garden_green_004",
+    "coverage_3_glass_light_avian_sky_sleep_quiet_001",
+    "coverage_3_glass_light_avian_sky_sleep_quiet_002",
+    "coverage_3_glass_light_avian_sky_sleep_quiet_003",
+    "coverage_3_glass_light_avian_sky_sleep_quiet_004",
+    "coverage_3_glass_light_garden_green_sleep_quiet_001",
+    "coverage_3_glass_light_garden_green_sleep_quiet_002",
+    "coverage_3_glass_light_garden_green_sleep_quiet_003",
+    "coverage_3_glass_light_garden_green_sleep_quiet_004",
+    "coverage_3_avian_sky_garden_green_sleep_quiet_001",
+    "coverage_3_avian_sky_garden_green_sleep_quiet_002",
+    "coverage_3_avian_sky_garden_green_sleep_quiet_003",
+    "coverage_3_avian_sky_garden_green_sleep_quiet_004",
+    "coverage_2_glass_light_avian_sky_001",
+    "coverage_2_glass_light_avian_sky_002",
+    "coverage_2_glass_light_avian_sky_003",
+    "coverage_2_glass_light_avian_sky_004",
+    "coverage_2_glass_light_garden_green_001",
+    "coverage_2_glass_light_garden_green_002",
+    "coverage_2_glass_light_garden_green_003",
+    "coverage_2_glass_light_garden_green_004",
+    "coverage_2_glass_light_sleep_quiet_001",
+    "coverage_2_glass_light_sleep_quiet_002",
+    "coverage_2_glass_light_sleep_quiet_003",
+    "coverage_2_glass_light_sleep_quiet_004",
+    "coverage_2_avian_sky_garden_green_001",
+    "coverage_2_avian_sky_garden_green_002",
+    "coverage_2_avian_sky_garden_green_003",
+    "coverage_2_avian_sky_garden_green_004",
+    "coverage_2_avian_sky_sleep_quiet_001",
+    "coverage_2_avian_sky_sleep_quiet_002",
+    "coverage_2_avian_sky_sleep_quiet_003",
+    "coverage_2_avian_sky_sleep_quiet_004",
+    "coverage_2_garden_green_sleep_quiet_001",
+    "coverage_2_garden_green_sleep_quiet_002",
+    "coverage_2_garden_green_sleep_quiet_003",
+    "coverage_2_garden_green_sleep_quiet_004",
+    "only_glass_light_001",
+    "only_glass_light_002",
+    "only_glass_light_003",
+    "only_glass_light_004",
+    "only_avian_sky_001",
+    "only_avian_sky_002",
+    "only_avian_sky_003",
+    "only_avian_sky_004",
+    "only_garden_green_001",
+    "only_garden_green_002",
+    "only_garden_green_003",
+    "only_garden_green_004",
+    "only_sleep_quiet_001",
+    "only_sleep_quiet_002",
+    "only_sleep_quiet_003",
+    "only_sleep_quiet_004",
+    "random_neutral_001",
+    "random_neutral_002",
+    "random_neutral_003",
+    "random_neutral_004"
+  ],
+  "summary": {
+    "anchor": {
+      "count": 320,
+      "mean_margin": -2.5510576666649025,
+      "mean_positive_logprob": -11.747720846217122,
+      "mean_negative_logprob": -9.196663179552221,
+      "margin_lift_vs_no_anchor": 1.1629255255902602
+    },
+    "anchor_head_deleted": {
+      "count": 320,
+      "mean_margin": -2.8808065531580835,
+      "mean_positive_logprob": -12.02753484036145,
+      "mean_negative_logprob": -9.146728287203361,
+      "margin_lift_vs_no_anchor": 0.8331766390970792
+    },
+    "anchor_mid_deleted": {
+      "count": 320,
+      "mean_margin": -2.6698360865869573,
+      "mean_positive_logprob": -11.868383648634744,
+      "mean_negative_logprob": -9.19854756204778,
+      "margin_lift_vs_no_anchor": 1.0441471056682055
+    },
+    "anchor_neutral_replaced": {
+      "count": 320,
+      "mean_margin": -2.836282027251243,
+      "mean_positive_logprob": -11.987303136982268,
+      "mean_negative_logprob": -9.15102110973103,
+      "margin_lift_vs_no_anchor": 0.8777011650039199
+    },
+    "anchor_shuffled": {
+      "count": 320,
+      "mean_margin": -2.7741988624357505,
+      "mean_positive_logprob": -11.960523660588532,
+      "mean_negative_logprob": -9.186324798152773,
+      "margin_lift_vs_no_anchor": 0.9397843298194122
+    },
+    "anchor_tail_deleted": {
+      "count": 320,
+      "mean_margin": -2.637388557611679,
+      "mean_positive_logprob": -11.808269985788307,
+      "mean_negative_logprob": -9.170881428176637,
+      "margin_lift_vs_no_anchor": 1.0765946346434836
+    },
+    "context_collision_anchor": {
+      "count": 320,
+      "mean_margin": -2.887053884274529,
+      "mean_positive_logprob": -12.7944278798564,
+      "mean_negative_logprob": -9.907373995581882,
+      "margin_lift_vs_no_anchor": 0.8269293079806337
+    },
+    "no_anchor": {
+      "count": 320,
+      "mean_margin": -3.7139831922551627,
+      "mean_positive_logprob": -12.479216414649139,
+      "mean_negative_logprob": -8.765233222393991,
+      "margin_lift_vs_no_anchor": 0.0
+    },
+    "random_matched_anchor_1": {
+      "count": 320,
+      "mean_margin": -3.773280202579732,
+      "mean_positive_logprob": -13.005127413759666,
+      "mean_negative_logprob": -9.231847211179943,
+      "margin_lift_vs_no_anchor": -0.05929701032456913
+    },
+    "random_matched_anchor_2": {
+      "count": 320,
+      "mean_margin": -3.7150887113234257,
+      "mean_positive_logprob": -12.89151216574166,
+      "mean_negative_logprob": -9.17642345441823,
+      "margin_lift_vs_no_anchor": -0.00110551906826295
+    },
+    "random_matched_anchor_3": {
+      "count": 320,
+      "mean_margin": -3.737086129814872,
+      "mean_positive_logprob": -12.958514585269672,
+      "mean_negative_logprob": -9.221428455454804,
+      "margin_lift_vs_no_anchor": -0.023102937559709158
+    }
+  },
+  "args": {
+    "artifact_dir": "tsce_agent_demo/results/story_subject_greenhouse_v1/controlled_proxy_family_grid_v1",
+    "anchor_key": [],
+    "model": "google/gemma-4-E4B-it",
+    "device": "auto",
+    "dtype": "auto",
+    "attn_implementation": "",
+    "seed": 31,
+    "out_dir": "tsce_agent_demo/results/story_subject_greenhouse_v1/controlled_proxy_family_grid_v1/anchor_token_causality_random3",
+    "top_k": 0,
+    "random_matched_count": 3
+  }
+}
