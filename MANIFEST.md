@@ -9,7 +9,7 @@ Excluded by construction: virtual environments, caches, `.DS_Store`, generated b
 |---|---|---:|---:|---|
 | (generated or root copy) | .gitignore | repo-metadata | 323 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
 | (generated or root copy) | LICENSE | repo-metadata | 1079 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
-| (generated or root copy) | MANIFEST.md | repo-metadata | 91280 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
+| (generated or root copy) | MANIFEST.md | repo-metadata | 91443 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
 | (generated or root copy) | README.md | repo-metadata | 3836 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
 | (generated or root copy) | SECURITY_REVIEW.md | repo-metadata | 1619 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
 | LICENSE | package/LICENSE | package | 1079 | Installable TSCE wrapper package file, example, or wrapper test. |
@@ -39,6 +39,7 @@ Excluded by construction: virtual environments, caches, `.DS_Store`, generated b
 | docs/figures/tsce/figure7_black_box_archive_lifts.png | paper/figures/tsce/figure7_black_box_archive_lifts.png | paper-figure | 130103 | Referenced figure asset used by think_before_you_speak_v2.tex. |
 | docs/figures/tsce/figure7_cross_run_lifts.pdf | paper/figures/tsce/figure7_cross_run_lifts.pdf | paper-figure | 20503 | Referenced figure asset used by think_before_you_speak_v2.tex. |
 | docs/figures/tsce/figure7_cross_run_lifts.png | paper/figures/tsce/figure7_cross_run_lifts.png | paper-figure | 131946 | Referenced figure asset used by think_before_you_speak_v2.tex. |
+| (user-supplied title-page graphic) | paper/figures/tsce/tsce_graphic.png | paper-figure | 947076 | First-page TSCE overview graphic supplied for the paper title page. |
 | scripts/build_tsce_v2_figures.py (relocated) | paper/support_code/build_tsce_v2_figures.py | paper-support-code | 16580 | Figure-generation code patched to read artifact-local curated results. |
 | docs/anchor_prompt_benchmark.md | paper/support_notes/anchor_prompt_benchmark.md | paper-support | 4765 | Supporting note for mechanism, anchor policy, task-suite, or diffusion framing. |
 | docs/anchor_prompt_spec.md | paper/support_notes/anchor_prompt_spec.md | paper-support | 5158 | Supporting note for mechanism, anchor policy, task-suite, or diffusion framing. |
@@ -49,8 +50,8 @@ Excluded by construction: virtual environments, caches, `.DS_Store`, generated b
 | docs/phase1_diffusion_anchor.md | paper/support_notes/phase1_diffusion_anchor.md | paper-support | 8998 | Supporting note for mechanism, anchor policy, task-suite, or diffusion framing. |
 | docs/rl_hda.md | paper/support_notes/rl_hda.md | paper-support | 1442 | Supporting note for mechanism, anchor policy, task-suite, or diffusion framing. |
 | docs/think_before_you_speak_mechanism_addendum.md | paper/think_before_you_speak_mechanism_addendum.md | paper | 6447 | Final paper source/PDF or paper addendum/framework text. |
-| docs/think_before_you_speak_v2.pdf | paper/think_before_you_speak_v2.pdf | paper | 291153 | Final paper source/PDF or paper addendum/framework text. |
-| docs/think_before_you_speak_v2.tex | paper/think_before_you_speak_v2.tex | paper | 42939 | Final paper source/PDF or paper addendum/framework text. |
+| docs/think_before_you_speak_v2.pdf | paper/think_before_you_speak_v2.pdf | paper | 948833 | Final paper source/PDF or paper addendum/framework text. |
+| docs/think_before_you_speak_v2.tex | paper/think_before_you_speak_v2.tex | paper | 43038 | Final paper source/PDF or paper addendum/framework text. |
 | docs/tsce_diffusion_framework.tex | paper/tsce_diffusion_framework.tex | paper | 18423 | Final paper source/PDF or paper addendum/framework text. |
 | (generated or root copy) | requirements-reproduce.txt | repo-metadata | 218 | Publishable companion-repository metadata, security note, and local reproduction guidance. |
 | archive/2025-05-30_17-08-01/cosine_bars.png | results/archive/2025-05-30_17-08-01/cosine_bars.png | curated-result | 24279 | Figure-supporting black-box archive result artifact. |

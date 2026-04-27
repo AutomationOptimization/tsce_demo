@@ -21,6 +21,10 @@
 \begin{document}
 \maketitle
 
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/tsce/tsce_graphic.png}
+\end{center}
+
 \begin{abstract}
 Many language-model failures begin before the first visible token: the model starts decoding from the wrong conditional state. Two-Step Contextual Enrichment (\tsce) is a discrete inference-time control method for improving reliability without changing model weights. It first generates a \hdalong{} (\hda), then decodes the final answer under that anchor. The \hda{} is the steering prefix under test: an ordinary input-token sequence selected to shift the model's pre-decode state into a better task basin before visible answer generation.
 
