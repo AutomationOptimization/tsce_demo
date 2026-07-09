@@ -1,0 +1,52 @@
+{
+ "n_records": 40,
+ "basis": "residualized averaged-gradient J-lens (32 contexts)",
+ "window_layers_from_explicit_positive": [
+  41,
+  42
+ ],
+ "band_means": {
+  "anchor": 0.015480409376323223,
+  "anchor_shuffled": 0.006084122695028782,
+  "context_collision_anchor": 0.003220765385776758,
+  "explicit_positive": 0.05079631879925728,
+  "explicit_negative": -0.02472405508160591,
+  "random_matched_anchor_1": -0.0006619145860895514,
+  "random_matched_anchor_2": 0.0016766857588663697,
+  "random_matched_anchor_3": 0.00014289426326286048
+ },
+ "band_means_random_pooled": 0.0003858883283101022,
+ "primary_anchor_minus_random": {
+  "mean": 0.015094520524144173,
+  "ci95": [
+   0.011523284018039703,
+   0.018812967464327812
+  ],
+  "clears_zero": true
+ },
+ "shuffled_minus_random": {
+  "mean": 0.0056982338428497314,
+  "ci95": [
+   0.0025248820893466473,
+   0.008924143388867378
+  ],
+  "clears_zero": true
+ },
+ "per_anchor_key": {
+  "all_four_001": 0.02062789909541607,
+  "all_four_002": 0.025653759017586708,
+  "all_four_003": 0.015676267445087433,
+  "all_four_004": 0.006514145527034998,
+  "coverage_2_glass_light_avian_sky_001": 0.029029909521341324,
+  "coverage_2_glass_light_avian_sky_002": 0.0072687892243266106,
+  "coverage_2_glass_light_avian_sky_003": 0.002112120855599642,
+  "coverage_2_glass_light_avian_sky_004": 0.013873264193534851
+ },
+ "per_probe": {
+  "probe_01": 0.02566051483154297,
+  "probe_02": 0.014685124158859253,
+  "probe_03": 0.009321540594100952,
+  "probe_04": 0.010757786221802235,
+  "probe_05": 0.015047633089125156
+ }
+}
